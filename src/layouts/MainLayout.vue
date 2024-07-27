@@ -9,13 +9,44 @@
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
           </q-avatar>
-          Title
+          {{ appName }}
+          <q-badge color="orange"> v{{ appVersion }}-alpha</q-badge>
         </q-toolbar-title>
+        <q-avatar>
+          <img src="https://cdn.quasar.dev/img/avatar.png">
+        </q-avatar>
+
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" side="left" overlay elevated>
-      <!-- drawer content -->
+            <q-list>
+              <q-item-label
+                header
+              >
+                Essential Links
+              </q-item-label>
+
+              <EssentialLink
+                v-for="link in essentialLinks"
+                :key="link.title"
+                v-bind="link"
+              />
+
+              <div class="absolute-bottom">
+                <essential-link title="Settings" caption="set" icon="settings" link="#"/>
+              </div>
+
+              <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+                <div class="absolute-bottom bg-transparent">
+                  <q-avatar size="56px" class="q-mb-sm">
+                    <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                  </q-avatar>
+                  <div class="text-weight-bold">Razvan Stoenescu</div>
+                  <div>@rstoenescu</div>
+                </div>
+              </q-img>
+            </q-list>
     </q-drawer>
 
     <q-page-container>
@@ -26,20 +57,47 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { defineComponent, ref } from 'vue';
+import { version, productName } from '../../package.json';
+import EssentialLink from "components/EssentialLink.vue";
 
-export default {
+const linksList = [
+  {
+    title: 'Characters',
+    caption: 'quasar.dev',
+    icon: 'school',
+    link: 'https://quasar.dev'
+  },
+  {
+    title: 'Github',
+    caption: 'github.com/quasarframework',
+    icon: 'code',
+    link: 'https://github.com/quasarframework'
+  }
+]
+
+export default defineComponent({
+  name: 'MainLayout',
+
+  components: {
+    EssentialLink
+  },
+
   setup () {
     const leftDrawerOpen = ref(false)
 
+
     return {
+      essentialLinks: linksList,
+      appVersion:version,
+      appName:productName,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
   }
-}
+})
 </script>
 
 <!--<template>-->
