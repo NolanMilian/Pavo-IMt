@@ -12,8 +12,8 @@
           {{ appName }}
           <q-badge color="orange"> v{{ appVersion }}-alpha</q-badge>
         </q-toolbar-title>
-        <q-avatar>
-          <img src="https://cdn.quasar.dev/img/avatar.png">
+        <q-avatar class="cursor-pointer" onclick="console.log('click')" onmouseover="console.log('mouseover')">
+          <img src="https://cdn.quasar.dev/img/boy-avatar.png">
         </q-avatar>
 
       </q-toolbar>
@@ -21,6 +21,30 @@
 
     <q-drawer v-model="leftDrawerOpen" side="left" overlay elevated>
             <q-list>
+              <q-img src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+                <div class="absolute-bottom bg-transparent col">
+                  <q-avatar size="56px" class="q-mb-sm">
+                    <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                  </q-avatar>
+                  <div class="text-weight-bold">Razvan Stoenescu</div>
+                  <div>@rstoenescu</div>
+                </div>
+                <div class="absolute-top-right transparent cursor-pointer">
+                  <q-icon name="settings" size="24px">
+                    <q-tooltip>
+                      Profile Settings
+                    </q-tooltip>
+                  </q-icon>
+                </div>
+                <div class="absolute-bottom-right transparent cursor-pointer">
+                  <q-icon name="logout" size="24px">
+                    <q-tooltip>
+                      Logout
+                    </q-tooltip>
+                  </q-icon>
+                </div>
+            </q-img>
+
               <q-item-label
                 header
               >
@@ -36,16 +60,6 @@
               <div class="absolute-bottom">
                 <essential-link title="Settings" caption="set" icon="settings" link="#"/>
               </div>
-
-              <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
-                <div class="absolute-bottom bg-transparent">
-                  <q-avatar size="56px" class="q-mb-sm">
-                    <img src="https://cdn.quasar.dev/img/boy-avatar.png">
-                  </q-avatar>
-                  <div class="text-weight-bold">Razvan Stoenescu</div>
-                  <div>@rstoenescu</div>
-                </div>
-              </q-img>
             </q-list>
     </q-drawer>
 
