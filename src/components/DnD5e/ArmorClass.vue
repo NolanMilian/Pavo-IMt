@@ -24,6 +24,8 @@ export default defineComponent({
 <style scoped>
 .armorClass {
   width: 100px;
+  min-width: 100px;
+  max-width: 100px;
   height: 100px;
   text-align: center;
   border: #A90000 5px solid;

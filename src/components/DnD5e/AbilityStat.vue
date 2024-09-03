@@ -35,6 +35,8 @@ export default defineComponent({
 .statBlock {
   position: relative;
   width: 85px;
+  min-width: 85px;
+  max-width: 85px;
   height: 100px;
   text-align: center;
   border: #A90000 5px solid;

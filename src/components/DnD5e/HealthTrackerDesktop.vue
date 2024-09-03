@@ -1,0 +1,104 @@
+<script>
+import {defineComponent} from 'vue'
+
+export default defineComponent({
+  name: "HealthTrackerDesktop",
+  props: [''],
+  data(){
+    return {
+      current: 93,
+      max: 93,
+      temp: 0
+    }
+  },
+  computed: {
+    tempHealth() {return this.temp === 0 ? '--' : this.temp}
+  }
+})
+</script>
+
+<template>
+  <div class="healthTracker">
+    <span class="healthLabel">HEALTH</span>
+    <div class="row items-center">
+      <div class="healthInputGroup q-ma-none q-pa-none col-4">
+        <input class="healthInput" type="number">
+<!--        <q-input type="number" class="healthInput" input-class="healthInput" filled></q-input>-->
+        <q-btn class="heal" size="10px" padding="none" color="green">HEAL</q-btn>
+        <q-btn class=" damage" size="10px" padding="none" color="red">DAMAGE</q-btn>
+      </div>
+      <div class="displays row col-8">
+        <div class="currentHealth col">
+          <div class="label">CURRENT</div>
+          <div class="value">{{ current }}</div>
+        </div>
+        <div class="slash q-ma-none q-pa-none">/</div>
+        <div class="maxHealth col">
+          <div class="label">MAX</div>
+          <div class="value">{{ max }}</div>
+        </div>
+        <div class="tempHealth col">
+          <div class="label">TEMP</div>
+          <div class="value">{{ tempHealth }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.healthTracker {
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
+  height: 100px;
+  text-align: center;
+  border: #A90000 5px solid;
+  border-radius: 10px;
+}
+
+.healthLabel {
+  font-family: $stat-DnD5e-font-family;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+
+.healthInputGroup {
+
+}
+.healthInput {
+  width: 75px;
+  height: 25px;
+}
+.heal {
+  height: 15px;
+  width: 75px;
+}
+.damage {
+  height: 15px;
+  width: 75px;
+}
+
+
+.currentHealth {
+  .label {
+    font-size: 14px;
+  }
+}
+
+
+.slash {
+  font-size: 35px;
+}
+
+.maxHealth {
+
+}
+
+
+.tempHealth {
+  //max-width: 50px;
+
+}
+</style>
