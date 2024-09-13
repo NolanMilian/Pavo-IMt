@@ -1,8 +1,10 @@
 <script>
 import {defineComponent} from 'vue'
+import DisplayBox from "components/DnD5e/DisplayBox.vue";
 
 export default defineComponent({
   name: "ArmorClass",
+  components: {DisplayBox},
   props: [''],
   data() {
     return {
@@ -14,23 +16,24 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="armorClass">
-    <div class="topLabel">ARMOR</div>
-    <div class="armorClassScore">{{ stat }}</div>
-    <div class="bottomLabel">CLASS</div>
-  </div>
+  <display-box
+    box-width="100px"
+    box-min-width="100px"
+    box-max-width="100px"
+    box-height="100px"
+    box-min-height="100px"
+    box-max-height="100px"
+  >
+    <div class="armorClass">
+      <div class="topLabel">ARMOR</div>
+      <div class="armorClassScore">{{ stat }}</div>
+      <div class="bottomLabel">CLASS</div>
+    </div>
+  </display-box>
 </template>
 
 <style scoped>
-.armorClass {
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
-  height: 100px;
-  text-align: center;
-  border: #A90000 5px solid;
-  border-radius: 10px;
-}
+.armorClass {}
 .topLabel {
   padding-top: 10px;
   font-family: $stat-DnD5e-font-family;

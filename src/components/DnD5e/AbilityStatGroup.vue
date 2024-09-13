@@ -50,9 +50,7 @@ export default defineComponent({
 
 .split {
   min-width: 303px;
-  :nth-last-child(-n+3) {
-    background: #9C27B0;
-  }
+
 }
 
 </style>

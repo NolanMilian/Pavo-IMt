@@ -1,8 +1,10 @@
 <script>
 import {defineComponent} from 'vue'
+import DisplayBox from "components/DnD5e/DisplayBox.vue";
 
 export default defineComponent({
   name: "HealthTrackerDesktop",
+  components: {DisplayBox},
   props: [''],
   data(){
     return {
@@ -18,44 +20,47 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="healthTracker">
-    <span class="healthLabel">HEALTH</span>
-    <div class="row items-center">
-      <div class="healthInputGroup q-ma-none q-pa-none col-4">
-        <input class="healthInput" type="number">
-<!--        <q-input type="number" class="healthInput" input-class="healthInput" filled></q-input>-->
-        <q-btn class="heal" size="10px" padding="none" color="green">HEAL</q-btn>
-        <q-btn class=" damage" size="10px" padding="none" color="red">DAMAGE</q-btn>
-      </div>
-      <div class="displays row col-8">
-        <div class="currentHealth col">
-          <div class="label">CURRENT</div>
-          <div class="value">{{ current }}</div>
+  <display-box
+    box-width="300px"
+    box-min-width="300px"
+    box-max-width="300px"
+    box-height="100px"
+    box-min-height="100px"
+    box-max-height="100px"
+  >
+    <div class="healthTracker">
+      <span class="healthLabel">HEALTH</span>
+      <div class="row items-center">
+        <div class="healthInputGroup q-ma-none q-pa-none col-4">
+          <input class="healthInput" type="number">
+          <!--        <q-input type="number" class="healthInput" input-class="healthInput" filled></q-input>-->
+          <q-btn class="heal" size="10px" padding="none" color="green">HEAL</q-btn>
+          <q-btn class=" damage" size="10px" padding="none" color="red">DAMAGE</q-btn>
         </div>
-        <div class="slash q-ma-none q-pa-none">/</div>
-        <div class="maxHealth col">
-          <div class="label">MAX</div>
-          <div class="value">{{ max }}</div>
-        </div>
-        <div class="tempHealth col">
-          <div class="label">TEMP</div>
-          <div class="value">{{ tempHealth }}</div>
+        <div class="displays row col-8">
+          <div class="currentHealth col">
+            <div class="label">CURRENT</div>
+            <div class="value">{{ current }}</div>
+          </div>
+          <div class="slash q-ma-none q-pa-none">/</div>
+          <div class="maxHealth col">
+            <div class="label">MAX</div>
+            <div class="value">{{ max }}</div>
+          </div>
+          <div class="tempHealth col">
+            <div class="label">TEMP</div>
+            <div class="value">{{ tempHealth }}</div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </display-box>
+
+
 </template>
 
 <style scoped>
-.healthTracker {
-  width: 300px;
-  min-width: 300px;
-  max-width: 300px;
-  height: 100px;
-  text-align: center;
-  border: #A90000 5px solid;
-  border-radius: 10px;
-}
+.healthTracker {}
 
 .healthLabel {
   font-family: $stat-DnD5e-font-family;

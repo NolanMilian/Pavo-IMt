@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
 <!--    <ability-stat-group></ability-stat-group>-->
-<!--    <proficiency-bonus></proficiency-bonus>-->
+    <proficiency-bonus></proficiency-bonus>
 <!--    <movement-speed></movement-speed>-->
 <!--    <armor-class></armor-class>-->
 <!--    <inspiration-display></inspiration-display>-->
@@ -10,6 +10,8 @@
 <!--    <health-tracker />-->
 <!--    <br>-->
     <top-stat-bar-desktop/>
+    <defenses-conditions-display/>
+<!--    <defenses-list/>-->
   </q-page>
 </template>
 
@@ -25,10 +27,14 @@ import InitiativeStat from "components/DnD5e/InitiativeStat.vue";
 import StackedInspirationInitiative from "components/DnD5e/StackedInspirationInitiative.vue";
 import HealthTracker from "components/DnD5e/HealthTrackerDesktop.vue";
 import TopStatBarDesktop from "components/DnD5e/TopStatBarDesktop.vue";
+import DefensesList from "components/DnD5e/DefensesList.vue";
+import DefensesConditionsDisplay from "components/DnD5e/DefensesConditionsDisplay.vue";
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
+    DefensesConditionsDisplay,
+    // DefensesList,
     TopStatBarDesktop,
     // HealthTracker,
     // StackedInspirationInitiative,
@@ -36,7 +42,7 @@ export default defineComponent({
     // InspirationDisplay,
     // ArmorClass,
     // MovementSpeed,
-    // ProficiencyBonus,
+    ProficiencyBonus,
     // AbilityStatGroup
   },
 })

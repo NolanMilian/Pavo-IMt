@@ -1,8 +1,10 @@
 <script>
 import {defineComponent} from 'vue'
+import DisplayBox from "components/DnD5e/DisplayBox.vue";
 
 export default defineComponent({
   name: "ProficiencyBonus",
+  components: {DisplayBox},
   props: [''],
   data() {
     return {
@@ -19,23 +21,25 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="proficiencyBonus">
-    <div class="proficiencyLabel">PROFICIENCY</div>
-    <div class="proficiencyScore">{{ score }}</div>
-    <div class="bonusLabel">BONUS</div>
-  </div>
+  <display-box
+    box-width="100px"
+    box-min-width="100px"
+    box-max-width="100px"
+    box-height="100px"
+    box-min-height="100px"
+    box-max-height="100px"
+  >
+    <div class="proficiencyBonus">
+      <div class="proficiencyLabel">PROFICIENCY</div>
+      <div class="proficiencyScore">{{ score }}</div>
+      <div class="bonusLabel">BONUS</div>
+    </div>
+  </display-box>
 </template>
 
 <style scoped>
-.proficiencyBonus {
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
-  height: 100px;
-  text-align: center;
-  border: #A90000 5px solid;
-  border-radius: 10px;
-}
+.proficiencyBonus {}
+
 .proficiencyLabel {
   padding-top: 10px;
   font-family: $stat-DnD5e-font-family;

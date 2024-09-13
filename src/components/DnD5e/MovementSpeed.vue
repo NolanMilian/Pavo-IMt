@@ -1,8 +1,10 @@
 <script>
 import {defineComponent} from 'vue'
+import DisplayBox from "components/DnD5e/DisplayBox.vue";
 
 export default defineComponent({
   name: "MovementSpeed",
+  components: {DisplayBox},
   props: [''],
   data() {
     return{
@@ -12,28 +14,40 @@ export default defineComponent({
     }
   },
   computed: {
-
+    capitalizeLabel() {
+      return this.movementType.toUpperCase()
+    },
   },
 })
 </script>
 
 <template>
-<div class="movementSpeed">
-  <div class="movementTypeLabel">{{ movementType }}</div>
-  <span class="speedStat">{{ speed }}</span><span class="distance">{{ distance }}</span>
-  <div class="speedLabel">SPEED</div>
-</div>
+  <display-box
+    box-width="100px"
+    box-min-width="100px"
+    box-max-width="100px"
+    box-height="100px"
+    box-min-height="100px"
+    box-max-height="100px"
+  >
+    <div class="movementSpeed">
+      <div class="movementTypeLabel">{{ capitalizeLabel }}</div>
+      <span class="speedStat">{{ speed }}</span><span class="distance">{{ distance }}</span>
+      <div class="speedLabel">SPEED</div>
+    </div>
+  </display-box>
+
 </template>
 
 <style scoped>
 .movementSpeed {
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
-  height: 100px;
-  text-align: center;
-  border: #A90000 5px solid;
-  border-radius: 10px;
+  //width: 100px;
+  //min-width: 100px;
+  //max-width: 100px;
+  //height: 100px;
+  //text-align: center;
+  //border: #A90000 5px solid;
+  //border-radius: 10px;
 }
 .movementTypeLabel {
   padding-top: 10px;

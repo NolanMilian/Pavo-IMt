@@ -1,8 +1,10 @@
 <script>
 import {defineComponent} from 'vue'
+import DisplayBox from "components/DnD5e/DisplayBox.vue";
 
 export default defineComponent({
   name: "AbilityStat",
+  components: {DisplayBox},
   props: ['StatObj'],
   data() {
     return {
@@ -24,24 +26,25 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="statBlock">
-    <div class="label">{{ capitalizeLabel }}</div>
-    <div class="middleScore">{{ reverseScores ? score : modifier }}</div>
-    <div class="bottomScore">{{ reverseScores ? modifier : score }}</div>
-  </div>
+  <display-box
+    box-width="85px"
+    box-min-width="85px"
+    box-max-width="85px"
+    box-height="100px"
+    box-min-height="100px"
+    box-max-height="100px"
+    style="position: relative"
+  >
+    <div class="statBlock">
+      <div class="label">{{ capitalizeLabel }}</div>
+      <div class="middleScore">{{ reverseScores ? score : modifier }}</div>
+      <div class="bottomScore">{{ reverseScores ? modifier : score }}</div>
+    </div>
+  </display-box>
 </template>
 
 <style scoped>
-.statBlock {
-  position: relative;
-  width: 85px;
-  min-width: 85px;
-  max-width: 85px;
-  height: 100px;
-  text-align: center;
-  border: #A90000 5px solid;
-  border-radius: 10px;
-}
+.statBlock {}
 .label {
   padding-top: 10px;
   font-family: $stat-DnD5e-font-family;
