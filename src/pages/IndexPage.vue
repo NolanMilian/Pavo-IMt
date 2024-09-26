@@ -1,49 +1,50 @@
 <template>
   <q-page class="flex flex-center">
-<!--    <ability-stat-group></ability-stat-group>-->
-    <proficiency-bonus></proficiency-bonus>
-<!--    <movement-speed></movement-speed>-->
-<!--    <armor-class></armor-class>-->
-<!--    <inspiration-display></inspiration-display>-->
-<!--    <initiative-stat></initiative-stat>-->
-<!--    <stacked-inspiration-initiative/>-->
-<!--    <health-tracker />-->
-<!--    <br>-->
     <top-stat-bar-desktop/>
-    <defenses-conditions-display/>
-<!--    <defenses-list/>-->
+    <div class="stack row q-col-gutter-md">
+      <div class="col q-gutter-md">
+        <saving-throws/>
+        <senses-display/>
+        <proficiencies-languages-display/>
+      </div>
+      <div class="col">
+        <skills-display/>
+      </div>
+      <div class="col-6 q-gutter-md">
+        <second-stat-bar-desktop/>
+        <ultra-display/>
+      </div>
+    </div>
+
+<!--    <second-stat-bar-desktop/>-->
   </q-page>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import AbilityStat from "components/DnD5e/AbilityStat.vue";
-import AbilityStatGroup from "components/DnD5e/AbilityStatGroup.vue";
-import ProficiencyBonus from "components/DnD5e/ProficiencyBonus.vue";
-import MovementSpeed from "components/DnD5e/MovementSpeed.vue";
-import ArmorClass from "components/DnD5e/ArmorClass.vue";
-import InspirationDisplay from "components/DnD5e/InspirationDisplay.vue";
-import InitiativeStat from "components/DnD5e/InitiativeStat.vue";
-import StackedInspirationInitiative from "components/DnD5e/StackedInspirationInitiative.vue";
-import HealthTracker from "components/DnD5e/HealthTrackerDesktop.vue";
+import SecondStatBarDesktop from "components/DnD5e/SecondStatBarDesktop.vue";
+import SavingThrows from "components/DnD5e/SavingThrows.vue";
+import SensesDisplay from "components/DnD5e/SensesDisplay.vue";
+import ProficienciesLanguagesDisplay from "components/DnD5e/ProficienciesLanguagesDisplay.vue";
+import SkillsDisplay from "components/DnD5e/SkillsDisplay.vue";
+import UltraDisplay from "components/DnD5e/UltraDisplay.vue";
 import TopStatBarDesktop from "components/DnD5e/TopStatBarDesktop.vue";
-import DefensesList from "components/DnD5e/DefensesList.vue";
-import DefensesConditionsDisplay from "components/DnD5e/DefensesConditionsDisplay.vue";
 
 export default defineComponent({
   name: 'IndexPage',
   components: {
-    DefensesConditionsDisplay,
-    // DefensesList,
+    UltraDisplay,
+    SkillsDisplay,
+    ProficienciesLanguagesDisplay,
+    SensesDisplay,
+    SavingThrows,
+    SecondStatBarDesktop,
     TopStatBarDesktop,
-    // HealthTracker,
-    // StackedInspirationInitiative,
-    // InitiativeStat,
-    // InspirationDisplay,
-    // ArmorClass,
-    // MovementSpeed,
-    ProficiencyBonus,
-    // AbilityStatGroup
   },
 })
 </script>
+<style scoped>
+.stack{
+  max-width: 1154px;
+}
+</style>

@@ -27,6 +27,6 @@ export default defineComponent({
 
 <style scoped>
 .conditionsList {
-  max-width: 125px;
+  //max-width: 125px;
 }
 </style>

@@ -28,6 +28,7 @@ export default defineComponent({
     box-height="100px"
     box-min-height="100px"
     box-max-height="100px"
+    style="text-align: center"
   >
     <div class="proficiencyBonus">
       <div class="proficiencyLabel">PROFICIENCY</div>

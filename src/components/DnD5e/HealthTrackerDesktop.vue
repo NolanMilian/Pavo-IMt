@@ -27,6 +27,7 @@ export default defineComponent({
     box-height="100px"
     box-min-height="100px"
     box-max-height="100px"
+    style="text-align: center"
   >
     <div class="healthTracker">
       <span class="healthLabel">HEALTH</span>

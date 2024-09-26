@@ -17,7 +17,7 @@ export default defineComponent({
 
 <style scoped>
 .box{
-  text-align: center;
+  //text-align: center;
   border: #A90000 5px solid;
   border-radius: 10px;
 }

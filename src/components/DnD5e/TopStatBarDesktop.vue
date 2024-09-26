@@ -13,7 +13,7 @@ export default defineComponent({
 
 <template>
   <div class="q-gutter-md row items-end sized">
-    <health-tracker-desktop class="col q-mr-md"/>
+    <health-tracker-desktop class="col"/>
     <ability-stat-group class="col"/>
     <movement-speed class="col"/>
     <armor-class class="col"/>

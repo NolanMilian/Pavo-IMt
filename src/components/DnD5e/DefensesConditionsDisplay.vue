@@ -12,26 +12,23 @@ export default defineComponent({
 
 <template>
   <display-box
-  box-width="300px"
-  box-min-width="300px"
-  box-max-width="300px"
+  box-width="382px"
+  box-min-width="382px"
+  box-max-width="382px"
   box-height="100px"
   box-min-height="100px"
   box-max-height="100px"
   >
     <div class="defensesConditionsDisplay row">
-      <defenses-list/>
-      <div class="pipe">|</div>
-      <conditions-list/>
+      <defenses-list class="col"/>
+      <div class="pipe col-1 text-center">|</div>
+      <conditions-list class="col"/>
     </div>
   </display-box>
 </template>
 
 <style scoped>
-.defensesConditionsDisplay {
-  width: 382px;
-  height: 100px;
-}
+.defensesConditionsDisplay {}
 
 
 .pipe {

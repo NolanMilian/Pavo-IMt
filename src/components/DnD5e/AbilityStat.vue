@@ -33,7 +33,7 @@ export default defineComponent({
     box-height="100px"
     box-min-height="100px"
     box-max-height="100px"
-    style="position: relative"
+    style="position: relative; text-align: center"
   >
     <div class="statBlock">
       <div class="label">{{ capitalizeLabel }}</div>

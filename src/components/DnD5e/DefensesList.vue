@@ -49,7 +49,7 @@ export default defineComponent({
 
 <style scoped>
 .defensesList{
-  max-width: 125px;
+  //max-width: 125px;
 }
 
 .topLabel{}
