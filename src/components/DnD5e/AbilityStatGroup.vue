@@ -22,12 +22,12 @@ export default defineComponent({
 <!--    <div class="statGroups row q-col-gutter-md">-->
     <div class="statGroups row">
       <div class="split row q-gutter-md">
-        <ability-stat class="col-12 col-md" />
-        <ability-stat class="col-12 col-md" />
-        <ability-stat class="col-12 col-md" />
-        <ability-stat class="col-12 col-md" />
-        <ability-stat class="col-12 col-md" />
-        <ability-stat class="col-12 col-md" />
+        <ability-stat class="col-4 col-md-3" />
+        <ability-stat class="col-4 col-md-3" />
+        <ability-stat class="col-4 col-md-3" />
+        <ability-stat class="col-4 col-md-3" />
+        <ability-stat class="col-4 col-md-3" />
+        <ability-stat class="col-4 col-md-3" />
       </div>
 <!--      <div class="statGroup1 row q-gutter-md">-->
 <!--        <ability-stat class="col strength" />-->
@@ -50,7 +50,8 @@ export default defineComponent({
 
 .split {
   min-width: 303px;
-
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 </style>

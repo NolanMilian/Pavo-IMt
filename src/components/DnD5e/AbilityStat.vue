@@ -27,7 +27,7 @@ export default defineComponent({
 
 <template>
   <display-box
-    box-width="85px"
+    box-width="100%"
     box-min-width="85px"
     box-max-width="85px"
     box-height="100px"
@@ -56,6 +56,7 @@ export default defineComponent({
   margin: 5% 10%;
   border: #1D1D1D 1px solid;
   border-radius: 5px;
+  background: white;
 }
 .bottomScore {
   background: white;

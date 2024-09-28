@@ -1,17 +1,17 @@
 <template>
   <q-page class="flex flex-center">
-    <top-stat-bar-desktop/>
+    <top-stat-bar-desktop class="q-mb-md"/>
     <div class="stack row q-col-gutter-md">
-      <div class="col q-gutter-md">
+      <div class="col-4 q-gutter-md leftCol">
         <saving-throws/>
         <senses-display/>
         <proficiencies-languages-display/>
       </div>
-      <div class="col">
-        <skills-display/>
+      <div class="col q-px-none q-mx-none centerCol">
+        <skills-display class="q-mr-none"/>
       </div>
-      <div class="col-6 q-gutter-md">
-        <second-stat-bar-desktop/>
+      <div class="col-6 rightCol q-pl-none">
+        <second-stat-bar-desktop class="q-mb-md"/>
         <ultra-display/>
       </div>
     </div>
@@ -46,5 +46,17 @@ export default defineComponent({
 <style scoped>
 .stack{
   max-width: 1154px;
+}
+.spacer {
+  width: 80px;
+}
+.leftCol {
+  width: 348px;
+}
+.centerCol {
+  width: 400px;
+}
+.rightCol {
+
 }
 </style>

@@ -86,6 +86,12 @@ export default defineComponent({
   width: 75px;
 }
 
+.value {
+  font-size: x-large;
+}
+
+.label {}
+
 
 .currentHealth {
   .label {

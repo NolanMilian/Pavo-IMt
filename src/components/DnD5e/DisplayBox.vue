@@ -3,13 +3,13 @@ import {defineComponent} from 'vue'
 
 export default defineComponent({
   name: "DisplayBox",
-  props: ['boxWidth', 'boxMinWidth', 'boxMaxWidth', 'boxHeight', 'boxMinHeight', 'boxMaxHeight'],
+  props: ['boxWidth', 'boxMinWidth', 'boxMaxWidth', 'boxHeight', 'boxMinHeight', 'boxMaxHeight', 'borderRad'],
 })
 </script>
 
 <template>
 <div class="box"
-     :style="{minWidth: boxMinWidth, maxWidth: boxMaxWidth, width: boxWidth, minHeight: boxMinHeight, maxHeight: boxMaxHeight, height: boxHeight}"
+     :style="{minWidth: boxMinWidth, maxWidth: boxMaxWidth, width: boxWidth, minHeight: boxMinHeight, maxHeight: boxMaxHeight, height: boxHeight, borderRadius: borderRad}"
 >
   <slot></slot>
 </div>
@@ -17,8 +17,8 @@ export default defineComponent({
 
 <style scoped>
 .box{
-  //text-align: center;
   border: #A90000 5px solid;
   border-radius: 10px;
+  background: lightgray;
 }
 </style>
