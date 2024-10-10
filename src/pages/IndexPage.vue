@@ -47,9 +47,6 @@ export default defineComponent({
 .stack{
   max-width: 1154px;
 }
-.spacer {
-  width: 80px;
-}
 .leftCol {
   width: 348px;
 }

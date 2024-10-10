@@ -35,13 +35,13 @@ export default defineComponent({
               align="justify"
               narrow-indicator
             >
-              <q-tab name="actions" label="ACTIONS" />
-              <q-tab name="spells" label="SPELLS" />
-              <q-tab name="inventory" label="INVENTORY" />
-              <q-tab name="features&traits" label="FEATURES & TRAITS" />
-              <q-tab name="description" label="DESCRIPTION" />
-              <q-tab name="notes" label="NOTES" />
-              <q-tab name="extras" label="EXTRAS" />
+              <q-tab class="tab text-subtitle2" name="actions" label="ACTIONS" />
+<!--              <q class="tab" -tab name="spells" label="SPELLS" />-->
+              <q-tab class="tab" name="inventory" label="INVENTORY" />
+              <q-tab class="tab" name="features&traits" label="FEATURES & TRAITS" />
+              <q-tab class="tab" name="description" label="DESCRIPTION" />
+              <q-tab class="tab" name="notes" label="NOTES" />
+              <q-tab class="tab" name="extras" label="EXTRAS" />
             </q-tabs>
 
             <q-separator />
@@ -90,5 +90,8 @@ export default defineComponent({
 </template>
 
 <style scoped>
-
+.tab {
+  font-family: $stat-DnD5e-font-family;
+  font-size: 10px;
+}
 </style>
