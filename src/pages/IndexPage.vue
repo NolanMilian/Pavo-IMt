@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
-    <top-stat-bar-desktop class="q-mb-md"/>
     <div class="stack row q-col-gutter-md">
+      <top-stat-bar-desktop class=""/>
       <div class="col-4 q-gutter-md leftCol">
         <saving-throws/>
         <senses-display/>
@@ -27,7 +27,7 @@ import SavingThrows from "components/DnD5e/SavingThrows.vue";
 import SensesDisplay from "components/DnD5e/SensesDisplay.vue";
 import ProficienciesLanguagesDisplay from "components/DnD5e/ProficienciesLanguagesDisplay.vue";
 import SkillsDisplay from "components/DnD5e/SkillsDisplay.vue";
-import UltraDisplay from "components/DnD5e/UltraDisplay.vue";
+import UltraDisplay from "components/DnD5e/UltraDisplay/UltraDisplay.vue";
 import TopStatBarDesktop from "components/DnD5e/TopStatBarDesktop.vue";
 
 export default defineComponent({
