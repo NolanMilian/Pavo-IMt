@@ -1,4 +1,4 @@
-export default function User(firebaseUser) {
+export default function AuthUser(firebaseUser) {
   let m = {
     displayName: '',
     email: '',

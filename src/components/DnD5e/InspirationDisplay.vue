@@ -26,6 +26,7 @@ export default defineComponent({
   text-align: center;
   border: #A90000 5px solid;
   border-radius: 25px;
+  background-color: lightgray;
 }
 .topLabel {
   font-family: $stat-DnD5e-font-family;

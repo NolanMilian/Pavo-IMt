@@ -19,6 +19,7 @@ export default defineComponent({
     <q-btn-toggle
       v-model="value"
       color="grey"
+      size="12px"
       text-color="black"
       toggle-color="red-14"
       toggle-text-color="black"

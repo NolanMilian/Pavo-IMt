@@ -2,7 +2,7 @@
 import {defineComponent} from 'vue'
 import ProficiencyBonus from "components/DnD5e/ProficiencyBonus.vue";
 import StackedInspirationInitiative from "components/DnD5e/StackedInspirationInitiative.vue";
-import DefensesConditionsDisplay from "components/DnD5e/DefensesConditionsDisplay.vue";
+import DefensesConditionsDisplay from "components/DnD5e/DefensesAndConditions/DefensesConditionsDisplay.vue";
 
 export default defineComponent({
   name: "SecondStatBarDesktop",

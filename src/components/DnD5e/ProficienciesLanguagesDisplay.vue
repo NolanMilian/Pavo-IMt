@@ -1,6 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
-import DisplayBox from "components/DnD5e/DisplayBox.vue";
+import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
 
 export default defineComponent({
   name: "ProficienciesLanguagesDisplay",
@@ -18,6 +18,7 @@ export default defineComponent({
     box-max-height="310px"
   >
     <div class="proficienciesLanguagesDisplay">
+      <div class="topLabel text-center text-h7">Proficiencies & Languages</div>
       <div class="prof"></div>
       <div class="prof"></div>
       <div class="prof"></div>

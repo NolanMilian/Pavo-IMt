@@ -1,6 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
-import DisplayBox from "components/DnD5e/DisplayBox.vue";
+import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
 import ButtonGroup from "components/DnD5e/UltraDisplay/Buttons/ButtonGroup.vue";
 
 export default defineComponent({
@@ -19,6 +19,30 @@ export default defineComponent({
         {label: 'REACTION', value: 'reaction'},
         {label: 'OTHER', value: 'other'},
         {label: 'LIMITED USE', value: 'limited use'},
+      ],
+
+      spellsGroup: 'all',
+      spellsOptions: [
+        {label: 'ALL', value: 'all'},
+        {label: '-0-', value: 'cantrip'},
+        {label: '1st', value: '1st'},
+        {label: '2nd', value: '2nd'},
+        {label: '3rd', value: '3rd'},
+        {label: '4th', value: '4th'},
+        {label: '5th', value: '5th'},
+        {label: '6th', value: '6th'},
+        {label: '7th', value: '7th'},
+        {label: 'R', value: 'ritual'},
+      ],
+
+      inventoryGroup: 'all',
+      inventoryOptions: [
+        {label: 'ALL', value: 'all'},
+        {label: 'EQUIPMENT', value: 'equipment'},
+        {label: 'BACKPACK', value: 'backpack'},
+        {label: 'COMPONENT POUCH', value: 'component pouch'},
+        {label: 'ATTUNEMENT', value: 'attunement'},
+        {label: 'OTHER POSSESSIONS', value: 'other possessions'},
       ],
 
       featuresAndTraitsGroup: 'all',
@@ -96,11 +120,19 @@ export default defineComponent({
 
               <q-tab-panel name="spells">
                 <div class="text-h6">SPELLS</div>
+                <button-group
+                  v-model="spellsGroup"
+                  :options="spellsOptions"
+                />
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </q-tab-panel>
 
               <q-tab-panel name="inventory">
                 <div class="text-h6">INVENTORY</div>
+                <button-group
+                  v-model="inventoryGroup"
+                  :options="inventoryOptions"
+                />
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </q-tab-panel>
 

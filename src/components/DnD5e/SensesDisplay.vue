@@ -1,10 +1,25 @@
 <script>
 import {defineComponent} from 'vue'
-import DisplayBox from "components/DnD5e/DisplayBox.vue";
+import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
+import HorizontalStat from "components/DnD5e/BaseComponents/HorizontalStat.vue";
 
 export default defineComponent({
   name: "SensesDisplay",
-  components: {DisplayBox}
+  components: {HorizontalStat, DisplayBox},
+  props: [''],
+  data(){
+    return{
+      sensesData: [
+        {label:'passive perception (wis)', score:'16'},
+        {label:'passive investigation (int)', score:'17'},
+        {label:'passive insight (wis)', score:'16'},
+      ],
+      extraSenseData : ['blindsight 30ft.'],
+    }
+  },
+  computed: {
+    extraSenses(){return null},
+  },
 })
 </script>
 
@@ -18,10 +33,11 @@ export default defineComponent({
     box-max-height="175px"
   >
     <div class="sensesDisplay">
-      <div class="stat"></div>
-      <div class="stat"></div>
-      <div class="stat"></div>
-      <div class="stats"></div>
+      <div class="topLabel text-center text-h7 text-bold">SENSES</div>
+      <div class="q-gutter-sm q-px-md">
+        <horizontal-stat class="stat" v-for="data in sensesData" :key="data.label" :label="data.label" :score="data.score" overall-width="225px"/>
+      </div>
+      <div class="extraSenses">{{ extraSenses }}</div>
     </div>
   </display-box>
 </template>

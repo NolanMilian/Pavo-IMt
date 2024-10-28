@@ -1,8 +1,8 @@
 <script>
 import {defineComponent} from 'vue'
-import DefensesList from "components/DnD5e/DefensesList.vue";
-import ConditionsList from "components/DnD5e/ConditionsList.vue";
-import DisplayBox from "components/DnD5e/DisplayBox.vue";
+import DefensesList from "components/DnD5e/DefensesAndConditions/DefensesList.vue";
+import ConditionsList from "components/DnD5e/DefensesAndConditions/ConditionsList.vue";
+import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
 
 export default defineComponent({
   name: "DefensesConditionsDisplay",

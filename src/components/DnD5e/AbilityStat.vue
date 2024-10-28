@@ -1,6 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
-import DisplayBox from "components/DnD5e/DisplayBox.vue";
+import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
 
 export default defineComponent({
   name: "AbilityStat",
@@ -14,9 +14,6 @@ export default defineComponent({
     }
   },
   computed: {
-    capitalizeLabel() {
-      return this.label.toUpperCase()
-    },
     modifier() {
       let score = Math.floor((this.score - 10) / 2);
       return score > 0 ? '+ ' + score : score;
@@ -36,7 +33,7 @@ export default defineComponent({
     style="position: relative; text-align: center"
   >
     <div class="statBlock">
-      <div class="label">{{ capitalizeLabel }}</div>
+      <div class="label">{{ label }}</div>
       <div class="middleScore">{{ reverseScores ? score : modifier }}</div>
       <div class="bottomScore">{{ reverseScores ? modifier : score }}</div>
     </div>
@@ -50,6 +47,7 @@ export default defineComponent({
   font-family: $stat-DnD5e-font-family;
   font-size: 10px;
   opacity: 0.8;
+  text-transform: uppercase;
 }
 .middleScore {
   font-size: x-large;

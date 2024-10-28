@@ -1,6 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
-import DisplayBox from "components/DnD5e/DisplayBox.vue";
+import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
 
 export default defineComponent({
   name: "MovementSpeed",

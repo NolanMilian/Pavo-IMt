@@ -1,16 +1,14 @@
 <script>
 import {defineComponent} from 'vue'
-import DnD5eLayout from "components/DnD5e/DnD5eLayout.vue";
 
 export default defineComponent({
-  name: "GamePage",
-  components: {DnD5eLayout}
+  name: "AuthPage"
 })
 </script>
 
 <template>
   <q-page class="flex flex-center">
-    <DnD5eLayout/>
+
   </q-page>
 </template>
 
