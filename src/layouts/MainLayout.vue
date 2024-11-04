@@ -12,10 +12,13 @@
           {{ appName }}
           <q-badge color="orange"> v{{ appVersion }}-alpha</q-badge>
         </q-toolbar-title>
-        <q-avatar class="cursor-pointer">
-          <img v-if="authUser" :src="authUser.photoURL" @click="console.log('profile')">
-          <q-icon v-else name="login" @click="login"></q-icon>
-<!--          <q-icon v-else name="login" @click.prevent="login"></q-icon>-->
+        <q-avatar v-if="authUser" class="cursor-pointer q-mr-lg">
+          <q-tooltip>Profile</q-tooltip>
+          <img :src="authUser.photoURL" @click="console.log('profile')">
+        </q-avatar>
+        <q-avatar v-else class="cursor-pointer q-mr-lg">
+          <q-tooltip>Login</q-tooltip>
+          <q-icon name="login" @click="login"></q-icon>
         </q-avatar>
 
       </q-toolbar>
@@ -26,6 +29,7 @@
               <q-img v-if="authUser" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
                 <div class="absolute-bottom bg-transparent col">
                   <q-avatar size="56px" class="q-mb-sm">
+                    <q-tooltip>Profile</q-tooltip>
                     <img class="cursor-pointer" :src="authUser.photoURL" @click="console.log('profile click')">
                   </q-avatar>
                   <div class="text-weight-bold">{{ authUser.displayName }}</div>
@@ -35,7 +39,7 @@
                 <div class="absolute-top-right transparent cursor-pointer">
                   <q-icon name="settings" size="24px">
                     <q-tooltip>
-                      Profile Settings
+                      Site Settings
                     </q-tooltip>
                   </q-icon>
                 </div>
@@ -70,10 +74,6 @@
                 :key="link.title"
                 v-bind="link"
               />
-
-<!--              <div class="absolute-bottom">-->
-<!--                <essential-link title="Settings" caption="set" icon="settings" link="#"/>-->
-<!--              </div>-->
             </q-list>
     </q-drawer>
 
@@ -92,22 +92,25 @@ import {auth} from "boot/firebase";
 import firebase from "firebase";
 import {useAuthStore} from "stores/auth-store";
 import AuthUser from "src/models/AuthUser";
+import {useQuasar} from "quasar";
 
 const useAuth = useAuthStore();
-// const authUser = null;
+
+const $q = useQuasar()
 
 const linksList = [
   {
     title: 'Characters',
     caption: 'quasar.dev',
     icon: 'school',
-    link: '/characters'
+    link: '/characters',
   },
   {
     title: 'Github',
     caption: 'github.com/quasarframework',
     icon: 'code',
-    link: 'https://github.com/quasarframework'
+    link: 'https://github.com/quasarframework',
+    newTab: true
   }
 ]
 
@@ -135,7 +138,8 @@ export default defineComponent({
     }
   },
   created() {
-    auth.onAuthStateChanged(user => {
+    auth
+      .onAuthStateChanged(user => {
       if (user) {
         this.authUser = new AuthUser(user);
       } else {
@@ -151,7 +155,7 @@ export default defineComponent({
 
     return {
       authUser: null,
-      OAuth: auth,
+      // OAuth: auth,
       essentialLinks: linksList,
       appVersion:version,
       appName:productName,

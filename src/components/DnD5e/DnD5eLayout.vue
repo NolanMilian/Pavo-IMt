@@ -1,6 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
-import SkillsDisplay from "components/DnD5e/SkillsDisplay.vue";
+import SkillsDisplay from "components/DnD5e/SkillsComponents/SkillsDisplay.vue";
 import TopStatBarDesktop from "components/DnD5e/TopStatBarDesktop.vue";
 import SecondStatBarDesktop from "components/DnD5e/SecondStatBarDesktop.vue";
 import ProficienciesLanguagesDisplay from "components/DnD5e/ProficienciesLanguagesDisplay.vue";

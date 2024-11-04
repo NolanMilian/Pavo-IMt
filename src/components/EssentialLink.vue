@@ -2,7 +2,7 @@
   <q-item
     clickable
     tag="a"
-    target="_blank"
+    :target='newTab ? "_blank" : ""'
     :href="link"
   >
     <q-item-section
@@ -40,9 +40,19 @@ export default defineComponent({
       default: '#'
     },
 
+    to: {
+      type: String,
+      default: '#'
+    },
+
     icon: {
       type: String,
       default: ''
+    },
+
+    newTab: {
+      type: Boolean,
+      default: false
     }
   }
 })

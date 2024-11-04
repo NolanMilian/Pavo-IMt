@@ -5,21 +5,16 @@ import ProficiencyBall from "components/DnD5e/BaseComponents/ProficiencyBall.vue
 export default defineComponent({
   name: "SkillsListItem",
   components: {ProficiencyBall},
-  props: ['prof', 'profCustom', 'mod', 'skill', 'bonus'],
-  // data(){
-  //   return{
-  //     skillsData: {prof: 'not_proficient', profCustom: false, mod: 'wis', skill:'Animal Handling', bonus: '+3'}
-  //   }
-  // },
+  props: ['skillObj'],
 })
 </script>
 
 <template>
 <div class="skillsListItem row items-baseline q-gutter-sm">
-  <div class="prof col-1 flex-center"><proficiency-ball :status="prof" :custom="profCustom"/></div>
-  <div class="mod col-2">{{ mod }}</div>
-  <div class="skill col q-ml-none">{{ skill }}</div>
-  <div class="bonus col-1 q-mr-xs text-center">{{ bonus }}</div>
+  <div class="prof col-1 flex-center"><proficiency-ball :status="skillObj.prof" :custom="skillObj.profCustom"/></div>
+  <div class="mod col-2">{{ skillObj.mod }}</div>
+  <div class="skill col q-ml-none">{{ skillObj.skill }}</div>
+  <div class="bonus col-1 q-mr-xs text-center">{{ skillObj.bonus }}</div>
 </div>
 </template>
 

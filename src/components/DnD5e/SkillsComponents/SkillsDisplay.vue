@@ -1,7 +1,7 @@
 <script>
 import {defineComponent} from 'vue'
 import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
-import SkillsListItem from "components/DnD5e/SkillsListItem.vue";
+import SkillsListItem from "components/DnD5e/SkillsComponents/SkillsListItem.vue";
 
 export default defineComponent({
   name: "SkillsDisplay",
@@ -53,12 +53,8 @@ export default defineComponent({
       <skills-list-item
         class="skillsList q-pl-sm"
         v-for="data in skillsData"
-        :prof="data.prof"
-        :prof-custom="data.profCustom"
-        :mod="data.mod"
-        :skill="data.skill"
-        :bonus="data.bonus"
         :key="data.skill"
+        :skill-obj="data"
       />
     </div>
   </display-box>

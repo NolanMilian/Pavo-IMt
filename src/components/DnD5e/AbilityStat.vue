@@ -16,7 +16,7 @@ export default defineComponent({
   computed: {
     modifier() {
       let score = Math.floor((this.score - 10) / 2);
-      return score > 0 ? '+ ' + score : score;
+      return score > 0 ? '+' + score : score;
     },
   },
 })

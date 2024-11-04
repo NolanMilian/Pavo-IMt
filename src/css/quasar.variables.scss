@@ -24,3 +24,14 @@ $negative  : #C10015;
 $info      : #31CCEC;
 $warning   : #F2C037;
 
+.body--light {
+  /* ... */
+}
+
+.body--dark {
+  /* ... */
+}
+
+body.body--dark {
+  background: #000
+}

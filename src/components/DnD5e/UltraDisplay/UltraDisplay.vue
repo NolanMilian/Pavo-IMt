@@ -1,7 +1,7 @@
 <script>
 import {defineComponent} from 'vue'
 import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
-import ButtonGroup from "components/DnD5e/UltraDisplay/Buttons/ButtonGroup.vue";
+import ButtonGroup from "components/DnD5e/UltraDisplay/Buttons/ButtonToggleGroup.vue";
 
 export default defineComponent({
   name: "UltraDisplay",
