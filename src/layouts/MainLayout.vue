@@ -92,11 +92,8 @@ import {auth} from "boot/firebase";
 import firebase from "firebase";
 import {useAuthStore} from "stores/auth-store";
 import AuthUser from "src/models/AuthUser";
-import {useQuasar} from "quasar";
 
-const useAuth = useAuthStore();
 
-const $q = useQuasar()
 
 const linksList = [
   {
@@ -117,7 +114,6 @@ const linksList = [
 export default defineComponent({
   name: 'MainLayout',
   components: {EssentialLink},
-  // props: ['authUser'],
   methods: {
     login() {
       let provider = new firebase.auth.GoogleAuthProvider();
@@ -140,22 +136,16 @@ export default defineComponent({
   created() {
     auth
       .onAuthStateChanged(user => {
-      if (user) {
-        this.authUser = new AuthUser(user);
-      } else {
-        this.authUser = null;
-      }
-      console.log('logged in as: ', this.authUser)
-    })
+        this.authUser = user ? new AuthUser(user) : null;
+        console.log('logged in as: ', this.authUser)
+      })
   },
 
   setup () {
     const leftDrawerOpen = ref(false)
 
-
     return {
       authUser: null,
-      // OAuth: auth,
       essentialLinks: linksList,
       appVersion:version,
       appName:productName,

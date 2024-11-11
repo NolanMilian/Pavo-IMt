@@ -20,7 +20,8 @@ module.exports = configure(function (/* ctx */) {
       // exclude: [],
       // rawOptions: {},
       warnings: true,
-      errors: true
+      errors: true,
+      preFetch: true,
     },
 
     // https://v2.quasar.dev/quasar-cli/prefetch-feature

@@ -1,16 +1,46 @@
 <script>
 import {defineComponent} from 'vue'
 import DnD5eLayout from "components/DnD5e/DnD5eLayout.vue";
+import {useUserStore} from "stores/user-store";
+import {db, auth} from "boot/firebase";
+import AuthUser from "src/models/AuthUser";
+import User from "src/models/User"
+import {mapStores} from "pinia";
+import DnD5eCharacter from "src/models/DnD5eCharacter";
 
 export default defineComponent({
   name: "GamePage",
-  components: {DnD5eLayout}
+  components: {DnD5eLayout},
+  data() {
+    return {
+      // user: User(auth.currentUser.uid),
+      userStore: useUserStore(),
+      data: {name: ''},
+      // authUser: auth.currentUser.uid,
+    }
+  },
+  computed: {
+    // ...mapStores(useUserStore),
+  },
+  methods: {
+    getCharacters() {this.userStore.getCharacters()},
+    selectCharacter(characterId) {this.userStore.selectCharacter(characterId)},
+    addCharacter(data) {this.userStore.addCharacter(data)},
+    updateCharacter(character, data) {}
+  },
+  mounted() {
+    this.getCharacters();
+  }
 })
 </script>
 
 <template>
   <q-page class="flex flex-center">
-    <DnD5eLayout/>
+    <DnD5eLayout :data="userStore.activeCharacter"/>
+    <q-btn @click="getCharacters()">Press me to get new characters</q-btn>
+    <q-btn @click="selectCharacter('RNbVeJj4rr5c55j93EZE')">Press me to select a character</q-btn>
+    <q-input v-model="data.name"></q-input>
+    <q-btn @click="addCharacter(data)">Press me to add a character</q-btn>
   </q-page>
 </template>
 

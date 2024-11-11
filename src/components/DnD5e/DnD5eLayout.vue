@@ -18,13 +18,14 @@ export default defineComponent({
     SecondStatBarDesktop,
     TopStatBarDesktop,
     SkillsDisplay
-  }
+  },
+  props: ['data'],
 })
 </script>
 
 <template>
   <div class="stack row q-col-gutter-md">
-    <top-stat-bar-desktop class=""/>
+    <top-stat-bar-desktop :data="data"/>
     <div class="col-4 q-gutter-md leftCol">
       <saving-throws/>
       <senses-display/>

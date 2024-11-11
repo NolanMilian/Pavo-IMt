@@ -5,11 +5,12 @@ import DnD5eCharacter from "src/models/DnD5eCharacter";
 
 export default defineComponent({
   name: "CharacterSelectionItem",
-  components: {DisplayBox},
+  components: {},
   props: ['characterObj'],
   data() {
     return{
       character: new DnD5eCharacter(),
+      bookmark: true,
     }
   },
   methods: {
@@ -24,42 +25,36 @@ export default defineComponent({
 </script>
 
 <template>
-  <display-box
-    box-width="375px"
-    box-max-width="375px"
-    box-min-width="375px"
-    box-height="150px"
-    box-max-height="150px"
-    box-min-height="150px"
-    border-rad="0"
-    border-color="black"
-    bg-color="darkgray"
-  >
-    <div class="box">
-
-      <div class="q-px-md">
-        <div class="text-left text-bold text-h6">{{ characterObj.name }}</div>
-        <div class="row">
-          <div class="col text-subtitle1">Level 13 | High Elf | Wizard School of Evocation</div>
+  <q-card v-if="characterObj" class="card" flat bordered square dark>
+    <q-card-section horizontal>
+<!--      <q-img-->
+<!--        class="col"-->
+<!--        src="https://cdn.quasar.dev/img/mountains.jpg"-->
+<!--      >-->
+        <div class="full-width cardBg q-px-md q-py-lg">
+          <div class="text-h5">{{ characterObj.name }}</div>
+          <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} {{ characterObj.class ? '|' : '' }} {{ characterObj.class.level }}</div>
         </div>
-      </div>
-      <div class="q-mt-md">
-        <q-btn-group
-          spread
-          square
-          class="btnGroup"
-        >
-          <q-btn label="VIEW" />
-          <q-btn label="EDIT" />
-          <q-btn label="DELETE" text-color="negative"/>
-        </q-btn-group>
-      </div>
-    </div>
-  </display-box>
+<!--      </q-img>-->
+
+      <q-card-actions vertical class="justify-around q-px-md bg-grey">
+        <q-btn flat round color="primary" icon="visibility" ><q-tooltip anchor="center right" self="center left">View</q-tooltip></q-btn>
+        <q-btn flat round color="amber" :icon="bookmark ? 'bookmark' : 'bookmark_outline'" ><q-tooltip anchor="center right" self="center left">Bookmark</q-tooltip></q-btn>
+        <q-btn flat round color="red" icon="delete" ><q-tooltip anchor="center right" self="center left">Delete</q-tooltip></q-btn>
+      </q-card-actions>
+    </q-card-section>
+  </q-card>
+  <div class="" v-else>No Character Information 😢</div>
 </template>
 
 <style scoped>
-.btnGroup {
-  background-color: lightgray;
+.card {
+  width: 375px;
+  max-width: 375px;
+  height: 150px;
+  max-height: 150px;
+}
+.cardBg {
+  background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);
 }
 </style>
