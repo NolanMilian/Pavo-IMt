@@ -7,6 +7,7 @@ import AuthUser from "src/models/AuthUser";
 import User from "src/models/User"
 import {mapStores} from "pinia";
 import DnD5eCharacter from "src/models/DnD5eCharacter";
+import Character from "src/models/Character";
 
 export default defineComponent({
   name: "GamePage",
@@ -15,7 +16,8 @@ export default defineComponent({
     return {
       // user: User(auth.currentUser.uid),
       userStore: useUserStore(),
-      data: {name: ''},
+      // data: {name: ''},
+      newCharacter: new Character(),
       // authUser: auth.currentUser.uid,
     }
   },
@@ -30,6 +32,7 @@ export default defineComponent({
   },
   mounted() {
     this.getCharacters();
+    this.selectCharacter('RNbVeJj4rr5c55j93EZE')
   }
 })
 </script>
@@ -39,8 +42,8 @@ export default defineComponent({
     <DnD5eLayout :data="userStore.activeCharacter"/>
     <q-btn @click="getCharacters()">Press me to get new characters</q-btn>
     <q-btn @click="selectCharacter('RNbVeJj4rr5c55j93EZE')">Press me to select a character</q-btn>
-    <q-input v-model="data.name"></q-input>
-    <q-btn @click="addCharacter(data)">Press me to add a character</q-btn>
+    <q-input v-model="newCharacter.name"></q-input>
+    <q-btn @click="addCharacter(newCharacter)">Press me to add a character</q-btn>
   </q-page>
 </template>
 

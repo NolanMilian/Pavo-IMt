@@ -1,6 +1,6 @@
 import firebase from "firebase";
 
-function Character(id, data) {
+export default function Character(id, data) {
   id = id ?? '';
   data = data ?? {};
 

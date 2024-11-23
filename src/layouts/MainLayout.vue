@@ -93,21 +93,19 @@ import firebase from "firebase";
 import {useAuthStore} from "stores/auth-store";
 import AuthUser from "src/models/AuthUser";
 
-
-
 const linksList = [
   {
     title: 'Characters',
     caption: 'quasar.dev',
-    icon: 'school',
+    icon: 'groups',
     link: '/characters',
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
+    title: 'Game',
+    caption: 'Temp Game Page',
     icon: 'code',
-    link: 'https://github.com/quasarframework',
-    newTab: true
+    link: '/game',
+    // newTab: false // opens link in a new tap
   }
 ]
 
@@ -115,22 +113,22 @@ export default defineComponent({
   name: 'MainLayout',
   components: {EssentialLink},
   methods: {
-    login() {
+    async login() {
       let provider = new firebase.auth.GoogleAuthProvider();
-      auth
-        .signInWithPopup(provider)
-        .catch(function (error) {
-          let errorCode = error.code;
-          let errorMsg = error.message;
-
-          console.error('Error signing in: ', error)
-          // TODO: let the user know
-        })
+      try {
+        await auth.signInWithPopup(provider)
+      } catch (error) {
+        console.error('Error signing in with Popup', error)
+      }
     },
-    logout() {
-      console.log('logout')
-      auth.signOut()
-        .catch(function (error){})
+
+    async logout() {
+      try {
+        await auth.signOut();
+        console.log('logout');
+      } catch (error) {
+        console.error('Error signing out', error)
+      }
     }
   },
   created() {

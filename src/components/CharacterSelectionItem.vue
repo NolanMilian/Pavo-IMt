@@ -14,12 +14,10 @@ export default defineComponent({
     }
   },
   methods: {
-    viewCharacter() {},
-    editCharacter() {},
     deleteCharacter() {},
   },
   created() {
-    console.log('character', this.character);
+    // console.log('character', this.character);
   }
 })
 </script>
@@ -32,8 +30,8 @@ export default defineComponent({
 <!--        src="https://cdn.quasar.dev/img/mountains.jpg"-->
 <!--      >-->
         <div class="full-width cardBg q-px-md q-py-lg">
-          <div class="text-h5">{{ characterObj.name }}</div>
-          <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} {{ characterObj.class ? '|' : '' }} {{ characterObj.class.level }}</div>
+<!--          <div class="text-h5">{{ characterObj.name }}</div>-->
+<!--          <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} {{ characterObj.class ? '|' : '' }} {{ characterObj.class.level }}</div>-->
         </div>
 <!--      </q-img>-->
 
@@ -44,7 +42,7 @@ export default defineComponent({
       </q-card-actions>
     </q-card-section>
   </q-card>
-  <div class="" v-else>No Character Information 😢</div>
+  <div v-else class="" >No Character Information 😢</div>
 </template>
 
 <style scoped>
