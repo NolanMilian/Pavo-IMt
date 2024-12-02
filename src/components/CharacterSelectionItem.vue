@@ -1,7 +1,7 @@
 <script>
-import {defineComponent} from 'vue'
-import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
+import { defineComponent } from 'vue'
 import DnD5eCharacter from "src/models/DnD5eCharacter";
+import { useUserStore } from "stores/user-store";
 
 export default defineComponent({
   name: "CharacterSelectionItem",
@@ -11,10 +11,13 @@ export default defineComponent({
     return{
       character: new DnD5eCharacter(),
       bookmark: true,
+      userStore: useUserStore(),
     }
   },
   methods: {
-    deleteCharacter() {},
+    deleteCharacter() {
+      this.userStore.deleteCharacter(this.characterObj);
+    },
   },
   created() {
     // console.log('character', this.character);
@@ -30,15 +33,16 @@ export default defineComponent({
 <!--        src="https://cdn.quasar.dev/img/mountains.jpg"-->
 <!--      >-->
         <div class="full-width cardBg q-px-md q-py-lg">
-<!--          <div class="text-h5">{{ characterObj.name }}</div>-->
+          <div class="text-h5">{{ characterObj.name }}</div>
+<!--          <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} {{ characterObj.class ? '|' : '' }} {{ characterObj.class.level }}</div>-->
 <!--          <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} {{ characterObj.class ? '|' : '' }} {{ characterObj.class.level }}</div>-->
         </div>
 <!--      </q-img>-->
-
       <q-card-actions vertical class="justify-around q-px-md bg-grey">
         <q-btn flat round color="primary" icon="visibility" ><q-tooltip anchor="center right" self="center left">View</q-tooltip></q-btn>
+        <q-btn flat round color="black" icon="settings" ><q-tooltip anchor="center right" self="center left">Settings</q-tooltip></q-btn>
         <q-btn flat round color="amber" :icon="bookmark ? 'bookmark' : 'bookmark_outline'" ><q-tooltip anchor="center right" self="center left">Bookmark</q-tooltip></q-btn>
-        <q-btn flat round color="red" icon="delete" ><q-tooltip anchor="center right" self="center left">Delete</q-tooltip></q-btn>
+        <q-btn flat round color="red" icon="delete" @click="deleteCharacter"><q-tooltip anchor="center right" self="center left">Delete</q-tooltip></q-btn>
       </q-card-actions>
     </q-card-section>
   </q-card>
@@ -49,8 +53,8 @@ export default defineComponent({
 .card {
   width: 375px;
   max-width: 375px;
-  height: 150px;
-  max-height: 150px;
+  height: 196px;
+  max-height: 196px;
 }
 .cardBg {
   background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);

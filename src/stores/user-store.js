@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import DnD5eCharacter from "src/models/DnD5eCharacter";
-import {db, auth} from "boot/firebase";
+import { db, auth } from "boot/firebase";
 import Character from "src/models/Character";
 
 export const useUserStore = defineStore('user', {
@@ -15,14 +14,15 @@ export const useUserStore = defineStore('user', {
         .collection(`users/${auth.currentUser.uid}/characters/`)
         .doc(characterId)
         .onSnapshot((doc) => {
+          // this.activeCharacter = new Character(doc.id, doc.data());
           this.activeCharacter = new Character(doc.id, doc.data());
-          console.log('active character', this.activeCharacter);
         })
+      console.log('active character', this.activeCharacter);
       // this.activeCharacter = this.allCharacters.find(c => c.id === characterId) // RNbVeJj4rr5c55j93EZE
     },
 
     getCharacters() {
-      const authId = auth.currentUser.uid; //Gwfv6nHoxQQl7aE8RMB9LsiuC6h1
+      // const authId = auth.currentUser.uid; //Gwfv6nHoxQQl7aE8RMB9LsiuC6h1
       this.allCharacters = [];
       db
         .collection(`users/${auth.currentUser.uid}/characters/`)
@@ -32,9 +32,11 @@ export const useUserStore = defineStore('user', {
           console.log(doc.id, '=>', doc.data());
           this.allCharacters.push(new Character(doc.id, doc.data()));
         })
+
       }).catch((error) => {
         console.error('Error retrieving collection from firestore', error);
       })
+      console.log('array of characters', this.allCharacters);
     },
 
     addCharacter(characterObj) {
@@ -56,6 +58,7 @@ export const useUserStore = defineStore('user', {
         .delete()
         .then(() => {
           console.log('Character deleted');
+          this.getCharacters();
         }).catch((error) => {
           console.error('Error removing character', error);
       })

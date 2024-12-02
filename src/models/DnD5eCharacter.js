@@ -42,7 +42,6 @@ export default function DnD5eCharacter() {
     get ClassLevels(){
       return null;
     },
-
   }
   // const modifier = function (score) {
   //   let mod = Math.floor((score - 10) / 2);

@@ -90,7 +90,6 @@ import { version, productName } from '../../package.json';
 import EssentialLink from "components/EssentialLink.vue";
 import {auth} from "boot/firebase";
 import firebase from "firebase";
-import {useAuthStore} from "stores/auth-store";
 import AuthUser from "src/models/AuthUser";
 
 const linksList = [
@@ -113,22 +112,22 @@ export default defineComponent({
   name: 'MainLayout',
   components: {EssentialLink},
   methods: {
-    async login() {
+    login() {
       let provider = new firebase.auth.GoogleAuthProvider();
-      try {
-        await auth.signInWithPopup(provider)
-      } catch (error) {
-        console.error('Error signing in with Popup', error)
-      }
+      auth
+        .signInWithPopup(provider)
+        .catch(function (error) {
+          let errorCode = error.code;
+          let errorMsg = error.message;
+          console.error('Error signing in: ', error)
+          // TODO: let the user know
+        })
     },
 
-    async logout() {
-      try {
-        await auth.signOut();
-        console.log('logout');
-      } catch (error) {
-        console.error('Error signing out', error)
-      }
+    logout() {
+      console.log('logout')
+      auth.signOut()
+        .catch(function (error){})
     }
   },
   created() {
