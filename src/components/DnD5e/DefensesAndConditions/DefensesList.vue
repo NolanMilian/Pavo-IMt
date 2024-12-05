@@ -16,8 +16,9 @@ export default defineComponent({
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       let resistList = this.resistances.sort((a,b) => a.resistance > b.resistance ? 1 : -1);
       let resist;
+      resistList.forEach(r => r.custom ? r.resistance + '* ' : r.resistance + ' ')
       for (let r of resistList) {
-        console.log(r)
+        // console.log(r)
         if (r.custom)
           resist += r.resistance + '* ';
         else
@@ -30,7 +31,7 @@ export default defineComponent({
 </script>
 
 <template>
-<div class="defensesList q-pl-xs">
+<div class="defensesList q-pl-xs q-gutter-xs">
   <div class="topLabel text-bold text-left">DEFENCES</div>
   <div class="resistances row">
     <div class="positiveIcon icon col-1 q-mr-xs">R <q-tooltip>Resistances</q-tooltip> </div>
