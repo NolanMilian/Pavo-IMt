@@ -18,6 +18,10 @@ export default defineComponent({
     deleteCharacter() {
       this.userStore.deleteCharacter(this.characterObj);
     },
+    selectCharacter() {
+      if (this.userStore.activeCharacter !== this.characterObj)
+      this.userStore.selectCharacter(this.characterObj)
+    }
   },
   created() {
     // console.log('character', this.character);
@@ -39,7 +43,7 @@ export default defineComponent({
         </div>
 <!--      </q-img>-->
       <q-card-actions vertical class="justify-around q-px-md bg-grey">
-        <q-btn flat round color="primary" icon="visibility" ><q-tooltip anchor="center right" self="center left">View</q-tooltip></q-btn>
+        <q-btn flat round color="primary" icon="visibility" @click="selectCharacter"><q-tooltip anchor="center right" self="center left">View</q-tooltip></q-btn>
         <q-btn flat round color="black" icon="settings" ><q-tooltip anchor="center right" self="center left">Settings</q-tooltip></q-btn>
         <q-btn flat round color="amber" :icon="bookmark ? 'bookmark' : 'bookmark_outline'" ><q-tooltip anchor="center right" self="center left">Bookmark</q-tooltip></q-btn>
         <q-btn flat round color="red" icon="delete" @click="deleteCharacter"><q-tooltip anchor="center right" self="center left">Delete</q-tooltip></q-btn>

@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth',{
   state: () => ({
     authUser: null,
   }),
-  actions: () => ({
+  actions:{
     setUser(user) {
       this.authUser = user;
     },
@@ -43,18 +43,13 @@ export const useAuthStore = defineStore('auth',{
     },
 
     init() {
-      auth
-        .onAuthStateChanged(user => {
-          if (user) {
-            this.authUser = new AuthUser(user);
-          } else {
-            this.authUser = null;
-          }
-          console.log('logged in as: ', this.authUser)
-        })
+        auth
+          .onAuthStateChanged(user => {
+            this.setUser(user ? new AuthUser(user) : null);
+          })
     },
 
-    registerUser(credentials) {
+     registerUser(credentials) {
       console.log('registerUser action', credentials)
       firebase.auth().createUserWithEmailAndPassword(credentials.email, credentials.password)
         .then((userCredential) => {
@@ -69,8 +64,8 @@ export const useAuthStore = defineStore('auth',{
         });
     },
 
-  }),
-  getters: () => ({
+  },
+  getters: {
 
-  }),
+  },
 })

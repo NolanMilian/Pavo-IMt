@@ -24,4 +24,11 @@ const auth = firebase.auth();
 const storage = firebase.storage();
 const analytics = firebase.analytics();
 
+// in case I want to use Pinia persistent
+// const authStore = useAuthStore();
+// firebase.auth().onAuthStateChanged(user => {
+//   authStore().setUser(user ? new AuthUser(user) : null);
+//   console.log('logged in as: ', authStore().authUser)
+// });
+
 export {db, auth, storage, analytics}

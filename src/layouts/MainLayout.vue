@@ -1,5 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
+    <div class=""></div>
 
     <q-header reveal elevated class="bg-primary text-white">
       <q-toolbar>
@@ -85,17 +86,18 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, reactive, ref } from "vue";
 import { version, productName } from '../../package.json';
 import EssentialLink from "components/EssentialLink.vue";
 import {auth} from "boot/firebase";
 import firebase from "firebase";
 import AuthUser from "src/models/AuthUser";
+import { useAuthStore } from "stores/auth-store";
 
 const linksList = [
   {
     title: 'Characters',
-    caption: 'quasar.dev',
+    caption: 'My Characters',
     icon: 'groups',
     link: '/characters',
   },
@@ -120,7 +122,6 @@ export default defineComponent({
           let errorCode = error.code;
           let errorMsg = error.message;
           console.error('Error signing in: ', error)
-          // TODO: let the user know
         })
     },
 
@@ -128,28 +129,31 @@ export default defineComponent({
       console.log('logout')
       auth.signOut()
         .catch(function (error){})
+    },
+    toggleLeftDrawer () {
+      this.leftDrawerOpen = !this.leftDrawerOpen;
     }
   },
   created() {
     auth
       .onAuthStateChanged(user => {
         this.authUser = user ? new AuthUser(user) : null;
+        this.authStore.authUser = user ? new AuthUser(user) : null;
         console.log('logged in as: ', this.authUser)
       })
   },
 
-  setup () {
-    const leftDrawerOpen = ref(false)
+  data () {
+    // let leftDrawerOpen = false
 
     return {
       authUser: null,
+      authStore: useAuthStore(),
       essentialLinks: linksList,
       appVersion:version,
       appName:productName,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
+      leftDrawerOpen: false,
+
     }
   }
 })

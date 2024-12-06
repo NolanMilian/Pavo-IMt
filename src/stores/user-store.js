@@ -9,23 +9,21 @@ export const useUserStore = defineStore('user', {
   }),
 
   actions: {
-    selectCharacter(characterId) {
+    selectCharacter(character) {
       db
         .collection(`users/${auth.currentUser.uid}/characters/`)
-        .doc(characterId)
+        .doc(character.id)
         .onSnapshot((doc) => {
-          // this.activeCharacter = new Character(doc.id, doc.data());
           this.activeCharacter = new Character(doc.id, doc.data());
         })
-      console.log('active character', this.activeCharacter);
-      // this.activeCharacter = this.allCharacters.find(c => c.id === characterId) // RNbVeJj4rr5c55j93EZE
+      // console.log('active character', this.activeCharacter);
     },
 
-    getCharacters() {
-      // const authId = auth.currentUser.uid; //Gwfv6nHoxQQl7aE8RMB9LsiuC6h1
+    getCharacters(authId) {
       this.allCharacters = [];
       db
-        .collection(`users/${auth.currentUser.uid}/characters/`)
+        // .collection(`users/${auth.currentUser.uid}/characters/`)
+        .collection(`users/${authId}/characters/`)
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
