@@ -10,7 +10,7 @@ export default function Character(id, data) {
     favorite: data.favorite ?? false,
     name: data.name ?? '',
     race: data.race ?? '',
-    class: data.class ?? {
+    classData: data.classData ?? {
       classes: [
         {
           className: 'Wizard',
@@ -31,8 +31,8 @@ export default function Character(id, data) {
         return null;
       },
     },
-    creationDate: data.creationDate ?? firebase.firestore.FieldValue.serverTimestamp(),
-    updateDate: firebase.firestore.FieldValue.serverTimestamp(),
+    // creationDate: data.creationDate ?? firebase.firestore.FieldValue.serverTimestamp(),
+    // updateDate: firebase.firestore.FieldValue.serverTimestamp(),
 
   }
 }

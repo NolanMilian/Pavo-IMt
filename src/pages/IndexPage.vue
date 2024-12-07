@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
 <!--    <DnD5eLayout/>-->
-    <div class="index text-h1 text-bold">
+    <div class="index text-h1 text-cyan text-bold">
       Welcome to TT Expansion!
     </div>
   </q-page>

@@ -135,6 +135,7 @@ export default defineComponent({
     }
   },
   created() {
+    // this.authStore.onAuthStateChange();
     auth
       .onAuthStateChanged(user => {
         this.authUser = user ? new AuthUser(user) : null;

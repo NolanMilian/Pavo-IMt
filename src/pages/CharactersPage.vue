@@ -1,31 +1,31 @@
 <script>
 import { defineComponent } from 'vue'
 import { useUserStore } from "stores/user-store";
-import { auth } from 'boot/firebase'
-// import { authUser } from 'models'
 import Character from "src/models/Character";
 import CharacterSelectionItem from "components/CharacterSelectionItem.vue";
 import { useAuthStore } from "stores/auth-store";
+import AddCharacterDialog from "components/AddCharacterDialog.vue";
 
 export default defineComponent({
   name: "CharactersPage",
-  components: {CharacterSelectionItem},
+  components: {AddCharacterDialog, CharacterSelectionItem},
   data() {
     return{
       newCharacter: new Character(),
       userStore: useUserStore(),
       authStore: useAuthStore(),
-      authUser: auth,
+      newCharacterDialog: false,
     }
   },
   methods: {
-    getCharacters() {this.userStore.getCharacters(this.authUser.currentUser.uid)},
-    selectCharacter(characterId) {this.userStore.selectCharacter(characterId)},
+    getCharacters() {this.userStore.getCharacters()},
     addCharacter(data) {this.userStore.addCharacter(data)},
-    updateCharacter(character, data) {}
+    refreshPage() {
+      location.reload();
+    },
   },
-  mounted() {
-    if (this.authUser.currentUser?.uid){
+  created() {
+    if (this.authStore.isLoaded){
       this.getCharacters();
     }
   },
@@ -34,12 +34,10 @@ export default defineComponent({
 
 <template>
 <q-page class="flex flex-center">
-<!--  <q-btn @click="selectCharacter">Press me to add a character</q-btn>-->
-<!--  <q-btn @click="selectCharacter">Press me to delete a character</q-btn>-->
-  <div v-show="userStore.allCharacters" class="row q-gutter-lg container items-center">
+  <div v-show="userStore.allCharacters.length > 0" class="row q-gutter-lg container items-center">
     <div class="topLabel full-width">
       <div class="text-h1 text-bold">
-        My Characters <q-icon class="q-px-xl addCharacterBtn cursor-pointer" name="person_add"><q-tooltip>Add New Character</q-tooltip></q-icon>
+        My Characters <q-icon class="q-px-xl addCharacterBtn cursor-pointer" name="person_add" @click="newCharacterDialog = true"><q-tooltip>Add New Character</q-tooltip></q-icon>
       </div>
     </div>
     <character-selection-item
@@ -48,8 +46,9 @@ export default defineComponent({
       :character-obj="data"
     />
   </div>
-  <div v-show="!userStore.allCharacters" class="" >No Character Information 😢 <q-btn @click="getCharacters">Click to Reload</q-btn> </div>
+  <div v-show="userStore.allCharacters <= 0" class="" >No Character Information 😢 <q-btn @click="refreshPage">Click to Reload</q-btn> </div>
 </q-page>
+  <add-character-dialog v-model="newCharacterDialog"/>
 </template>
 
 <style scoped>

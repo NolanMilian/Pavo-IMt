@@ -10,6 +10,7 @@ import firebase from "firebase";
 export const useAuthStore = defineStore('auth',{
   state: () => ({
     authUser: null,
+    isLoaded: false,
   }),
   actions:{
     setUser(user) {
@@ -42,11 +43,20 @@ export const useAuthStore = defineStore('auth',{
       }
     },
 
-    init() {
+    onAuthStateChange() {
         auth
           .onAuthStateChanged(user => {
             this.setUser(user ? new AuthUser(user) : null);
           })
+    },
+
+    // initialize authState in the app.vue
+    init() {
+      auth
+        .onAuthStateChanged(user => {
+          this.setUser(user ? new AuthUser(user) : null);
+          this.isLoaded = true;
+        })
     },
 
      registerUser(credentials) {

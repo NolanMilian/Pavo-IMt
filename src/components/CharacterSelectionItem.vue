@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue'
 import DnD5eCharacter from "src/models/DnD5eCharacter";
 import { useUserStore } from "stores/user-store";
+import {createRouter as $router} from "vue-router";
 
 export default defineComponent({
   name: "CharacterSelectionItem",
@@ -16,21 +17,19 @@ export default defineComponent({
   },
   methods: {
     deleteCharacter() {
-      this.userStore.deleteCharacter(this.characterObj);
+      this.userStore.deleteCharacter(this.characterObj.id);
     },
     selectCharacter() {
       if (this.userStore.activeCharacter !== this.characterObj)
-      this.userStore.selectCharacter(this.characterObj)
+      this.userStore.activateCharacter(this.characterObj.id)
+      this.$router.push({name: 'Character', params: { id: this.characterObj.id } })
     }
   },
-  created() {
-    // console.log('character', this.character);
-  }
 })
 </script>
 
 <template>
-  <q-card v-if="characterObj" class="card" flat bordered square dark>
+  <q-card class="card" flat bordered square dark>
     <q-card-section horizontal>
 <!--      <q-img-->
 <!--        class="col"-->
@@ -45,12 +44,11 @@ export default defineComponent({
       <q-card-actions vertical class="justify-around q-px-md bg-grey">
         <q-btn flat round color="primary" icon="visibility" @click="selectCharacter"><q-tooltip anchor="center right" self="center left">View</q-tooltip></q-btn>
         <q-btn flat round color="black" icon="settings" ><q-tooltip anchor="center right" self="center left">Settings</q-tooltip></q-btn>
-        <q-btn flat round color="amber" :icon="bookmark ? 'bookmark' : 'bookmark_outline'" ><q-tooltip anchor="center right" self="center left">Bookmark</q-tooltip></q-btn>
+        <q-btn flat round color="amber" :icon="characterObj.favorite ? 'bookmark' : 'bookmark_outline'" ><q-tooltip anchor="center right" self="center left">Bookmark</q-tooltip></q-btn>
         <q-btn flat round color="red" icon="delete" @click="deleteCharacter"><q-tooltip anchor="center right" self="center left">Delete</q-tooltip></q-btn>
       </q-card-actions>
     </q-card-section>
   </q-card>
-  <div v-else class="" >No Character Information 😢</div>
 </template>
 
 <style scoped>

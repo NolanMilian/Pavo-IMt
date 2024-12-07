@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { db, auth } from "boot/firebase";
+import { db } from "boot/firebase";
 import Character from "src/models/Character";
+import {useAuthStore} from "stores/auth-store";
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -9,21 +10,29 @@ export const useUserStore = defineStore('user', {
   }),
 
   actions: {
-    selectCharacter(character) {
+    characterById(characterId) {
+      db.doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
+        .get()
+        .then((doc) => {
+          console.log(doc.id, '=>', doc.data())
+        })
+
+    },
+
+    activateCharacter(characterId) {
       db
-        .collection(`users/${auth.currentUser.uid}/characters/`)
-        .doc(character.id)
+        .doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
         .onSnapshot((doc) => {
           this.activeCharacter = new Character(doc.id, doc.data());
         })
       // console.log('active character', this.activeCharacter);
     },
 
-    getCharacters(authId) {
+    getCharacters() {
       this.allCharacters = [];
       db
         // .collection(`users/${auth.currentUser.uid}/characters/`)
-        .collection(`users/${authId}/characters/`)
+        .collection(`users/${useAuthStore().authUser.uid}/characters/`)
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -39,7 +48,7 @@ export const useUserStore = defineStore('user', {
 
     addCharacter(characterObj) {
       db
-        .collection(`users/${auth.currentUser.uid}/characters/`)
+        .collection(`users/${useAuthStore().authUser.uid}/characters/`)
         .add(characterObj)
         .then((docRef) => {
           console.log('Character written with ID of: ', docRef.id);
@@ -49,10 +58,10 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    deleteCharacter(character) {
+    deleteCharacter(characterId) {
       db
-        .collection(`users/${auth.currentUser.uid}/characters/`)
-        .doc(character.id)
+        .collection(`users/${useAuthStore().authUser.uid}/characters/`)
+        .doc(characterId)
         .delete()
         .then(() => {
           console.log('Character deleted');

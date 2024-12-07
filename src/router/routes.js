@@ -6,7 +6,7 @@ const routes = [
     children: [
       { path: '/', name: 'Index', component: () => import('pages/IndexPage.vue') },
       { path: '/characters', name: 'Characters', component: () => import('pages/CharactersPage.vue') },
-      { path: '/character/:id', component: () => import('pages/GamePage.vue'), props: true },
+      { path: '/character/:id', name: 'Character', component: () => import('pages/GamePage.vue'), props: true },
       { path: '/game', name: 'Game', component: () => import('pages/GamePage.vue') },
       // { path: '/settings', name: 'Settings', component: () => import('pages/GamePage.vue') },
       // { path: '/profile', name: 'Profile', component: () => import('pages/GamePage.vue') },

@@ -6,6 +6,8 @@
 //   // something to do
 // })
 import firebase from 'firebase';
+// import {useAuthStore} from "stores/auth-store";
+// import AuthUser from "src/models/AuthUser";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDUAEScC0oiXdln9pk5G4ehB4GOUql1eTg",
@@ -27,8 +29,8 @@ const analytics = firebase.analytics();
 // in case I want to use Pinia persistent
 // const authStore = useAuthStore();
 // firebase.auth().onAuthStateChanged(user => {
-//   authStore().setUser(user ? new AuthUser(user) : null);
-//   console.log('logged in as: ', authStore().authUser)
+//   authStore.setUser(user ? new AuthUser(user) : null);
+//   console.log('logged in as: ', authStore.authUser)
 // });
 
 export {db, auth, storage, analytics}
