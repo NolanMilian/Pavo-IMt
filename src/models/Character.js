@@ -13,7 +13,7 @@ export default function Character(id, data) {
     class: data.class ?? {
       classes: [
         {
-          className: 'Wizard',
+          className: '',
           classLevel: 1,
           hit_die: 6,
         },
@@ -31,8 +31,8 @@ export default function Character(id, data) {
         return null;
       },
     },
-    creationDate: data.creationDate ?? firebase.firestore.FieldValue.serverTimestamp(),
-    updateDate: firebase.firestore.FieldValue.serverTimestamp(),
+    // creationDate: data.creationDate ?? firebase.firestore.FieldValue.serverTimestamp(),
+    // updateDate: firebase.firestore.FieldValue.serverTimestamp(),
 
   }
 }
