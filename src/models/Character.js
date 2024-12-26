@@ -13,7 +13,7 @@ export default function Character(id, data) {
     classData: data.classData ?? {
       classes: [
         {
-          className: 'Wizard',
+          className: '',
           classLevel: 1,
           hit_die: 6,
         },
