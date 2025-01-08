@@ -6,22 +6,19 @@ export default function Character(id, data) {
 
   return {
     id: id,
-    gameType: data.gameType ?? 'DnD5e',
+    gameType: data.gameType ?? '',
+    campaignName: data.campaignName ?? '',
     favorite: data.favorite ?? false,
     name: data.name ?? '',
     race: data.race ?? '',
+    level: data.level ?? '',
     classData: data.classData ?? {
+      classLevelString: '',
+      classString: '',
       classes: [
         {
           className: '',
           classLevel: 1,
-          hit_die: 6,
-        },
-        {
-          className: 'Wizard',
-          subClass: '',
-          classLevel: 2,
-          hit_die: 6,
         },
       ],
       get totalLevel() {

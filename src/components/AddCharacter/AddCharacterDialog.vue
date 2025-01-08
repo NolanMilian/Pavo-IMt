@@ -8,6 +8,7 @@ export default defineComponent({
   methods: {},
   data(){
     return{
+      ganeType: 'DnD5e',
       newCharacter: new Character(),
       step: 1,
     }

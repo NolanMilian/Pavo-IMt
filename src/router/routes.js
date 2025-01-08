@@ -5,7 +5,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '/', name: 'Index', component: () => import('pages/IndexPage.vue') },
-      { path: '/characters', name: 'Characters', component: () => import('pages/CharactersPage.vue') },
+      { path: '/characters', name: 'Characters', component: () => import('pages/CharactersSelectionPage.vue') },
       { path: '/character/:id', name: 'Character', component: () => import('pages/GamePage.vue'), props: true },
       { path: '/game', name: 'Game', component: () => import('pages/GamePage.vue') },
       // { path: '/settings', name: 'Settings', component: () => import('pages/GamePage.vue') },
@@ -23,7 +23,7 @@ const routes = [
   //   path: '/',
   //   component: () => import('layouts/MainLayout.vue'),
   //   children: [
-  //     { path: '/characters', name: 'Characters', component: () => import('pages/CharactersPage.vue'), props: true },
+  //     { path: '/characters', name: 'Characters', component: () => import('pages/CharactersSelectionPage.vue'), props: true },
   //   ]
   // },
 

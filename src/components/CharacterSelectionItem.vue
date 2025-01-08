@@ -1,18 +1,18 @@
 <script>
-import { defineComponent } from 'vue'
+import {defineComponent} from 'vue'
 import DnD5eCharacter from "src/models/DnD5eCharacter";
-import { useUserStore } from "stores/user-store";
-import {createRouter as $router} from "vue-router";
+import {useUserStore} from "stores/user-store";
 
 export default defineComponent({
   name: "CharacterSelectionItem",
   components: {},
   props: ['characterObj'],
   data() {
-    return{
+    return {
       character: new DnD5eCharacter(),
-      bookmark: true,
       userStore: useUserStore(),
+      cardGameLabel: '',
+      cardBg: {},
     }
   },
   methods: {
@@ -21,31 +21,58 @@ export default defineComponent({
     },
     selectCharacter() {
       if (this.userStore.activeCharacter !== this.characterObj)
-      this.userStore.activateCharacter(this.characterObj.id)
-      this.$router.push({name: 'Character', params: { id: this.characterObj.id } })
-    }
+        this.userStore.activateCharacter(this.characterObj.id)
+      this.$router.push({name: 'Character', params: {id: this.characterObj.id}})
+    },
+    setCardLabel(gameLabel) {this.cardGameLabel = gameLabel},
+    setCardBg(gameBg) {this.cardBg = gameBg},
   },
+  computed: {
+
+  },
+  created() {
+    switch (this.characterObj.gameType){
+      case 'DnD5e':
+        this.setCardLabel('D & D - 5e');
+        this.setCardBg({backgroundImage: 'radial-gradient(circle, #d70114 0%, #75010c 100%)'})
+        break;
+      default:
+        this.setCardLabel('No Game Name');
+        this.setCardBg({backgroundImage: 'radial-gradient(circle, #35a2ff 0%, #014a88 100%)'})
+    }
+  }
 })
 </script>
 
 <template>
-  <q-card class="card" flat bordered square dark>
+  <q-card bordered class="card" dark flat square>
     <q-card-section horizontal>
-<!--      <q-img-->
-<!--        class="col"-->
-<!--        src="https://cdn.quasar.dev/img/mountains.jpg"-->
-<!--      >-->
-        <div class="full-width cardBg q-px-md q-py-lg">
+      <!--      <q-img-->
+      <!--        class="col"-->
+      <!--        src="https://cdn.quasar.dev/img/mountains.jpg"-->
+      <!--      >-->
+      <div class="full-width cardBg q-px-md q-gutter-md q-mt-none relative-position" :style="[cardBg]">
+        <div class="gameType text-h5 z-top">{{ cardGameLabel }}</div>
+        <div class="ellipsis-2-lines">
           <div class="text-h5">{{ characterObj.name }}</div>
-<!--          <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} {{ characterObj.class ? '|' : '' }} {{ characterObj.class.level }}</div>-->
-<!--          <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} {{ characterObj.class ? '|' : '' }} {{ characterObj.class.level }}</div>-->
+          <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} | {{ characterObj.classData.classString }} </div>
         </div>
-<!--      </q-img>-->
-      <q-card-actions vertical class="justify-around q-px-md bg-grey">
-        <q-btn flat round color="primary" icon="visibility" @click="selectCharacter"><q-tooltip anchor="center right" self="center left">View</q-tooltip></q-btn>
-        <q-btn flat round color="black" icon="settings" ><q-tooltip anchor="center right" self="center left">Settings</q-tooltip></q-btn>
-        <q-btn flat round color="amber" :icon="characterObj.favorite ? 'bookmark' : 'bookmark_outline'" ><q-tooltip anchor="center right" self="center left">Bookmark</q-tooltip></q-btn>
-        <q-btn flat round color="red" icon="delete" @click="deleteCharacter"><q-tooltip anchor="center right" self="center left">Delete</q-tooltip></q-btn>
+        <div v-if="characterObj.campaignName" class="absolute-bottom text-h6 ellipsis ">Campaign: <em><strong>{{ characterObj.campaignName }}</strong></em></div>
+      </div>
+      <!--      </q-img>-->
+      <q-card-actions class="justify-around q-px-md bg-grey" vertical>
+        <q-btn color="primary" flat icon="visibility" round @click="selectCharacter">
+          <q-tooltip anchor="center right" self="center left">View</q-tooltip>
+        </q-btn>
+        <q-btn color="black" flat icon="settings" round>
+          <q-tooltip anchor="center right" self="center left">Settings</q-tooltip>
+        </q-btn>
+        <q-btn :icon="characterObj.favorite ? 'bookmark' : 'bookmark_outline'" color="amber" flat round>
+          <q-tooltip anchor="center right" self="center left">Bookmark</q-tooltip>
+        </q-btn>
+        <q-btn color="red" flat icon="delete" round @click="deleteCharacter">
+          <q-tooltip anchor="center right" self="center left">Delete</q-tooltip>
+        </q-btn>
       </q-card-actions>
     </q-card-section>
   </q-card>
@@ -58,7 +85,10 @@ export default defineComponent({
   height: 196px;
   max-height: 196px;
 }
+
 .cardBg {
-  background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);
+  //background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);
+  //background: radial-gradient(circle, #d70114 0%, #75010c 100%);
+  //background-image: radial-gradient(circle, #35a2ff 0%, #014a88 100%);
 }
 </style>
