@@ -30,6 +30,5 @@ export default defineComponent({
   border: #A90000 5px solid;
   border-radius: 10px;
   background: lightgray;
-  color: ;
 }
 </style>

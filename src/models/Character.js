@@ -1,4 +1,4 @@
-import firebase from "firebase";
+// import firebase from "firebase";
 
 export default function Character(id, data) {
   id = id ?? '';
@@ -21,12 +21,12 @@ export default function Character(id, data) {
           classLevel: 1,
         },
       ],
-      get totalLevel() {
-        return this.classes.length;
-      },
       get ClassLevels(){
         return null;
       },
+    },
+    get getLevel() {
+      return this.classData.classes.length;
     },
     // creationDate: data.creationDate ?? firebase.firestore.FieldValue.serverTimestamp(),
     // updateDate: firebase.firestore.FieldValue.serverTimestamp(),

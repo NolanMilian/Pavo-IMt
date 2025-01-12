@@ -24,8 +24,9 @@ export default defineComponent({
       .doc(`users/${useAuthStore().authUser.uid}/characters/${this.id}`)
       .onSnapshot((doc) => {
         this.activeCharacter = doc.data();
-        this.userStore.activeCharacter = doc.data();
-        this.activeCharacter.id = doc.id;
+        // this.userStore.activeCharacter = doc.data();
+        // this.activeCharacter.id = doc.id;
+        this.activeCharacter = new Character(doc.id, doc.data());
         console.log('active', this.activeCharacter)
       });
   }
@@ -39,13 +40,13 @@ export default defineComponent({
         {{ activeCharacter.name }}
       </div>
       <div class="details text-h5 text-weight-light">
-        {{ activeCharacter.race }} | {{ activeCharacter.classData.classLevelString }}
+        {{ activeCharacter.race }} | {{ activeCharacter?.classData?.classLevelString }}
       </div>
     </div>
   </div>
 
   <q-page class="flex flex-center">
-    <DnD5eLayout :data="userStore.activeCharacter"/>
+    <DnD5eLayout v-if="activeCharacter.gameType === 'DnD5e'" :data="activeCharacter"/>
     <!--    <div class="debug">-->
     <!--      <q-btn @click="getCharacters()">Press me to get the characters</q-btn>-->
     <!--      <q-btn @click="selectCharacter('9v0qQSAGDo52AObkDdNU')">Press me to select a character</q-btn>-->
