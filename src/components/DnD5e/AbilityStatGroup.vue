@@ -7,9 +7,7 @@ export default defineComponent({
   props: [''],
   components: {AbilityStat},
   data() {
-    return{
-
-    }
+    return {}
   },
   computed: {},
   methods: {},
@@ -19,27 +17,27 @@ export default defineComponent({
 
 <template>
 
-<!--    <div class="statGroups row q-col-gutter-md">-->
-    <div class="statGroups row">
-      <div class="split row q-gutter-md">
-        <ability-stat class="col-4 col-md-3" />
-        <ability-stat class="col-4 col-md-3" />
-        <ability-stat class="col-4 col-md-3" />
-        <ability-stat class="col-4 col-md-3" />
-        <ability-stat class="col-4 col-md-3" />
-        <ability-stat class="col-4 col-md-3" />
-      </div>
-<!--      <div class="statGroup1 row q-gutter-md">-->
-<!--        <ability-stat class="col strength" />-->
-<!--        <ability-stat class="col dexterity" />-->
-<!--        <ability-stat class="col constitution" />-->
-<!--      </div>-->
-<!--      <div class="statGroup2 row q-gutter-md">-->
-<!--        <ability-stat class="col intelligence" />-->
-<!--        <ability-stat class="col wisdom" />-->
-<!--        <ability-stat class="col charisma" />-->
-<!--      </div>-->
+  <!--    <div class="statGroups row q-col-gutter-md">-->
+  <div class="statGroups row">
+    <div class="split row q-gutter-md">
+      <ability-stat class="col-4 col-md-3"/>
+      <ability-stat class="col-4 col-md-3"/>
+      <ability-stat class="col-4 col-md-3"/>
+      <ability-stat class="col-4 col-md-3"/>
+      <ability-stat class="col-4 col-md-3"/>
+      <ability-stat class="col-4 col-md-3"/>
     </div>
+    <!--      <div class="statGroup1 row q-gutter-md">-->
+    <!--        <ability-stat class="col strength" />-->
+    <!--        <ability-stat class="col dexterity" />-->
+    <!--        <ability-stat class="col constitution" />-->
+    <!--      </div>-->
+    <!--      <div class="statGroup2 row q-gutter-md">-->
+    <!--        <ability-stat class="col intelligence" />-->
+    <!--        <ability-stat class="col wisdom" />-->
+    <!--        <ability-stat class="col charisma" />-->
+    <!--      </div>-->
+  </div>
 
 </template>
 
