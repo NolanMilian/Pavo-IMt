@@ -51,13 +51,15 @@ export default defineComponent({
       <!--        class="col"-->
       <!--        src="https://cdn.quasar.dev/img/mountains.jpg"-->
       <!--      >-->
-      <div class="full-width cardBg q-px-md q-gutter-md q-mt-none relative-position" :style="[cardBg]">
-        <div class="gameType text-h5 z-top">{{ cardGameLabel }}</div>
-        <div class="ellipsis-2-lines">
-          <div class="text-h5">{{ characterObj.name }}</div>
-          <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} | {{ characterObj.classData.classString }} </div>
+      <div class="full-width cardBg relative-position" :style="[cardBg]">
+        <div class="q-px-md q-gutter-md q-mt-none">
+          <div class="gameType text-h5 z-top text-bold">{{ cardGameLabel }}</div>
+          <div class="ellipsis-3-lines">
+            <div class="text-h5">{{ characterObj.name }}</div>
+            <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} | {{ characterObj.classData.classString }} </div>
+          </div>
         </div>
-        <div v-if="characterObj.campaignName" class="absolute-bottom text-h6 ellipsis ">Campaign: <em><strong>{{ characterObj.campaignName }}</strong></em></div>
+        <div v-if="characterObj.campaignName" class="absolute-bottom text-h6 ellipsis campaignBg q-pl-md">Campaign: <em><strong>{{ characterObj.campaignName }}</strong></em></div>
       </div>
       <!--      </q-img>-->
       <q-card-actions class="justify-around q-px-md bg-grey" vertical>
@@ -84,6 +86,9 @@ export default defineComponent({
   max-width: 375px;
   height: 196px;
   max-height: 196px;
+}
+.campaignBg {
+  background-color: black;
 }
 
 .cardBg {

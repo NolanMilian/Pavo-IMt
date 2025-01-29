@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('auth',{
       this.authUser = user;
     },
 
+
     async signInWithEmailAndPassword(email, password) {
       try {
         this.authUser = await auth.signInWithEmailAndPassword(email, password);
@@ -75,6 +76,6 @@ export const useAuthStore = defineStore('auth',{
     },
   },
   getters: {
-
+    isAuthenticated: state => !!state.authUser
   },
 })
