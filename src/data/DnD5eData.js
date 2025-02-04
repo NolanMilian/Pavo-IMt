@@ -119,6 +119,17 @@ const skills = {
   performance: {skillType: 'cha'},
   persuasion: {skillType: 'cha'}
 };
+const equipment = async () => { 
+  if (window.fetch) {
+        const response = await fetch("https://www.dnd5eapi.co/api/equipment");
+          const jsonData = await response.json();
+            console.log(jsonData);
+            return jsonData;       
+  } else { 
+    axios.get()
+    return {}
+  }
+}
 
 export {proficiencyValues, scoreTypes, resistantTypes, immunityTypes, vulnerabilityTypes, conditions, skills};
 

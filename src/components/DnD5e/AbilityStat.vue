@@ -5,7 +5,7 @@ import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
 export default defineComponent({
   name: "AbilityStat",
   components: {DisplayBox},
-  props: ['StatObj'],
+  props: ['statObj'],
   data() {
     return {
       label: 'constitution',

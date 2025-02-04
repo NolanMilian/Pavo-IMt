@@ -4,7 +4,7 @@ import AbilityStat from "components/DnD5e/AbilityStat.vue";
 
 export default defineComponent({
   name: "AbilityStatGroup",
-  props: [''],
+  props: ['statObj'],
   components: {AbilityStat},
   data() {
     return {}
@@ -20,7 +20,7 @@ export default defineComponent({
   <!--    <div class="statGroups row q-col-gutter-md">-->
   <div class="statGroups row">
     <div class="split row q-gutter-md">
-      <ability-stat class="col-4 col-md-3"/>
+      <ability-stat :stat-obj="statObj.str" class="col-4 col-md-3"/>
       <ability-stat class="col-4 col-md-3"/>
       <ability-stat class="col-4 col-md-3"/>
       <ability-stat class="col-4 col-md-3"/>
