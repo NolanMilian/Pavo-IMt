@@ -17,18 +17,42 @@ export default defineComponent({
     }
   },
   methods: {
+    abilityModifiers () {
+      const stats = this.activeCharacter.abilityScoresTotal;
 
+      for (let key in stats) {
+        if (stats.hasOwnProperty(key)) {
+          let value = stats[key];
+          stats[key] = Math.floor((value - 10) / 2);
+          console.log(key, stats[key])
+        }
+      }
+      this.activeCharacter.abilityScoreModifiers = stats;
+      this.userStore.activeCharacter.abilityScoreModifiers = stats;
+      console.log(stats);
+    },
+
+
+    logChar () {
+      console.log('active Char', this.activeCharacter);
+    }
   },
   created() {
     db
       .doc(`users/${useAuthStore().authUser.uid}/characters/${this.id}`)
       .onSnapshot((doc) => {
         this.activeCharacter = doc.data();
-        // this.userStore.activeCharacter = doc.data();
+        this.userStore.activeCharacter = new Character(doc.id, doc.data());
         // this.activeCharacter.id = doc.id;
         this.activeCharacter = new Character(doc.id, doc.data());
+        this.abilityModifiers();
+
         console.log('active', this.activeCharacter)
       });
+    // this.abilityModifiers();
+  },
+  mounted() {
+    // this.abilityModifiers();
   }
 })
 </script>
@@ -47,12 +71,12 @@ export default defineComponent({
 
   <q-page class="flex flex-center">
     <DnD5eLayout v-if="activeCharacter.gameType === 'DnD5e'" :data="activeCharacter"/>
-    <!--    <div class="debug">-->
-    <!--      <q-btn @click="getCharacters()">Press me to get the characters</q-btn>-->
-    <!--      <q-btn @click="selectCharacter('9v0qQSAGDo52AObkDdNU')">Press me to select a character</q-btn>-->
-    <!--      <q-input v-model="newCharacter.name"></q-input>-->
-    <!--      <q-btn @click="addCharacter(newCharacter)">Press me to add a character</q-btn>-->
-    <!--    </div>-->
+        <div class="debug">
+          <q-btn @click="logChar()">Press me to get the characters</q-btn>
+<!--          <q-btn @click="selectCharacter('9v0qQSAGDo52AObkDdNU')">Press me to select a character</q-btn>-->
+<!--          <q-input v-model="newCharacter.name"></q-input>-->
+<!--          <q-btn @click="addCharacter(newCharacter)">Press me to add a character</q-btn>-->
+        </div>
   </q-page>
 </template>
 

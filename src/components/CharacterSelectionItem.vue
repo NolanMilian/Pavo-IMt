@@ -16,6 +16,9 @@ export default defineComponent({
     }
   },
   methods: {
+    favoriteToggle() {
+      this.userStore.toggleCharacterVariable(this.characterObj, "favorite")
+    },
     deleteCharacter() {
       this.userStore.deleteCharacter(this.characterObj.id);
     },
@@ -69,8 +72,8 @@ export default defineComponent({
         <q-btn color="black" flat icon="settings" round>
           <q-tooltip anchor="center right" self="center left">Settings</q-tooltip>
         </q-btn>
-        <q-btn :icon="characterObj.favorite ? 'bookmark' : 'bookmark_outline'" color="amber" flat round>
-          <q-tooltip anchor="center right" self="center left">Bookmark</q-tooltip>
+        <q-btn :icon="characterObj.favorite ? 'bookmark' : 'bookmark_outline'" color="amber" flat round @click="favoriteToggle()">
+          <q-tooltip anchor="center right" self="center left" >Bookmark</q-tooltip>
         </q-btn>
         <q-btn color="red" flat icon="delete" round @click="deleteCharacter">
           <q-tooltip anchor="center right" self="center left">Delete</q-tooltip>

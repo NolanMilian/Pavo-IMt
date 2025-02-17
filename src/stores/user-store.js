@@ -5,7 +5,7 @@ import {useAuthStore} from "stores/auth-store";
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    activeCharacter: null,
+    activeCharacter: {},
     allCharacters: [],
   }),
 
@@ -70,6 +70,29 @@ export const useUserStore = defineStore('user', {
           console.error('Error removing character', error);
       })
     },
+
+    updateCharacterVariable(character, variable, data) {
+      db
+        .doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
+        .update({})
+        .then(() => console.log('Document updated'))
+    },
+
+    toggleCharacterVariable(character, variable) {
+      let fieldValue = character[variable]
+      console.log('filedValue',fieldValue)
+      db
+        .doc(`users/${useAuthStore().authUser.uid}/characters/${character.id}`)
+        .update({
+          [variable]: !fieldValue,
+        })
+        .then(() =>
+          console.log(`Character: ${character.name}, fieldValue updated: ${variable}, to: ${!fieldValue}`),
+        )
+        .catch((error) => console.error(`Error toggling ${variable} in document`, error))
+    },
+
+
 
   },
 
