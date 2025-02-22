@@ -2,14 +2,14 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "DnD5eCreatorSelector"
+  name: "DnD5eSummaryPage"
 })
 </script>
 
 <template>
-<q-page>
-
-</q-page>
+<div class="">
+  Summary
+</div>
 </template>
 
 <style scoped>

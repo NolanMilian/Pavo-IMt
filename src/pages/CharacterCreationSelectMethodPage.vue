@@ -1,8 +1,35 @@
 <script>
 import {defineComponent} from 'vue'
+import {db} from "boot/firebase";
+import {useUserStore} from "stores/user-store";
+import {useAuthStore} from "stores/auth-store";
 
 export default defineComponent({
-  name: "CharacterCreationSelectMethodPage"
+  name: "CharacterCreationSelectMethodPage",
+  data() {
+    return {
+      userStore: useUserStore(),
+      authStore: useAuthStore(),
+    }
+  },
+  methods: {
+    async createCharacter(gameType) {
+      let tempCharacterName = this.authStore.authUser.displayName + `'s Character`;
+      let characterObj = {gameType: gameType, favorite: false, name: tempCharacterName};
+
+      db
+        .collection(`users/${useAuthStore().authUser.uid}/characters/`)
+        .add(characterObj)
+        .then((docRef) => {
+          console.log('Character written with ID of: ', docRef.id);
+          this.userStore.activateCharacter(docRef.id);
+          this.$router.push({name: 'creator-dnd5e', params: {id: docRef.id}})
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error);
+        })
+    }
+  },
 })
 </script>
 
@@ -11,26 +38,30 @@ export default defineComponent({
     Select Game Type
   </div>
   <q-page class="flex flex-block justify-center">
-  <div class="q-pa-md row items-start q-gutter-md">
-    <q-card class="dnd5e card text-white">
-      <q-card-section>
-        <div class="text-h6">Dungeons & Dragons</div>
-        <div class="text-subtitle2">Fifth Edition</div>
-      </q-card-section>
 
-      <q-card-section>
-        {{ lorem }}
-      </q-card-section>
+    <div class="q-pa-md row items-start q-gutter-md">
 
-      <q-separator dark />
+      <q-card class="dnd5e card text-white">
+        <q-card-section>
+          <div class="text-h6">Dungeons & Dragons</div>
+          <div class="text-subtitle2">Fifth Edition</div>
+        </q-card-section>
 
-      <q-card-actions align="between" class="bg-dark">
-        <q-btn flat @click="this.$router.push({name: 'index'})">Create New</q-btn>
-        <q-btn disable flat @click="this.$router.push({name: 'index'})">Browse Pre-made</q-btn>
-      </q-card-actions>
-    </q-card>
-  </div>
-</q-page>
+        <q-card-section>
+          Extra Text
+        </q-card-section>
+
+        <q-separator dark />
+
+        <q-card-actions align="between" class="bg-dark">
+          <q-btn flat @click="createCharacter('DnD5e')">Create New</q-btn>
+          <q-btn disable flat @click="this.$router.push({name: 'index', params: {id: this.characterObj.id}})">Browse Pre-made</q-btn>
+        </q-card-actions>
+      </q-card>
+
+    </div>
+
+  </q-page>
 </template>
 
 <style scoped>

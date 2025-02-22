@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpR fFf">
+  <q-layout view="hHh lpR fFf" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'">
     <div class=""></div>
 
     <q-header reveal elevated class="bg-primary text-white">
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent } from "vue";
 import { version, productName } from '../../package.json';
 import EssentialLink from "components/EssentialLink.vue";
 import {auth} from "boot/firebase";
@@ -122,8 +122,6 @@ export default defineComponent({
       auth
         .signInWithPopup(provider)
         .catch(function (error) {
-          let errorCode = error.code;
-          let errorMsg = error.message;
           console.error('Error signing in: ', error)
         })
     },

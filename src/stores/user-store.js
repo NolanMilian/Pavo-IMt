@@ -16,7 +16,6 @@ export const useUserStore = defineStore('user', {
         .then((doc) => {
           console.log(doc.id, '=>', doc.data())
         })
-
     },
 
     activateCharacter(characterId) {
@@ -47,15 +46,20 @@ export const useUserStore = defineStore('user', {
     },
 
     addCharacter(characterObj) {
+      let characterId = '';
       db
         .collection(`users/${useAuthStore().authUser.uid}/characters/`)
         .add(characterObj)
         .then((docRef) => {
           console.log('Character written with ID of: ', docRef.id);
-          this.getCharacters();
-        }).catch((error) => {
+          characterId = docRef.id;
+          this.activateCharacter(characterId)
+          // this.getCharacters();
+        })
+        .catch((error) => {
           console.error('Error adding document: ', error);
       })
+      return characterId;
     },
 
     deleteCharacter(characterId) {
