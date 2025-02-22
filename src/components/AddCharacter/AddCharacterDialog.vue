@@ -8,27 +8,38 @@ export default defineComponent({
   methods: {},
   data(){
     return{
-      ganeType: 'DnD5e',
       newCharacter: new Character(),
       step: 1,
+      gameTypeModel: 'DnD5e',
+      gameTypeOptions: [
+        {
+          label: 'D&D - 5e',
+          value: 'DnD5e',
+          icon: '',
+        }
+      ],
+
     }
   },
 })
 </script>
 
 <template>
-  <q-dialog>
+  <q-dialog
+  full-width
+  >
     <q-card>
       <q-toolbar>
-        <q-avatar>
-          <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg">
-        </q-avatar>
+<!--        <q-avatar>-->
+<!--          <img src="https://cdn.quasar.dev/logo-v2/svg/logo.svg">-->
+<!--        </q-avatar>-->
 
-        <q-toolbar-title><span class="text-weight-bold">Quasar</span> Framework</q-toolbar-title>
+        <q-toolbar-title><span class="text-weight-bold">TTE</span>: Character Creation</q-toolbar-title>
 
         <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
 
+<!--      Top Header Text-->
 <!--      <q-card-section>-->
 <!--        Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.-->
 <!--      </q-card-section>-->
@@ -38,21 +49,46 @@ export default defineComponent({
           ref="stepper"
           color="primary"
           animated
+          alternative-labels
         >
+
           <q-step
             :name="1"
-            title="Select campaign settings"
+            title="Select Game Type"
             icon="settings"
             :done="step > 1"
+            :error="gameTypeModel === null"
           >
-            For each ad campaign that you create, you can control how much you're willing to
-            spend on clicks and conversions, which networks and geographical locations you want
-            your ads to show on, and more.
+            <q-select
+              filled
+              v-model="gameTypeModel"
+              :options="gameTypeOptions"
+              label="Standard"
+              color="teal"
+              clearable
+              map-options
+              options-selected-class="text-blue"
+              error-message="Must make a selection"
+              rules="[val => !!val || 'Must select a game type']"
+            >
+              <template v-slot:option="scope">
+                <q-item v-bind="scope.itemProps">
+                  <q-item-section avatar>
+                    <q-icon :name="scope.opt.icon" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>{{ scope.opt.label }}</q-item-label>
+                    <q-item-label caption>{{ scope.opt.description }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+
           </q-step>
 
           <q-step
             :name="2"
-            title="Create an ad group"
+            title="Basic Character Information"
             caption="Optional"
             icon="create_new_folder"
             :done="step > 2"

@@ -4,28 +4,21 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/', name: 'Index', component: () => import('pages/IndexPage.vue') },
-      { path: '/characters', name: 'Characters', component: () => import('pages/CharactersSelectionPage.vue') },
-      { path: '/character/:id', name: 'Character', component: () => import('pages/GamePage.vue'), props: true },
-      { path: '/game', name: 'Game', component: () => import('pages/GamePage.vue') },
-      // { path: '/settings', name: 'Settings', component: () => import('pages/GamePage.vue') },
-      // { path: '/profile', name: 'Profile', component: () => import('pages/GamePage.vue') },
+      { name: 'index', path: '', component: () => import('pages/IndexPage.vue') },
+      { name: 'characters', path: '/characters', component: () => import('pages/CharactersSelectionPage.vue') },
+      { name: 'select-creator', path: '/characters/select-creator', component: () => import('pages/CharacterCreationSelectMethodPage.vue') },
+      { name: 'Character', path: '/character/:id', component: () => import('pages/GamePage.vue'), props: true, children: [
+          { name: 'creator-dnd5e', path: '/creator/dnd5e', children: [
+              { path: '', redirect: 'abilities' },
+              { name: 'dnd5e-abilities', path: 'abilities' },
+              { name: 'dnd5e-race', path: 'race'  },
+              { name: 'dnd5e-class', path: 'class'  },
+              { name: 'dnd5e-background', path: 'background' },
+              { name: 'dnd5e-summary', path: 'summary'  }
+            ]}
+        ]},
     ]
   },
-  // {
-  //   path: '/',
-  //   component: () => import('layouts/MainLayout.vue'),
-  //   children: [
-  //     { path: '/game', name: 'Game', component: () => import('pages/GamePage.vue'), props: true },
-  //   ]
-  // },
-  // {
-  //   path: '/',
-  //   component: () => import('layouts/MainLayout.vue'),
-  //   children: [
-  //     { path: '/characters', name: 'Characters', component: () => import('pages/CharactersSelectionPage.vue'), props: true },
-  //   ]
-  // },
 
   // Always leave this as last one,
   // but you can also remove it

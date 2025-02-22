@@ -7,11 +7,13 @@
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-          </q-avatar>
-          {{ appName }}
-          <q-badge color="orange"> v{{ appVersion }}-alpha</q-badge>
+          <span class="appTitle cursor-pointer" @click="this.$router.push({name: 'index'})">
+            <q-avatar>
+              <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+            </q-avatar>
+            {{ appName }}
+          </span>
+          <q-badge class="q-ml-md" color="orange"> v{{ appVersion }}-alpha</q-badge>
         </q-toolbar-title>
         <q-avatar v-if="authUser" class="cursor-pointer q-mr-lg">
           <q-tooltip>Profile</q-tooltip>
@@ -64,11 +66,11 @@
                 </span>
               </div>
 
-              <q-item-label
-                header
-              >
-                Essential Links
-              </q-item-label>
+<!--              <q-item-label-->
+<!--                header-->
+<!--              >-->
+<!--                Essential Links-->
+<!--              </q-item-label>-->
 
               <EssentialLink
                 v-for="link in essentialLinks"
@@ -100,14 +102,15 @@ const linksList = [
     caption: 'My Characters',
     icon: 'groups',
     link: '/characters',
+    auth: true,
   },
-  {
-    title: 'Game',
-    caption: 'Temp Game Page',
-    icon: 'code',
-    link: '/game',
-    // newTab: false // opens link in a new tap
-  }
+  // {
+  //   title: 'Game',
+  //   caption: 'Temp Game Page',
+  //   icon: 'code',
+  //   link: '/game',
+  //   // newTab: false // opens link in a new tap
+  // }
 ]
 
 export default defineComponent({

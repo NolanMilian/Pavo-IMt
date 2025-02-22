@@ -33,17 +33,17 @@ export const useUserStore = defineStore('user', {
       db
         // .collection(`users/${auth.currentUser.uid}/characters/`)
         .collection(`users/${useAuthStore().authUser.uid}/characters/`)
-        .get()
-        .then((querySnapshot) => {
+        .onSnapshot((querySnapshot) => {
+          this.allCharacters.length = 0;
           querySnapshot.forEach((doc) => {
           console.log(doc.id, '=>', doc.data());
           this.allCharacters.push(new Character(doc.id, doc.data()));
         })
-
-      }).catch((error) => {
-        console.error('Error retrieving collection from firestore', error);
       })
-      console.log('array of characters', this.allCharacters);
+      //   .catch((error) => {
+      //   console.error('Error retrieving collection from firestore', error);
+      // })
+      // console.log('array of characters', this.allCharacters);
     },
 
     addCharacter(characterObj) {
@@ -73,9 +73,12 @@ export const useUserStore = defineStore('user', {
 
     updateCharacterVariable(character, variable, data) {
       db
-        .doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
-        .update({})
-        .then(() => console.log('Document updated'))
+        .doc(`users/${useAuthStore().authUser.uid}/characters/${character.id}`)
+        .update({
+          [variable]: data
+        })
+        .then(() => console.log(`Character: ${character.name} document updated variable: ${variable} with data: ${data}`))
+        .catch((error) => console.error(`Error updating ${variable} with data: ${data}`, error))
     },
 
     toggleCharacterVariable(character, variable) {
@@ -86,9 +89,7 @@ export const useUserStore = defineStore('user', {
         .update({
           [variable]: !fieldValue,
         })
-        .then(() =>
-          console.log(`Character: ${character.name}, fieldValue updated: ${variable}, to: ${!fieldValue}`),
-        )
+        .then(() => console.log(`Character: ${character.name}, fieldValue updated: ${variable}, to: ${!fieldValue}`))
         .catch((error) => console.error(`Error toggling ${variable} in document`, error))
     },
 

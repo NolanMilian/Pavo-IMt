@@ -41,9 +41,9 @@ export default defineComponent({
     db
       .doc(`users/${useAuthStore().authUser.uid}/characters/${this.id}`)
       .onSnapshot((doc) => {
-        this.activeCharacter = doc.data();
-        this.userStore.activeCharacter = new Character(doc.id, doc.data());
+        // this.activeCharacter = doc.data();
         // this.activeCharacter.id = doc.id;
+        this.userStore.activeCharacter = new Character(doc.id, doc.data());
         this.activeCharacter = new Character(doc.id, doc.data());
         this.abilityModifiers();
 
