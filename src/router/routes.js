@@ -9,8 +9,11 @@ const routes = [
       { name: 'select-creator', path: '/characters/select-creator', component: () => import('pages/CharacterCreationSelectMethodPage.vue') },
       // { name: 'select-creator-dnd5e', path: '/characters/select-creator/dnd5e' }, // creation mode for DnD5e eg. quick build, random build, or a standard build.
       { name: 'Character', path: '/character/:id', component: () => import('pages/GamePage.vue'), props: true },
-      { name: 'creator-dnd5e', path: '/character/:id/creator/dnd5e', component: () => import('layouts/DnD5eCharacterCreatorLayout.vue'), props: true, children: [
-          { path: '', redirect: '/character/:id/creator/dnd5e/settings', props: true },
+      { name: 'creator-dnd5e', path: '/character/:id/creator/dnd5e', component: () => import('layouts/DnD5eCharacterCreatorLayout.vue'),
+        // redirect: '/character/:id/creator/dnd5e/settings',
+        props: true,
+        children: [
+          { path: '', redirect: '/character/:id/creator/dnd5e/settings' },
           { name: 'dnd5e-settings', path: 'settings', component: () => import('pages/DnD5ePages/DnD5eSettingsPage.vue'), props: true  },
           { name: 'dnd5e-race', path: 'race', component: () => import('pages/DnD5ePages/DnD5eRacePage.vue'), props: true  },
           { name: 'dnd5e-class', path: 'class', component: () => import('pages/DnD5ePages/DnD5eClassPage.vue'), props: true },

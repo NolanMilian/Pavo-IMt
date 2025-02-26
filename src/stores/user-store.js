@@ -75,14 +75,19 @@ export const useUserStore = defineStore('user', {
       })
     },
 
-    updateCharacterVariable(character, variable, data) {
+    updateCharacterVariable(characterId, variable, data) {
+      // let characterId;
+      // if (character.id !== null)
+      //   characterId = character.id
+      // else
+      //   characterId = character
       db
-        .doc(`users/${useAuthStore().authUser.uid}/characters/${character.id}`)
+        .doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
         .update({
           [variable]: data
         })
-        .then(() => console.log(`Character: ${character.name} document updated variable: ${variable} with data: ${data}`))
-        .catch((error) => console.error(`Error updating ${variable} with data: ${data}`, error))
+        .then(() => console.log(`Character: ${characterId} document updated variable: ${variable}, with data: ${data}`))
+        .catch((error) => console.error(`Error updating ${variable}, with data: ${data}`, error))
     },
 
     toggleCharacterVariable(character, variable) {

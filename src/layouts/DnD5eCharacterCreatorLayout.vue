@@ -19,7 +19,7 @@ export default defineComponent({
       <div class="layout text-white">
         <q-toolbar>
           <q-toolbar-title>
-            DnD5e | Character Creator - {{ userStore.activeCharacter.name }}
+            DnD5e | Character Creator: {{ userStore.activeCharacter.name }}
           </q-toolbar-title>
         </q-toolbar>
 
