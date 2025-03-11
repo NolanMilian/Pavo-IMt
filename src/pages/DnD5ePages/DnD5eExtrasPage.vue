@@ -2,14 +2,14 @@
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-  name: "DnD5eSummaryPage"
+  name: "DnD5eExtrasPage"
 })
 </script>
 
 <template>
-<div class="">
-  Summary
-</div>
+  <div class="">
+    Extras
+  </div>
 </template>
 
 <style scoped>

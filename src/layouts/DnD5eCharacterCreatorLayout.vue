@@ -10,6 +10,10 @@ export default defineComponent({
       userStore: useUserStore(),
     }
   },
+  mounted() {
+    this.userStore.activateCharacter(this.id);
+    console.log('Character ID: ', this.id);
+  }
 })
 </script>
 
@@ -30,8 +34,10 @@ export default defineComponent({
           <q-route-tab exact name="dnd5e-abilities" :to="{ name: 'dnd5e-abilities', params: { id: id } }" label="Abilities" />
           <q-route-tab exact name="dnd5e-description" :to="{ name: 'dnd5e-description', params: { id: id } }" label="Description" />
           <q-route-tab exact name="dnd5e-equipment" :to="{ name: 'dnd5e-equipment', params: { id: id } }" label="Equipment" />
-          <q-route-tab exact name="dnd5e-summary" :to="{ name: 'dnd5e-summary', params: { id: id } }" label="Summary" />
+          <q-route-tab exact name="dnd5e-extras" :to="{ name: 'dnd5e-extras', params: { id: id } }" label="Extras" />
+          <q-btn disable dense square class="no-wrap gameBtn q-ml-lg bg-primary"> <q-tooltip>Game Page</q-tooltip> Game Page</q-btn>
         </q-tabs>
+
       </div>
 
 <!--    </q-page-sticky>-->
@@ -61,6 +67,10 @@ export default defineComponent({
 //.sub-layout-content {
 //  margin-top: 100px; /* Adjust the value to match the height of the fixed header */
 //}
+
+.gameBtn {
+  min-width: 100px;
+}
 
 
 </style>

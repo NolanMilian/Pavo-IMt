@@ -25,7 +25,12 @@ export default defineComponent({
     selectCharacter() {
       if (this.userStore.activeCharacter !== this.characterObj)
         this.userStore.activateCharacter(this.characterObj.id)
-      this.$router.push({name: 'Character', params: {id: this.characterObj.id}})
+      this.$router.push({name: 'character', params: {id: this.characterObj.id}})
+    },
+    updateCharacter() {
+      if (this.userStore.activeCharacter !== this.characterObj)
+        this.userStore.activateCharacter(this.characterObj.id)
+      this.$router.push({name: 'dnd5e-settings', params: {id: this.characterObj.id}})
     },
     setCardLabel(gameLabel) {this.cardGameLabel = gameLabel},
     setCardBg(gameBg) {this.cardBg = gameBg},
@@ -59,7 +64,7 @@ export default defineComponent({
           <div class="gameType text-h5 z-top text-bold">{{ cardGameLabel }}</div>
           <div class="ellipsis-3-lines">
             <div class="text-h5">{{ characterObj.name }}</div>
-            <div class="text-subtitle2">Level {{ characterObj.level }} | {{ characterObj.race }} | {{ characterObj.classData.classString }} </div>
+            <div class="text-subtitle2">Level {{ characterObj.classData.totalLevel }} | {{ characterObj.race }} | {{ characterObj.classData.classString }} </div>
           </div>
         </div>
         <div v-if="characterObj.campaignName" class="absolute-bottom text-h6 ellipsis campaignBg q-pl-md">Campaign: <em><strong>{{ characterObj.campaignName }}</strong></em></div>
@@ -72,7 +77,7 @@ export default defineComponent({
         <q-btn :icon="characterObj.favorite ? 'bookmark' : 'bookmark_outline'" color="amber" flat round @click="favoriteToggle()">
           <q-tooltip anchor="center right" self="center left" >Bookmark</q-tooltip>
         </q-btn>
-        <q-btn color="black" flat icon="settings" round>
+        <q-btn color="black" flat icon="settings" round @click="updateCharacter">
           <q-tooltip anchor="center right" self="center left">Settings</q-tooltip>
         </q-btn>
         <q-btn color="red" flat icon="delete" round @click="deleteCharacter">

@@ -13,7 +13,7 @@ export default defineComponent({
     }
   },
   methods: {
-    async createCharacter(gameType) {
+    async createDnD5eCharacter(gameType) {
       let tempCharacterName = this.authStore.authUser.displayName + `'s Character`;
       let characterObj = {gameType: gameType, favorite: false, name: tempCharacterName};
 
@@ -23,7 +23,7 @@ export default defineComponent({
         .then((docRef) => {
           console.log('Character written with ID of: ', docRef.id);
           this.userStore.activateCharacter(docRef.id);
-          this.$router.push({name: 'creator-dnd5e', params: {id: docRef.id}})
+          this.$router.push({name: 'dnd5e-settings', params: {id: docRef.id}}) // TODO: put this back in when redirect works properly 'creator-dnd5e'
         })
         .catch((error) => {
           console.error('Error adding document: ', error);
@@ -54,8 +54,8 @@ export default defineComponent({
         <q-separator dark />
 
         <q-card-actions align="between" class="bg-dark">
-          <q-btn flat @click="createCharacter('DnD5e')">Create New</q-btn>
-          <q-btn disable flat @click="this.$router.push({name: 'index', params: {id: this.characterObj.id}})">Browse Pre-made</q-btn>
+          <q-btn flat @click="createDnD5eCharacter('DnD5e')">Create New</q-btn>
+          <q-btn disable flat>Browse Pre-made</q-btn>
         </q-card-actions>
       </q-card>
 

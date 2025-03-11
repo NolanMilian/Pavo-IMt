@@ -7,9 +7,9 @@ export default defineComponent({
 </script>
 
 <template>
-<q-page>
-
-</q-page>
+  <q-page>
+    Profile Settings
+  </q-page>
 </template>
 
 <style scoped>

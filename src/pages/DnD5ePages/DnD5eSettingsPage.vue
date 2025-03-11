@@ -15,7 +15,8 @@ export default defineComponent({
   },
   methods: {
     update(){
-      this.userStore.updateCharacterVariable(this.id, 'name', this.characterName)
+      if (this.characterName)
+        this.userStore.updateCharacterVariable(this.id, 'name', this.characterName)
     }
 
   },
@@ -28,10 +29,10 @@ export default defineComponent({
 
   },
   mounted() {
-    this.userStore.activateCharacter(this.id);
+    // this.userStore.activateCharacter(this.id);
     this.activeCharacter = this.userStore.activeCharacter;
     this.characterName = this.activeCharacter.name;
-    console.log('Character ID: ', this.id);
+    // console.log('Character ID: ', this.id);
   }
 })
 </script>
@@ -43,7 +44,6 @@ export default defineComponent({
         <strong>Character Name</strong>
       </span>
       <q-input standout debounce="500" v-model="characterName" @blur="update" style="width: 300px"/>
-<!--      {{ characterName }}-->
     </div>
   </div>
 </template>

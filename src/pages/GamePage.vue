@@ -69,15 +69,15 @@ export default defineComponent({
     </div>
   </div>
 
-  <q-page class="flex flex-center">
+  <div class="q-mt-lg flex flex-center">
     <DnD5eLayout v-if="activeCharacter.gameType === 'DnD5e'" :data="activeCharacter"/>
-        <div class="debug">
-          <q-btn @click="logChar()">Press me to get the characters</q-btn>
+<!--        <div class="debug">-->
+<!--          <q-btn @click="logChar()">Press me to get the characters</q-btn>-->
 <!--          <q-btn @click="selectCharacter('9v0qQSAGDo52AObkDdNU')">Press me to select a character</q-btn>-->
 <!--          <q-input v-model="newCharacter.name"></q-input>-->
 <!--          <q-btn @click="addCharacter(newCharacter)">Press me to add a character</q-btn>-->
-        </div>
-  </q-page>
+<!--        </div>-->
+  </div>
 </template>
 
 <style scoped>

@@ -15,10 +15,46 @@
           </span>
           <q-badge class="q-ml-md" color="orange"> v{{ appVersion }}-alpha</q-badge>
         </q-toolbar-title>
+
+<!--        <q-btn v-if="authUser" color="purple" label="Account Settings">-->
         <q-avatar v-if="authUser" class="cursor-pointer q-mr-lg">
+          <q-menu>
+            <div class="row no-wrap q-pa-md">
+              <div class="column">
+                <div class="text-h6 q-mb-md"> Settings   <q-btn flat round icon="settings" @click="pushToSiteSettings"><q-tooltip>Site Settings</q-tooltip></q-btn> </div>
+                <q-toggle disable v-model="darkMode" label="Dark Mode" />
+<!--                <q-toggle v-model="bluetooth" label="Bluetooth" />-->
+              </div>
+
+              <q-separator vertical inset class="q-mx-lg" />
+
+              <div class="column items-center">
+                <q-avatar class="cursor-pointer" size="72px" @click="pushToProfileSettings">
+                  <q-tooltip>Profile Settings</q-tooltip>
+                  <img :src="authUser.photoURL">
+                </q-avatar>
+
+                <div class="text-subtitle1 q-mt-md q-mb-xs">{{ authUser.displayName }}</div>
+
+                <q-btn
+                  color="primary"
+                  label="Logout"
+                  icon-right="logout"
+                  no-wrap
+                  push
+                  size="sm"
+                  @click="logout"
+                  v-close-popup
+                />
+              </div>
+            </div>
+          </q-menu>
           <q-tooltip>Profile</q-tooltip>
-          <img :src="authUser.photoURL" @click="console.log('profile')">
+          <img :src="authUser.photoURL">  <!-- @click="" redirect to profile page -->
         </q-avatar>
+<!--        </q-btn>-->
+
+
         <q-avatar v-else class="cursor-pointer q-mr-lg">
           <q-tooltip>Login</q-tooltip>
           <q-icon name="login" @click="login"></q-icon>
@@ -31,7 +67,7 @@
             <q-list>
               <q-img v-if="authUser" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
                 <div class="absolute-bottom bg-transparent col">
-                  <q-avatar size="56px" class="q-mb-sm">
+                  <q-avatar size="56px" class="q-mb-sm" @click="pushToProfileSettings">
                     <q-tooltip>Profile</q-tooltip>
                     <img class="cursor-pointer" :src="authUser.photoURL" @click="console.log('profile click')">
                   </q-avatar>
@@ -40,7 +76,7 @@
                 </div>
 
                 <div class="absolute-top-right transparent cursor-pointer">
-                  <q-icon name="settings" size="24px">
+                  <q-icon name="settings" size="24px" @click="pushToSiteSettings">
                     <q-tooltip>
                       Site Settings
                     </q-tooltip>
@@ -117,6 +153,12 @@ export default defineComponent({
   name: 'MainLayout',
   components: {EssentialLink},
   methods: {
+    pushToProfileSettings() {
+      this.$router.push({name: 'profile-settings'})
+    },
+    pushToSiteSettings() {
+      this.$router.push({name: 'site-settings'})
+    },
     login() {
       let provider = new firebase.auth.GoogleAuthProvider();
       auth
@@ -155,6 +197,7 @@ export default defineComponent({
       appVersion:version,
       appName:productName,
       leftDrawerOpen: false,
+      darkMode: false,
 
     }
   }
