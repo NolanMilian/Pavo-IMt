@@ -69,7 +69,7 @@
                 <div class="absolute-bottom bg-transparent col">
                   <q-avatar size="56px" class="q-mb-sm" @click="pushToProfileSettings">
                     <q-tooltip>Profile</q-tooltip>
-                    <img class="cursor-pointer" :src="authUser.photoURL" @click="console.log('profile click')">
+                    <img class="cursor-pointer" :src="authUser.photoURL">
                   </q-avatar>
                   <div class="text-weight-bold">{{ authUser.displayName }}</div>
                   <div>{{ authUser.email }}</div>
