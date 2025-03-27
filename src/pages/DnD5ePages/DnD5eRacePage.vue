@@ -39,7 +39,8 @@ export default defineComponent({
   },
   methods: {
     update(){
-      this.userStore.updateCharacterVariable(this.id, 'race', this.characterRace);
+      if (this.characterRace)
+        this.userStore.updateCharacterVariable(this.id, 'race', this.characterRace);
     },
     filterFn (val, update) {
       if (val === '') {

@@ -9,8 +9,9 @@ export default defineComponent({
     return {
       userStore: useUserStore(),
       activeCharacter: {},
+      numberOptions: Array.from({ length: 20 }, (_, i) => ({ label: (i + 1).toString(), value: i + 1 })),
 
-      classLevel: 0,
+      classLevel: 1,
       className: '',
       subClassName: '',
 
@@ -27,6 +28,7 @@ export default defineComponent({
       if (this.className !== '' && this.classLevel !== 0)
         this.userStore.updateCharacterVariable(this.id, 'classData', this.classData)
     },
+
     createClass() {
       this.classData.classes = [];
       let classObj = {
@@ -61,6 +63,7 @@ export default defineComponent({
 </script>
 
 <template>
+<!-- TODO: make a much better system for choosing classes -->
   <div class="flex flex-center q-gutter-md content-start items-start">
     <div class="characterClass column self-start">
       <span class="label text-h6">
@@ -78,15 +81,22 @@ export default defineComponent({
       <span class="label text-h6">
         <strong>Character Class Level</strong>
       </span>
-      <q-input
+<!--      <q-input-->
+<!--        standout-->
+<!--        min="1"-->
+<!--        max="20"-->
+<!--        debounce="500"-->
+<!--        v-model="classLevel"-->
+<!--        type="number"-->
+<!--        :rules="[val => val > 0 && val <= 20 || 'Number must be greater than 0, and less than 20']"-->
+<!--        style="width: 300px"/>-->
+      <q-select
         standout
-        min="1"
-        max="20"
-        debounce="500"
         v-model="classLevel"
-        type="number"
-        :rules="[val => val > 0 && val <= 20 || 'Number must be greater than 0, and less than 20']"
-        style="width: 300px"/>
+        :options="numberOptions"
+        emit-value
+        map-options
+      />
     </div>
   </div>
 </template>
