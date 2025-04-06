@@ -131,5 +131,66 @@ const equipment = async () => {
   }
 }
 
+const sources = {
+  phb: {
+    name: 'Players Handbook / Baisc Rules',
+    shortName: 'PHB',
+  },
+  motm: {
+    name: 'Mordenkainen Presents: Monsters of the Multiverse',
+    shortName: 'MOTM',
+  },
+  sotdq: {
+    name: 'Dragonlance: Shadow of the Dragon Queen',
+    shortName: 'SOTDQ',
+  },
+}
+
+const races = [
+  {
+    name: 'Dragonborn',
+    subRaces: 
+    [
+      {
+      type: 'Black',
+      name: 'Black Dragonborn',
+      source: sources.phb,
+      },
+      {
+        type: 'Blue',
+      },
+      {
+        type: 'Brass',
+      },
+      {
+        type: 'Bronze',
+      },
+      {
+        type: 'Copper',
+      },
+      {
+        type: 'Gold',
+      },
+      {
+        type: 'Green',
+      },
+      {
+        type: 'Red',
+      },
+      {
+        type: 'Silver',
+      },
+      {
+        type: 'White',
+      }
+    ],
+    source: sources.phb,
+  },
+  {
+    name: 'Dwarf',
+    source: sources.phb,
+  },
+]
+
 export {proficiencyValues, scoreTypes, resistantTypes, immunityTypes, vulnerabilityTypes, conditions, skills};
 

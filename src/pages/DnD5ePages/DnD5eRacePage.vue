@@ -10,7 +10,7 @@ export default defineComponent({
       userStore: useUserStore(),
       activeCharacter: {},
       characterRace: '',
-      stringOptions: [
+    Ji  stringOptions: [
         'Aarakocra',
         'Dragonborn',
         'Hill Dwarf',

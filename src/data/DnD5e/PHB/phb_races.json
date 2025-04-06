@@ -1,0 +1,36 @@
+[
+    {"version":"0.0.1"}, 
+    {"sourceBookCode":"PHB"},
+    {"sourceBookTitle":"Player's Handbook"},
+    {"content":"Races"},
+    {"db":"0"},
+    {"data":[
+        {"id":0,"race":"Dragonborn","subTypes":[
+            {"id":0,"type":"Black","name":"Black Dragonborn"}
+        ]},
+        {"id":0,"race":"Dwarf","asi":"con+2","size":"Medium","speed":25,"MatureAge":50,"lifespan":350,"matureRate":"same as humans","subTypes":[
+            {"id":0,"type":"Hill","name":"Hill Dwarf","asi":"wis+1"},
+            {"id":0,"type":"Mountain","name":"Mountain Dwarf","asi":"str+2"}
+        ]},
+        {"id":0,"race":"Elf","asi":"dex+2","size":"Medium","speed":30,"subTypes":[
+            {"id":0,"type":"High","name":"High Elf"},
+            {"id":0,"type":"Wood","name":"Wood Elf"},
+            {"id":0,"type":"Dark","name":"Dark Elf(Drow)"}
+        ]},
+        {"id":0,"race":"Halfling","subTypes":[
+            {"id":0,"type":"Lighttfoot","name":"Lightfoot Halfling"},
+            {"id":0,"type":"Stout","name":"Stout Halfling"}
+        ]},
+        {"id":0,"race":"Human","subTypes":[
+            {"id":0,"type":"Human","name":"Human"},
+            {"id":0,"type":"Variant","name":"Human(Variant)"}
+        ]},
+        {"id":0,"race":"Gnome","subTypes":[
+            {"id":0,"type":"Forest","name":"Forest Gnome"},
+            {"id":0,"typr":"Rock","name":"Rock Gnome"}
+        ]},
+        {"id":0,"race":"Half-Elf"},
+        {"id":0,"race":"Half-Orc"},
+        {"id":0,"race":"Tiefling"}
+    ]}
+]

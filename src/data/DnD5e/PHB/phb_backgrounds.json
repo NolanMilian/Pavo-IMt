@@ -1,0 +1,11 @@
+[
+    {"version":"0.0.1"},
+    {"sourceBookCode":"PHB"},
+    {"sourceBookTitle":"Player's Handbook"},
+    {"content":"Backgrounds"},
+    {"db":0},
+    {"data":[
+        {"id":0,"name":"Acolyte","skillProficiencies":"Insight,Religion","languages":"any.2","equipment":"holy symbol,prayer book or prayer wheel,sticks of incense.5,vestments,a set of common clothes,15gp"},
+        {"id":0,"name":"Charlatan","skillProficiencies":"Deception,Slight of Hand","toolProficiencies":"Disguise kit,forgery kit","equipment":["A set of fine c1othes","disguise kit","tools of the con of your choice %(ten stoppered bottles filled ith colored liquid, a set of weighted dice, a deck of arked cards, or a signet ring of an imaginary duke)","belt pouch containing money","15gp"]}
+    ]}
+]
