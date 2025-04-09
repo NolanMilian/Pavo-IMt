@@ -1,6 +1,6 @@
 <script>
 import {defineComponent} from 'vue'
-import AbilityStat from "components/DnD5e/AbilityStat.vue";
+import AbilityStat from "components/DnD5e/AbilityComponents/AbilityStat.vue";
 
 export default defineComponent({
   name: "AbilityStatGroup",

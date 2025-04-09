@@ -1,7 +1,7 @@
 <script>
 import {defineComponent} from 'vue'
 import HealthTrackerDesktop from "components/DnD5e/HealthTrackerDesktop.vue";
-import AbilityStatGroup from "components/DnD5e/AbilityStatGroup.vue";
+import AbilityStatGroup from "components/DnD5e/AbilityComponents/AbilityStatGroup.vue";
 import MovementSpeed from "components/DnD5e/MovementSpeed.vue";
 import ArmorClass from "components/DnD5e/ArmorClass.vue";
 

@@ -38,7 +38,7 @@ export default defineComponent({
       <div v-show="userStore.allCharacters.length > 0" class="row q-gutter-lg container items-center q-mx-auto">
         <div class="topLabel full-width">
           <div class="text-h1 text-bold">
-            My Characters <q-icon class="q-px-xl addCharacterBtn cursor-pointer" name="person_add" @click="this.$router.push({name: 'select-creator'})"><q-tooltip>Add New Character</q-tooltip></q-icon>
+            My Characters <q-btn icon="person_add" rounded size="36px" class="q-px-xl addCharacterBtn cursor-pointer bg-primary text-white" @click="this.$router.push({name: 'select-creator'})"><q-tooltip>Add New Character</q-tooltip></q-btn>
           </div>
         </div>
         <character-selection-item

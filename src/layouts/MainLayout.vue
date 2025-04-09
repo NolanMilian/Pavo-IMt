@@ -140,13 +140,13 @@ const linksList = [
     link: '/characters',
     auth: true,
   },
-  // {
-  //   title: 'Game',
-  //   caption: 'Temp Game Page',
-  //   icon: 'code',
-  //   link: '/game',
-  //   // newTab: false // opens link in a new tap
-  // }
+  {
+    title: 'Equipment',
+    caption: 'D&D 5e Equipment Reference',
+    icon: 'build',
+    link: '/equipment-dnd5e',
+    // newTab: false // opens link in a new tap
+  }
 ]
 
 export default defineComponent({
