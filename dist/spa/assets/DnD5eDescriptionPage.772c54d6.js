@@ -1,0 +1,1 @@
+import{_ as e,J as n,K as o,Y as s}from"./index.58564a6b.js";const t=n({name:"DnD5eDescriptionPage"}),a={class:""};function c(r,i,p,_,d,f){return o(),s("div",a," description ")}var D=e(t,[["render",c]]);export{D as default};

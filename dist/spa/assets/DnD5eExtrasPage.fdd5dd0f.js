@@ -1,0 +1,1 @@
+import{_ as e,J as a,K as s,Y as t}from"./index.58564a6b.js";const n=a({name:"DnD5eExtrasPage"}),o={class:""};function r(c,_,p,d,f,i){return s(),t("div",o," Extras ")}var x=e(n,[["render",r]]);export{x as default};

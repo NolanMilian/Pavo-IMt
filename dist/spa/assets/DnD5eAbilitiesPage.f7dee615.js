@@ -1,0 +1,1 @@
+import{_ as e,J as s,K as t,Y as a}from"./index.58564a6b.js";const n=s({name:"DnD5eAbilitiesPage"}),i={class:""};function o(c,r,_,p,l,d){return t(),a("div",i," abilities ")}var m=e(n,[["render",o]]);export{m as default};

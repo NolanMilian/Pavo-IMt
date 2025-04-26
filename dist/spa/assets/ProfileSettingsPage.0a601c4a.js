@@ -1,0 +1,1 @@
+import{Q as e}from"./QPage.56deb251.js";import{_ as t,J as a,K as o,L as r,M as s,O as n}from"./index.58564a6b.js";import"./render.a7501c6e.js";const i=a({name:"ProfileSettingsPage"});function c(f,p,_,l,m,d){return o(),r(e,null,{default:s(()=>[n(" Profile Settings ")]),_:1})}var x=t(i,[["render",c]]);export{x as default};

@@ -1,0 +1,1 @@
+import{Q as e}from"./QPage.56deb251.js";import{_ as t,J as a,K as o,L as s,M as n,O as r}from"./index.58564a6b.js";import"./render.a7501c6e.js";const c=a({name:"SettingsPage"});function i(p,_,f,m,d,g){return o(),s(e,null,{default:n(()=>[r(" Site Settings ")]),_:1})}var S=t(c,[["render",i]]);export{S as default};
