@@ -51,15 +51,20 @@ export default defineComponent({
 </script>
 
 <template>
-<div class="equipment">
-  <q-btn @click="returnEquipment">click me</q-btn>
-  <div class="cursor-pointer" v-for="data in equipment" :key="data.index">
-    {{data.name}}
-    <div class="" v-for="item in item" :key="item.index" @click="returnEquipmentItem(data.index)">
-      {{ item.cost.unit }}
+<div class="equipment row items-start">
+  <q-btn class="bg-primary text-white q-mr-xl" @click="returnEquipment">click me</q-btn>
+  <div class="q-gutter-md col">
+    <div class="" v-for="data in equipment" :key="data.index">
+      <q-btn class="bg-primary text-white" @click="returnEquipmentItem(data.index)" :label="data.name"></q-btn>
+    </div>
+  </div>
+  <div class="col">
+    <div class="" v-for="object in item" :key="object.index">
+      {{ object }}
     </div>
   </div>
 </div>
+
 </template>
 
 <style scoped>

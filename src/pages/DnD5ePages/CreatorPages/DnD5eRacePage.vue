@@ -9,7 +9,10 @@ export default defineComponent({
     return{
       userStore: useUserStore(),
       activeCharacter: {},
+      races: [],
+      subRaces: [],
       characterRace: '',
+      finalRace: '',
       stringOptions: [
         'Aarakocra',
         'Dragonborn',
@@ -38,8 +41,34 @@ export default defineComponent({
     }
   },
   methods: {
+    async fetchResults(url,requestOptions) {
+      let resultData;
+      await fetch(url, requestOptions)
+        .then( response => response.json() )
+        .then( data => {
+          resultData = data;
+          // console.log('data: ',data);
+        } )
+        .catch( error => console.error('error', error) );
+      return resultData;
+    },
+    returnRaces(){
+      this.fetchResults("https://www.dnd5eapi.co/api/races")
+        .then(data => {this.races = data.results; this.stringOptions = this.races.map(r=>r.name)});
+    },
+    returnRaceSubTypes(index){
+      this.fetchResults(`https://www.dnd5eapi.co/api/races/${index.toLocaleLowerCase()}`)
+        .then(data => {this.subRaces = data.subraces.map(s=>s.name)});
+    },
+    handleBlur(){
+      this.returnRaceSubTypes(this.characterRace)
+      if (this.subRaces.length === 0)
+        this.update();
+    },
     update(){
-      if (this.characterRace)
+      if (this.subRaces.length !== 0)
+        this.userStore.updateCharacterVariable(this.id, 'race', this.finalRace);
+      else
         this.userStore.updateCharacterVariable(this.id, 'race', this.characterRace);
     },
     filterFn (val, update) {
@@ -49,7 +78,6 @@ export default defineComponent({
         })
         return
       }
-
       update(() => {
         const needle = val.toLowerCase()
         this.options = this.stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
@@ -57,21 +85,15 @@ export default defineComponent({
     },
   },
   mounted() {
+    this.returnRaces();
     this.activeCharacter = this.userStore.activeCharacter;
     this.characterRace = this.activeCharacter.race;
-    // console.log('Character ID: ', this.id);
   },
-  computed: {
-
-  },
-  beforeUnmount() {
-
-  }
 })
 </script>
 
 <template>
-  <div class="flex flex-center">
+  <div class="flex flex-center q-gutter-md">
     <div class="characterRace column">
       <span class="label text-h6">
         <strong>Character Race</strong>
@@ -85,6 +107,30 @@ export default defineComponent({
         label="Race"
         :options="options"
         @filter="filterFn"
+        style="width: 250px"
+        behavior="menu"
+        @blur="handleBlur"
+      >
+        <template v-slot:no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              No results
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+    </div>
+    <div v-if="subRaces.length>0" class="characterRace column">
+      <span class="label text-h6">
+        <strong>Character Sub-Race</strong>
+      </span>
+      <q-select
+        filled
+        v-model="finalRace"
+        use-input
+        input-debounce="0"
+        label="Race"
+        :options="subRaces"
         style="width: 250px"
         behavior="menu"
         @blur="update"
