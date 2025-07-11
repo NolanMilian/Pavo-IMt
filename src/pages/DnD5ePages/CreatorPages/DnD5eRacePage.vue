@@ -57,8 +57,11 @@ export default defineComponent({
         .then(data => {this.races = data.results; this.stringOptions = this.races.map(r=>r.name)});
     },
     returnRaceSubTypes(index){
-      this.fetchResults(`https://www.dnd5eapi.co/api/races/${index.toLocaleLowerCase()}`)
-        .then(data => {this.subRaces = data.subraces.map(s=>s.name)});
+      this.fetchResults(`https://www.dnd5eapi.co/api/races/${index.toLowerCase()}/subraces`)
+        .then(data => {
+          //this.subRaces = data.subraces.map(s => s.name)
+          this.subRaces = data.results.map(s => s.name)
+        });
     },
     handleBlur(){
       this.returnRaceSubTypes(this.characterRace)
