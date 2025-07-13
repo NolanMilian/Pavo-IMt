@@ -12,7 +12,7 @@ export default defineComponent({
   },
   mounted() {
     this.userStore.activateCharacter(this.id);
-    console.log('Character ID: ', this.id);
+    // console.log('Character ID: ', this.id);
   }
 })
 </script>

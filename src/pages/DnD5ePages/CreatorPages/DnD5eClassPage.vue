@@ -79,7 +79,6 @@ export default defineComponent({
 </script>
 
 <template>
-<!-- TODO: make a much better system for choosing classes -->
   <div class="flex flex-center q-gutter-md content-start items-start">
     <div class="characterClass column self-start">
       <span class="label text-h6">

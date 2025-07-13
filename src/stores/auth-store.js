@@ -3,8 +3,9 @@ import { auth } from 'boot/firebase'
 import AuthUser from 'src/models/AuthUser'
 import firebase from "firebase";
 
-/*
-  This is in case I want to use https://github.com/prazdevs/pinia-plugin-persistedstate
+/* TODO: change name to useUserStore
+ * This is in case I want to use https://github.com/prazdevs/pinia-plugin-persistedstate 
+ * User Store: Handles user authentication, profile information, site settings, and user-related actions.
 */
 
 export const useAuthStore = defineStore('auth',{
@@ -16,7 +17,6 @@ export const useAuthStore = defineStore('auth',{
     setUser(user) {
       this.authUser = user;
     },
-
 
     async signInWithEmailAndPassword(email, password) {
       try {
