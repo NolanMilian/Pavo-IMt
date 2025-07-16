@@ -35,13 +35,14 @@ export default defineComponent({
 <template>
   <q-page class="flex flex-center">
     <div v-if="authStore.isAuthenticated" class="authenticated">
-      <div v-show="userStore.allCharacters.length > 0" class="row q-gutter-lg container items-center q-mx-auto">
+      <div class="row q-gutter-lg container items-center q-mx-auto">
         <div class="topLabel full-width">
           <div class="text-h1 text-bold">
             My Characters <q-btn icon="person_add" rounded size="36px" class="q-px-xl addCharacterBtn cursor-pointer bg-primary text-white" @click="this.$router.push({name: 'select-creator'})"><q-tooltip>Add New Character</q-tooltip></q-btn>
           </div>
         </div>
         <character-selection-item
+          v-show="userStore.allCharacters.length > 0"
           v-for="data in userStore.allCharacters"
           :key="data.id"
           :character-obj="data"
