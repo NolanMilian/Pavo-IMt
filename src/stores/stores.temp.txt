@@ -1,0 +1,11 @@
+quasar new store <storeName-store>
+User Store: Handles user authentication, profile information, and user-related actions.
+Character Store: Manages the state and actions related to character data, such as creating, updating, and retrieving character information.
+
+Campaign Store: Deals with managing campaigns, including creating, joining, and tracking campaign details.
+
+Encounter Store: Handles the state and actions related to managing and tracking encounters, such as initiative order, hit points, and combat-related mechanics.
+
+Content Store: Manages the source material and content data, including classes, spells, races, and other game-related information.
+
+Notification Store: Handles notifications and alerts for important events or updates within the app, such as new messages, campaign invitations, or character updates.

@@ -11,6 +11,10 @@ export default defineComponent({
       activeCharacter: {},
       numberOptions: Array.from({ length: 20 }, (_, i) => ({ label: (i + 1).toString(), value: i + 1 })),
 
+      classes:[],
+      subClasses: [],
+
+
       classLevel: 1,
       className: '',
       subClassName: '',
@@ -24,9 +28,29 @@ export default defineComponent({
     }
   },
   methods: {
+    async fetchResults(url,requestOptions){
+      let resultData;
+      await fetch(url,requestOptions)
+      .then(response => response.json())
+      .then(data => {resultData = data})
+      .catch(error => console.error('Error in fetch request: ', error)
+    },
+    returnClasses() {
+      this.fetchResults("https://www.dnd5eapi.co/api/classes")
+      .then(data => {this.classes = data.results.map(c => c.name)})
+    },
+    returnSubClasses(index) {
+      this.fetchResults(`https://www.dnd5eapi.co/api/classes${index.toLowerCase()}/subclasses`)
+      .then(data => {this.subClasses = data.results.map(s => s.name)})
+    },
+    handleBlur() {
+      this.returnSubClasses(this.className)
+      if (this.subClasses === 0)
+        this.update();
+    },  
     update(){
-      if (this.className !== '' && this.classLevel !== 0)
-        this.userStore.updateCharacterVariable(this.id, 'classData', this.classData)
+      this.createClass();
+      this.userStore.updateCharacterVariable(this.id, 'classData', this.classData);
     },
 
     createClass() {
@@ -44,16 +68,8 @@ export default defineComponent({
     },
 
   },
-  updated() {
-
-
-  },
-
-  beforeUnmount() {
-    this.createClass();
-
-  },
   mounted() {
+    this.returnClasses();
     // this.userStore.activateCharacter(this.id);
     this.activeCharacter = this.userStore.activeCharacter;
     this.classData = this.activeCharacter.classData;
@@ -63,33 +79,40 @@ export default defineComponent({
 </script>
 
 <template>
-<!-- TODO: make a much better system for choosing classes -->
   <div class="flex flex-center q-gutter-md content-start items-start">
     <div class="characterClass column self-start">
       <span class="label text-h6">
         <strong>Character Class</strong>
       </span>
-      <q-input standout debounce="500" v-model="className" style="width: 300px"/>
+      <q-select 
+      standout
+      v-model="className" 
+      style="width: 250px"
+      label="Class"
+      :options="classes"
+      behavior="menu"
+      @blur="handleBlur"
+      />
     </div>
-    <div class="characterSubClass column self-start">
+    <div 
+    class="characterSubClass column self-start">
       <span class="label text-h6">
         <strong>Character Subclass</strong>
       </span>
-      <q-input standout debounce="500" v-model="subClassName" style="width: 300px"/>
+      <q-input 
+      standout 
+      v-model="subClassName" 
+      style="width: 250px"
+      label="subclass"
+      :options="subClasses"
+      behavior="menu"
+      @blur="update"
+      />
     </div>
     <div class="characterClassLevel column self-start">
       <span class="label text-h6">
         <strong>Character Class Level</strong>
       </span>
-<!--      <q-input-->
-<!--        standout-->
-<!--        min="1"-->
-<!--        max="20"-->
-<!--        debounce="500"-->
-<!--        v-model="classLevel"-->
-<!--        type="number"-->
-<!--        :rules="[val => val > 0 && val <= 20 || 'Number must be greater than 0, and less than 20']"-->
-<!--        style="width: 300px"/>-->
       <q-select
         standout
         v-model="classLevel"
