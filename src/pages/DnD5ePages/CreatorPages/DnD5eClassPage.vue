@@ -33,7 +33,7 @@ export default defineComponent({
       await fetch(url,requestOptions)
       .then(response => response.json())
       .then(data => {resultData = data})
-      .catch(error => console.error('Error in fetch request: ', error)
+      .catch(error => console.error('Error in fetch request: ', error))
     },
     returnClasses() {
       this.fetchResults("https://www.dnd5eapi.co/api/classes")
@@ -47,7 +47,7 @@ export default defineComponent({
       this.returnSubClasses(this.className)
       if (this.subClasses === 0)
         this.update();
-    },  
+    },
     update(){
       this.createClass();
       this.userStore.updateCharacterVariable(this.id, 'classData', this.classData);
@@ -84,9 +84,9 @@ export default defineComponent({
       <span class="label text-h6">
         <strong>Character Class</strong>
       </span>
-      <q-select 
+      <q-select
       standout
-      v-model="className" 
+      v-model="className"
       style="width: 250px"
       label="Class"
       :options="classes"
@@ -94,14 +94,14 @@ export default defineComponent({
       @blur="handleBlur"
       />
     </div>
-    <div 
+    <div
     class="characterSubClass column self-start">
       <span class="label text-h6">
         <strong>Character Subclass</strong>
       </span>
-      <q-input 
-      standout 
-      v-model="subClassName" 
+      <q-input
+      standout
+      v-model="subClassName"
       style="width: 250px"
       label="subclass"
       :options="subClasses"

@@ -48,9 +48,8 @@
             </div>
           </q-menu>
           <q-tooltip>Profile</q-tooltip>
-          <img :src="authUser.photoURL">  <!-- @click="" redirect to profile page -->
+          <img :src="authUser.photoURL">
         </q-avatar>
-
 
         <q-avatar v-else class="cursor-pointer q-mr-lg">
           <q-tooltip>Login</q-tooltip>
@@ -135,10 +134,9 @@ const linksList = [
     caption: 'My Characters',
     icon: 'groups',
     link: '/characters',
-    auth: true,
   },
   {
-    title: 'Equipment',
+    title: 'Equipment Reference',
     caption: 'D&D 5e Equipment Reference',
     icon: 'build',
     link: '/equipment-dnd5e',

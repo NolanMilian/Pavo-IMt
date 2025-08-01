@@ -53,7 +53,7 @@ export default defineComponent({
     newTab: {
       type: Boolean,
       default: false
-    }
-  }
+    },
+  },
 })
 </script>
