@@ -9,9 +9,9 @@ export default defineComponent({
     return {
       userStore: useUserStore(),
       activeCharacter: {},
-      numberOptions: Array.from({ length: 20 }, (_, i) => ({ label: (i + 1).toString(), value: i + 1 })),
+      numberOptions: Array.from({length: 20}, (_, i) => ({label: (i + 1).toString(), value: i + 1})),
 
-      classes:[],
+      classes: [],
       subClasses: [],
 
 
@@ -28,27 +28,36 @@ export default defineComponent({
     }
   },
   methods: {
-    async fetchResults(url,requestOptions){
+    async fetchResults(url, requestOptions) {
       let resultData;
-      await fetch(url,requestOptions)
-      .then(response => response.json())
-      .then(data => {resultData = data})
-      .catch(error => console.error('Error in fetch request: ', error))
+      await fetch(url, requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          resultData = data;
+        })
+        .catch(error => console.error('Error in fetch request: ', error))
+      return resultData;
     },
     returnClasses() {
       this.fetchResults("https://www.dnd5eapi.co/api/classes")
-      .then(data => {this.classes = data.results.map(c => c.name)})
+        .then(data => {
+          console.log('data: ', data)
+          this.classes = data.results.map(c => c.name);
+          console.log('classes: ', this.classes)
+        })
     },
     returnSubClasses(index) {
-      this.fetchResults(`https://www.dnd5eapi.co/api/classes${index.toLowerCase()}/subclasses`)
-      .then(data => {this.subClasses = data.results.map(s => s.name)})
+      this.fetchResults(`https://www.dnd5eapi.co/api/classes/${index.toLowerCase()}/subclasses`)
+        .then(data => {
+          this.subClasses = data.results.map(s => s.name)
+        })
     },
     handleBlur() {
       this.returnSubClasses(this.className)
       if (this.subClasses === 0)
         this.update();
     },
-    update(){
+    update() {
       this.createClass();
       this.userStore.updateCharacterVariable(this.id, 'classData', this.classData);
     },
@@ -70,10 +79,8 @@ export default defineComponent({
   },
   mounted() {
     this.returnClasses();
-    // this.userStore.activateCharacter(this.id);
     this.activeCharacter = this.userStore.activeCharacter;
     this.classData = this.activeCharacter.classData;
-    // console.log('Character ID: ', this.id);
   }
 })
 </script>
@@ -85,28 +92,28 @@ export default defineComponent({
         <strong>Character Class</strong>
       </span>
       <q-select
-      standout
-      v-model="className"
-      style="width: 250px"
-      label="Class"
-      :options="classes"
-      behavior="menu"
-      @blur="handleBlur"
+        v-model="className"
+        :options="classes"
+        behavior="menu"
+        label="Class"
+        standout
+        style="width: 250px"
+        @blur="handleBlur"
       />
     </div>
     <div
-    class="characterSubClass column self-start">
+      class="characterSubClass column self-start">
       <span class="label text-h6">
         <strong>Character Subclass</strong>
       </span>
-      <q-input
-      standout
-      v-model="subClassName"
-      style="width: 250px"
-      label="subclass"
-      :options="subClasses"
-      behavior="menu"
-      @blur="update"
+      <q-select
+        v-model="subClassName"
+        :options="subClasses"
+        behavior="menu"
+        label="subclass"
+        standout
+        style="width: 250px"
+        @blur="update"
       />
     </div>
     <div class="characterClassLevel column self-start">
@@ -114,11 +121,11 @@ export default defineComponent({
         <strong>Character Class Level</strong>
       </span>
       <q-select
-        standout
         v-model="classLevel"
         :options="numberOptions"
         emit-value
         map-options
+        standout
       />
     </div>
   </div>

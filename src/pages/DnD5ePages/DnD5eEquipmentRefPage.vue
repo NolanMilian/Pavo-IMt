@@ -8,15 +8,9 @@ export default defineComponent({
       method: "GET",
       redirect: "follow"
     };
-    const settings = {
-      "url": "https://www.dnd5eapi.co/api/equipment",
-      "method": "GET",
-      "timeout": 0,
-    };
     // let equipment;
     return{
       requestOptions,
-      settings,
       responseData: {},
       equipment: [],
       item: {},
@@ -36,11 +30,11 @@ export default defineComponent({
     },
     returnEquipment(){
       this.fetchResults("https://www.dnd5eapi.co/api/equipment")
-        .then(data => {this.equipment = data.results; console.log('Equipment: ',this.equipment)});
+        .then(data => {this.equipment = data.results});
     },
     returnEquipmentItem(index){
       this.fetchResults(`https://www.dnd5eapi.co/api/equipment/${index}`)
-        .then(data => {this.item = data; console.log('Equipment Item: ',this.item)});
+        .then(data => {this.item = data});
     }
   },
   mounted() {

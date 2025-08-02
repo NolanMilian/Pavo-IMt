@@ -135,13 +135,19 @@ const linksList = [
     icon: 'groups',
     link: '/characters',
   },
+  // {
+  //   title: 'Equipment Reference',
+  //   caption: 'D&D 5e Equipment Reference',
+  //   icon: 'build',
+  //   link: '/equipment-dnd5e',
+  //   // newTab: false // opens link in a new tap
+  // },
   {
-    title: 'Equipment Reference',
-    caption: 'D&D 5e Equipment Reference',
-    icon: 'build',
-    link: '/equipment-dnd5e',
-    // newTab: false // opens link in a new tap
-  }
+    title: 'Spell Reference',
+    caption: 'D&D 5e Spell Reference',
+    icon: 'auto_fix_normal',
+    link: '/spells-dnd5e',
+  },
 ]
 
 export default defineComponent({

@@ -24,6 +24,7 @@ const routes = [
       { name: 'site-settings', path: 'settings', component: () => import('pages/SettingsPage.vue') },
       { name: 'profile-settings', path: 'profile', component: () => import('pages/ProfileSettingsPage.vue') },
       { name: 'equipment-dnd5e', path: 'equipment-dnd5e', component: () => import('pages/DnD5ePages/DnD5eEquipmentRefPage.vue') },
+      { name: 'spells-dnd5e', path: 'spells-dnd5e', component: () => import('pages/DnD5ePages/DnD5eSpellsRefPage.vue') },
     ]
   },
 
