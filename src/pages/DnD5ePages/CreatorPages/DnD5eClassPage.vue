@@ -41,9 +41,9 @@ export default defineComponent({
     returnClasses() {
       this.fetchResults("https://www.dnd5eapi.co/api/classes")
         .then(data => {
-          console.log('data: ', data)
+          // console.log('data: ', data)
           this.classes = data.results.map(c => c.name);
-          console.log('classes: ', this.classes)
+          // console.log('classes: ', this.classes)
         })
     },
     returnSubClasses(index) {

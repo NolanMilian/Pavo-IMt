@@ -20,7 +20,7 @@ export default function Character(id, data) {
 
     // Ability Scores
     abilityScores: data.abilityScores ?? {
-      baseAbilityScores: { str: 12, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
+      baseAbilityScores: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 },
       abilityScoreRacialBonuses: { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 },
       abilityScoreImprovements: { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 },
       abilityScoreMiscBonuses: { str: 0, dex: 0, con: 0, int: 0, wis: 0, cha: 0 },
@@ -58,12 +58,12 @@ export default function Character(id, data) {
     },
     level: data.level ?? '',
     classData: data.classData ?? {
-      classLevelString: '',
+      classLevelString: 'Level',
       classString: '',
       classes: [
         {
           className: '',
-          classLevel: 1,
+          classLevel: 0,
         },
       ],
     },
