@@ -10,6 +10,13 @@ export default defineComponent({
       userStore: useUserStore(),
     }
   },
+  methods: {
+    selectCharacter() {
+      if (this.userStore.activeCharacter.uid !== this.id)
+        this.userStore.activateCharacter(this.id)
+      this.$router.push({name: 'character', params: {id: this.id}})
+    },
+  },
   mounted() {
     this.userStore.activateCharacter(this.id);
     // console.log('Character ID: ', this.id);
@@ -32,10 +39,10 @@ export default defineComponent({
           <q-route-tab exact name="dnd5e-race" :to="{ name: 'dnd5e-race', params: { id: id } }" label="Race" />
           <q-route-tab exact name="dnd5e-class" :to="{ name: 'dnd5e-class', params: { id: id } }" label="Class" />
           <q-route-tab exact name="dnd5e-abilities" :to="{ name: 'dnd5e-abilities', params: { id: id } }" label="Abilities" />
-          <q-route-tab exact name="dnd5e-description" :to="{ name: 'dnd5e-description', params: { id: id } }" label="Description" />
-          <q-route-tab exact name="dnd5e-equipment" :to="{ name: 'dnd5e-equipment', params: { id: id } }" label="Equipment" />
-          <q-route-tab exact name="dnd5e-extras" :to="{ name: 'dnd5e-extras', params: { id: id } }" label="Extras" />
-          <q-btn disable dense square class="no-wrap gameBtn q-ml-lg bg-primary"> <q-tooltip>Game Page</q-tooltip> Game Page</q-btn>
+<!--          <q-route-tab exact name="dnd5e-description" :to="{ name: 'dnd5e-description', params: { id: id } }" label="Description" />-->
+<!--          <q-route-tab exact name="dnd5e-equipment" :to="{ name: 'dnd5e-equipment', params: { id: id } }" label="Equipment" />-->
+<!--          <q-route-tab exact name="dnd5e-extras" :to="{ name: 'dnd5e-extras', params: { id: id } }" label="Extras" />-->
+          <q-btn dense square class="no-wrap gameBtn q-ml-lg bg-primary" @click="selectCharacter"> <q-tooltip>Game Page</q-tooltip> Game Page</q-btn>
         </q-tabs>
 
       </div>

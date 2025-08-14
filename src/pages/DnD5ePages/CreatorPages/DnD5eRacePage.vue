@@ -93,7 +93,8 @@ export default defineComponent({
   mounted() {
     this.returnRaces();
     this.activeCharacter = this.userStore.activeCharacter;
-    this.characterRace = this.activeCharacter.race;
+    if (this.activeCharacter.race)
+      this.characterRace = this.activeCharacter.race;
   },
 })
 </script>

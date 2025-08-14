@@ -9,26 +9,68 @@ export default defineComponent({
     return {
       userStore: useUserStore(),
       activeCharacter: {},
-      strBase: null,
-      strTotal: null,
-      dexBase: null,
-      dexTotal: null,
-      conBase: null,
-      conTotal: null,
-      intBase: null,
-      intTotal: null,
-      wisBase: null,
-      wisTotal: null,
-      chaBase: null,
-      chaTotal: null,
-      // abilities: {
-      //   str: {
-      //     baseValue: 0,
-      //   },
-      //   dex: {
-      //     baseValue: 0,
-      //   },
-      // },
+      strBase: 0,
+      strTotal: 0,
+      dexBase: 0,
+      dexTotal: 0,
+      conBase: 0,
+      conTotal: 0,
+      intBase: 0,
+      intTotal: 0,
+      wisBase: 0,
+      wisTotal: 0,
+      chaBase: 0,
+      chaTotal: 0,
+      rollGroups: [
+        {
+          one: {roll: null, assignedAbility: '--'},
+          two: {roll: null, assignedAbility: '--'},
+          three: {roll: null, assignedAbility: '--'},
+          four: {roll: null, assignedAbility: '--'},
+          five: {roll: null, assignedAbility: '--'},
+          six: {roll: null, assignedAbility: '--'},
+          abilityCategories:[
+            'STR',
+            'DEX',
+            'CON',
+            'INT',
+            'WIS',
+            'CHA'
+          ],
+        }
+      ],
+      rollNumber1: null,
+      rollNumber2: null,
+      rollNumber3: null,
+      rollNumber4: null,
+      rollNumber5: null,
+      rollNumber6: null,
+      abilityCategories: [
+        'STR',
+        'DEX',
+        'CON',
+        'INT',
+        'WIS',
+        'CHA'
+      ],
+      abilities: {
+        baseScores: {
+          str: 0,
+          dex: 0,
+          con: 0,
+          int: 0,
+          wis: 0,
+          cha: 0
+        },
+        totalScores: {
+          str: 0,
+          dex: 0,
+          con: 0,
+          int: 0,
+          wis: 0,
+          cha: 0
+        }
+      },
     }
   },
   methods: {
@@ -46,12 +88,52 @@ export default defineComponent({
 
       // Sum the highest 3 rolls
       return rolls[1] + rolls[2] + rolls[3];
+    },
+    update() {
+      this.userStore.updateCharacterVariable(this.id, 'abilities', this.abilities);
+    },
+    // setScores() {
+    //   this.strTotal = this.strBase??3;
+    //   this.dexTotal = this.dexBase??3;
+    //   this.conTotal = this.conBase??3;
+    //   this.intTotal = this.intBase??3;
+    //   this.wisTotal = this.wisBase??3;
+    //   this.chaTotal = this.chaBase??3;
+    //   this.abilities.baseScores = {str:this.strBase??3,dex:this.dexBase??3,con:this.conBase??3,int:this.intBase??3,wis:this.wisBase??3,cha:this.chaBase??3};
+    //   this.abilities.totalScores = {str:this.strTotal,dex:this.dexTotal,con:this.conTotal,int:this.intTotal,wis:this.wisTotal,cha:this.chaTotal};
+    // },
+    // saveHandler(){
+    //   this.setScores();
+    //   this.update();
+    // }
+    setScores() {
+      this.strTotal = this.strBase;
+      this.dexTotal = this.dexBase;
+      this.conTotal = this.conBase;
+      this.intTotal = this.intBase;
+      this.wisTotal = this.wisBase;
+      this.chaTotal = this.chaBase;
+      // this.abilities.baseScores = {str: this.strBase || 3, dex: this.dexBase || 3, con: this.conBase || 3, int: this.intBase || 3, wis: this.wisBase || 3, cha: this.chaBase || 3};
+      // this.abilities.totalScores = {str: this.strTotal, dex: this.dexTotal, con: this.conTotal, int: this.intTotal, wis: this.wisTotal, cha: this.chaTotal};
+
+      Object.assign(this.abilities.baseScores, {str: this.strBase||3, dex: this.dexBase||3, con: this.conBase||3, int: this.intBase||3, wis: this.wisBase||3, cha: this.chaBase||3})
+      Object.assign(this.abilities.totalScores, {str: this.strTotal, dex: this.dexTotal, con: this.conTotal, int: this.intTotal, wis: this.wisTotal, cha: this.chaTotal})
+
+
+      },
+    saveHandler() {
+      this.setScores();
+      this.update();
     }
+
+
   },
+
   mounted() {
-    // this.returnRaces();
     this.activeCharacter = this.userStore.activeCharacter;
-    this.abilities = this.activeCharacter.abilities;
+    console.log(this.activeCharacter)
+    if (this.activeCharacter.abilities)
+      this.abilities = this.activeCharacter.abilities;
   },
 })
 </script>
@@ -66,12 +148,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="strBase"
+            v-model="abilities.baseScores.str"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total: {{ strTotal ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total: {{ abilities.totalScores.str?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Dexterity</div>
@@ -79,12 +161,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="dexBase"
+            v-model="abilities.baseScores.dex"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ conTotal ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.con ?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Constitution</div>
@@ -92,12 +174,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="conBase"
+            v-model="abilities.baseScores.con"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ conTotal ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.con ?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Intelligence</div>
@@ -105,12 +187,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="intBase"
+            v-model="abilities.baseScores.int"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ intTotal ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.int ?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Wisdom</div>
@@ -118,12 +200,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="wisBase"
+            v-model="abilities.baseScores.wis"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ wisTotal ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.wis ?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Charisma</div>
@@ -131,14 +213,22 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="chaBase"
+            v-model="abilities.baseScores.cha"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ chaTotal ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.cha ?? '--' }}</div>
         </div>
       </div>
+<!--      <div class="row q-gutter-md">-->
+<!--        <div class="col" v-for="roll in rollGroups" :key="roll">-->
+<!--          <div class="rollNumber">{{ roll.one.roll ?? '&#45;&#45;' }}</div>-->
+<!--          <div class="rollAssign"><q-select v-model="roll.one.assignedAbility" /></div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+      <q-btn class="bg-primary text-white" label="Save Scores" @click="saveHandler"></q-btn>
     </div>
   </div>
 </template>
@@ -153,6 +243,10 @@ export default defineComponent({
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
+}
+.rollNumber {
+  font-size: 25px;
+  font-weight: bold;
 }
 
 </style>
