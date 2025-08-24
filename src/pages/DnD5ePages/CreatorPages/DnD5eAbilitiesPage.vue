@@ -8,7 +8,10 @@ export default defineComponent({
   data() {
     return {
       userStore: useUserStore(),
-      activeCharacter: {},
+      activeCharacter: this?.activeCharacter?.abilityScores ?? {
+        abilityScoresTotal: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }
+      },
+      saveIcon: false,
       strBase: 0,
       strTotal: 0,
       dexBase: 0,
@@ -53,8 +56,8 @@ export default defineComponent({
         'WIS',
         'CHA'
       ],
-      abilities: {
-        baseScores: {
+      abilityScores: {
+        baseAbilityScores: {
           str: 0,
           dex: 0,
           con: 0,
@@ -90,7 +93,7 @@ export default defineComponent({
       return rolls[1] + rolls[2] + rolls[3];
     },
     update() {
-      this.userStore.updateCharacterVariable(this.id, 'abilities', this.abilities);
+      this.userStore.updateCharacterVariable(this.id, 'abilityScores', this.abilityScores);
     },
     // setScores() {
     //   this.strTotal = this.strBase??3;
@@ -116,8 +119,9 @@ export default defineComponent({
       // this.abilities.baseScores = {str: this.strBase || 3, dex: this.dexBase || 3, con: this.conBase || 3, int: this.intBase || 3, wis: this.wisBase || 3, cha: this.chaBase || 3};
       // this.abilities.totalScores = {str: this.strTotal, dex: this.dexTotal, con: this.conTotal, int: this.intTotal, wis: this.wisTotal, cha: this.chaTotal};
 
-      Object.assign(this.abilities.baseScores, {str: this.strBase||3, dex: this.dexBase||3, con: this.conBase||3, int: this.intBase||3, wis: this.wisBase||3, cha: this.chaBase||3})
-      Object.assign(this.abilities.totalScores, {str: this.strTotal, dex: this.dexTotal, con: this.conTotal, int: this.intTotal, wis: this.wisTotal, cha: this.chaTotal})
+      Object.assign(this.abilityScores.baseAbilityScores, {str: this.abilityScores.baseAbilityScores.str, dex: this.abilityScores.baseAbilityScores.dex, con: this.abilityScores.baseAbilityScores.con, int: this.abilityScores.baseAbilityScores.int, wis: this.abilityScores.baseAbilityScores.wis, cha: this.abilityScores.baseAbilityScores.cha})
+      Object.assign(this.abilityScores.baseAbilityScores, {str: this.abilityScores.baseAbilityScores.str, dex: this.abilityScores.baseAbilityScores.dex, con: this.abilityScores.baseAbilityScores.con, int: this.abilityScores.baseAbilityScores.int, wis: this.abilityScores.baseAbilityScores.wis, cha: this.abilityScores.baseAbilityScores.cha})
+      // Object.assign(this.abilityScores.totalScores, {str: this.strTotal, dex: this.dexTotal, con: this.conTotal, int: this.intTotal, wis: this.wisTotal, cha: this.chaTotal})
 
 
       },
@@ -129,11 +133,12 @@ export default defineComponent({
 
   },
 
-  mounted() {
-    this.activeCharacter = this.userStore.activeCharacter;
-    console.log(this.activeCharacter)
-    if (this.activeCharacter.abilities)
-      this.abilities = this.activeCharacter.abilities;
+  async mounted() {
+    this.activeCharacter = await this.userStore.activeCharacter;
+    // console.log('active character',this.activeCharacter)
+    if (this.activeCharacter.abilityScores) {
+      this.abilityScores = this.activeCharacter.abilityScores
+    }
   },
 })
 </script>
@@ -148,12 +153,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="abilities.baseScores.str"
+            v-model="abilityScores.baseAbilityScores.str"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total: {{ abilities.totalScores.str?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total: {{ activeCharacter.abilityScoresTotal.str?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Dexterity</div>
@@ -161,12 +166,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="abilities.baseScores.dex"
+            v-model="abilityScores.baseAbilityScores.dex"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.con ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ activeCharacter.abilityScoresTotal.dex ?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Constitution</div>
@@ -174,12 +179,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="abilities.baseScores.con"
+            v-model="abilityScores.baseAbilityScores.con"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.con ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ activeCharacter.abilityScoresTotal.con ?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Intelligence</div>
@@ -187,12 +192,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="abilities.baseScores.int"
+            v-model="abilityScores.baseAbilityScores.int"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.int ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ activeCharacter.abilityScoresTotal.int ?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Wisdom</div>
@@ -200,12 +205,12 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="abilities.baseScores.wis"
+            v-model="abilityScores.baseAbilityScores.wis"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.wis ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ activeCharacter.abilityScoresTotal.wis ?? '--' }}</div>
         </div>
         <div class="col">
           <div class="scoreLabel text-uppercase text-bold">Charisma</div>
@@ -213,14 +218,15 @@ export default defineComponent({
             class=""
             outlined
             dense
-            v-model="abilities.baseScores.cha"
+            v-model="abilityScores.baseAbilityScores.cha"
             max="18"
             min="3"
             style="width: 100px"
           />
-          <div class="total text-uppercase text-bold text-center text-h6">Total{{ abilities.totalScores.cha ?? '--' }}</div>
+          <div class="total text-uppercase text-bold text-center text-h6">Total{{ activeCharacter.abilityScoresTotal.cha ?? '--' }}</div>
         </div>
       </div>
+<!--      TODO: put in rng for stat selection-->
 <!--      <div class="row q-gutter-md">-->
 <!--        <div class="col" v-for="roll in rollGroups" :key="roll">-->
 <!--          <div class="rollNumber">{{ roll.one.roll ?? '&#45;&#45;' }}</div>-->
@@ -228,7 +234,7 @@ export default defineComponent({
 <!--        </div>-->
 <!--      </div>-->
 
-      <q-btn class="bg-primary text-white" label="Save Scores" @click="saveHandler"></q-btn>
+      <q-btn class="bg-primary text-white" label="Save Scores" @click="saveHandler"><q-icon v-if="saveIcon" class="q-pl-md" name="save" size="24px"/></q-btn>
     </div>
   </div>
 </template>

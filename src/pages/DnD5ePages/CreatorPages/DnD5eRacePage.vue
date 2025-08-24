@@ -38,6 +38,7 @@ export default defineComponent({
         'Variant Aasimar',
       ],
       options: this.stringOptions,
+      saveIcon: false,
     }
   },
   methods: {
@@ -68,14 +69,20 @@ export default defineComponent({
     },
     handleBlur() {
       this.returnRaceSubTypes(this.characterRace)
-      if (this.subRaces.length === 0)
+      console.log(this.subRaces)
+      if (this.subRaces.length < 1)
         this.update();
+    },
+    saveHandler(){
+      this.saveIcon = true;
+      setTimeout(() => {this.saveIcon = false},500);
     },
     update() {
       if (this.subRaces.length !== 0)
         this.userStore.updateCharacterVariable(this.id, 'race', this.finalRace);
       else
         this.userStore.updateCharacterVariable(this.id, 'race', this.characterRace);
+      this.saveHandler();
     },
     filterFn(val, update) {
       if (val === '') {
@@ -102,54 +109,56 @@ export default defineComponent({
 <template>
   <div class="flex flex-center q-gutter-md">
     <div class="characterRace column">
-      <span class="label text-h6">
+        <span class="label text-h6">
         <strong>Character Race</strong>
       </span>
-      <!--      <q-input standout debounce="500" v-model="characterRace" @blur="update" style="width: 300px"/>-->
-      <q-select
-        v-model="characterRace"
-        :options="options"
-        behavior="menu"
-        filled
-        input-debounce="0"
-        label="Race"
-        style="width: 250px"
-        use-input
-        @blur="handleBlur"
-        @filter="filterFn"
-      >
-        <template v-slot:no-option>
-          <q-item>
-            <q-item-section class="text-grey">
-              No results
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
-    </div>
-    <div v-if="subRaces.length>0" class="characterRace column">
+      <div class="row">
+        <q-select
+          v-model="characterRace"
+          :options="options"
+          behavior="menu"
+          filled
+          input-debounce="0"
+          label="Race"
+          style="width: 250px"
+          use-input
+          @blur="handleBlur"
+          @filter="filterFn"
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
+      <div v-if="subRaces.length>0" class="characterRace column">
       <span class="label text-h6">
         <strong>Character Sub-Race</strong>
       </span>
-      <q-select
-        v-model="finalRace"
-        :options="subRaces"
-        behavior="menu"
-        filled
-        input-debounce="0"
-        label="Race"
-        style="width: 250px"
-        use-input
-        @blur="update"
-      >
-        <template v-slot:no-option>
-          <q-item>
-            <q-item-section class="text-grey">
-              No results
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
+        <q-select
+          v-model="finalRace"
+          :options="subRaces"
+          behavior="menu"
+          filled
+          input-debounce="0"
+          label="Race"
+          style="width: 250px"
+          use-input
+          @blur="update"
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
+      <q-icon v-if="saveIcon" class="q-pt-md" name="save" size="24px"/>
     </div>
   </div>
 </template>

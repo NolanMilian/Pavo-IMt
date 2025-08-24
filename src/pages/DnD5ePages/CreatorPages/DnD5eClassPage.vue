@@ -9,20 +9,24 @@ export default defineComponent({
     return {
       userStore: useUserStore(),
       activeCharacter: {},
+      saveIcon: false,
       numberOptions: Array.from({length: 20}, (_, i) => ({label: (i + 1).toString(), value: i + 1})),
 
       classes: [],
       subClasses: [],
 
 
-      classLevel: 1,
+      classLevel: '--',
       className: '',
       subClassName: '',
 
       classData: {
+        classLevel: 0,
+        className: '',
+        subClassName: '',
         classLevelString: '',
         classString: '',
-        TotalLevel: 1,
+        totalLevel: 0,
       },
 
     }
@@ -54,26 +58,33 @@ export default defineComponent({
     },
     handleBlur() {
       this.returnSubClasses(this.className)
-      if (this.subClasses === 0)
-        this.update();
     },
-    update() {
-      this.createClass();
+    saveHandler(){
+      this.saveIcon = true;
+      setTimeout(() => {this.saveIcon = false},500);
+    },
+    updateClasses() {
+      // this.createClass();
       this.userStore.updateCharacterVariable(this.id, 'classData', this.classData);
+      this.saveHandler();
     },
 
     createClass() {
-      this.classData.classes = [];
-      let classObj = {
-        classLevel: this.classLevel,
-        className: this.className,
-        subClassName: this.subClassName,
-      }
-      this.classData.classLevelString = `${this.className} ${this.classLevel}`;
+      // this.classData.classes = [];
+      // let classObj = {
+      //   classLevel: this.classLevel.value,
+      //   className: this.className,
+      //   subClassName: this.subClassName,
+      // }
+      // console.log('classObj', classObj)
+      this.classData.classLevel = this.classLevel.value;
+      this.classData.className = this.className;
+      this.classData.subClassName = this.subClassName;
+      this.classData.totalLevel = this.classLevel.value;
+      this.classData.classLevelString = `${this.className} ${this.classLevel.value}`;
       this.classData.classString = `${this.className}/${this.subClassName}`;
-      this.classData.totalLevel = this.classLevel
-      this.classData.classes.push(classObj);
-      this.update()
+      // this.classData.classes.push(classObj);
+      this.updateClasses()
     },
 
   },
@@ -81,6 +92,12 @@ export default defineComponent({
     this.returnClasses();
     this.activeCharacter = this.userStore.activeCharacter;
     this.classData = this.activeCharacter.classData;
+    if (this.classData) {
+      this.className = this.classData.className;
+      this.subClassName = this.classData.subClassName;
+      this.classLevel = this.classData.classLevel;
+    }
+
   }
 })
 </script>
@@ -113,7 +130,6 @@ export default defineComponent({
         label="subclass"
         standout
         style="width: 250px"
-        @blur="update"
       />
     </div>
     <div class="characterClassLevel column self-start">
@@ -123,10 +139,11 @@ export default defineComponent({
       <q-select
         v-model="classLevel"
         :options="numberOptions"
-        emit-value
         map-options
         standout
+        @blur="createClass"
       />
+      <q-icon v-if="saveIcon" class="q-pt-md" name="save" size="24px"/>
     </div>
   </div>
 </template>

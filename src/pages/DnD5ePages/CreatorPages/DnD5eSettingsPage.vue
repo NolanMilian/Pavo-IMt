@@ -10,23 +10,21 @@ export default defineComponent({
       userStore: useUserStore(),
       activeCharacter: {},
       characterName: '',
+      saveIcon: false,
 
     }
   },
   methods: {
     update(){
       if (this.characterName)
-        this.userStore.updateCharacterVariable(this.id, 'name', this.characterName)
-    }
+        this.userStore.updateCharacterVariable(this.id, 'name', this.characterName);
+      this.saveHandler();
 
-  },
-  updated() {
-
-
-  },
-
-  beforeUnmount() {
-
+    },
+    saveHandler(){
+      this.saveIcon = true;
+      setTimeout(() => {this.saveIcon = false},500);
+    },
   },
   mounted() {
     // this.userStore.activateCharacter(this.id);
@@ -43,7 +41,8 @@ export default defineComponent({
       <span class="label text-h6">
         <strong>Character Name</strong>
       </span>
-      <q-input standout debounce="500" v-model="characterName" @blur="update" style="width: 300px"/>
+        <q-input standout debounce="500" v-model="characterName" @blur="update" style="width: 300px"/>
+        <q-icon v-if="saveIcon" class="q-pt-md" name="save" size="24px"/>
     </div>
   </div>
 </template>

@@ -5,12 +5,13 @@ import DisplayBox from "components/DnD5e/BaseComponents/DisplayBox.vue";
 export default defineComponent({
   name: "AbilityStat",
   components: {DisplayBox},
-  props: ['statObj'],
+  // props: ['statObj', 'label', 'score', 'reverseScores'],
+  props: {label: {type: String}, score:{type: Number}, reverseScores:{type: Boolean, default: false}},
   data() {
     return {
-      label: 'constitution',
-      score: 20,
-      reverseScores: false
+      // label: 'constitution',
+      // score: 20,
+      // reverseScores: false
     }
   },
   computed: {
@@ -34,8 +35,8 @@ export default defineComponent({
   >
     <div class="statBlock">
       <div class="label">{{ label }}</div>
-      <div class="middleScore">{{ reverseScores ? score : modifier }}</div>
-      <div class="bottomScore">{{ reverseScores ? modifier : score }}</div>
+      <div class="middleScore">{{ reverseScores ? modifier : score }}</div>
+      <div class="bottomScore">{{ reverseScores ? score : modifier }}</div>
     </div>
   </display-box>
 </template>
