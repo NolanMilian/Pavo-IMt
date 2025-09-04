@@ -10,6 +10,7 @@ import SensesDisplay from "components/DnD5e/SensesDisplay.vue";
 
 export default defineComponent({
   name: "DnD5eLayout",
+  props: ['data'],
   components: {
     SensesDisplay,
     UltraDisplay,
@@ -19,7 +20,6 @@ export default defineComponent({
     TopStatBarDesktop,
     SkillsDisplay
   },
-  props: ['data'],
 })
 </script>
 

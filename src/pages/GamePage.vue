@@ -24,18 +24,18 @@ export default defineComponent({
         if (stats.hasOwnProperty(key)) {
           let value = stats[key];
           stats[key] = Math.floor((value - 10) / 2);
-          console.log(key, stats[key])
+          // console.log(key, stats[key])
         }
       }
       this.activeCharacter.abilityScoreModifiers = stats;
       this.userStore.activeCharacter.abilityScoreModifiers = stats;
-      console.log(stats);
+      // console.log(stats);
     },
-
-
-    logChar () {
-      console.log('active Char', this.activeCharacter);
-    }
+    updateCharacter() {
+      if (this.userStore.activeCharacter.uid !== this.id)
+        this.userStore.activateCharacter(this.id)
+      this.$router.push({name: 'dnd5e-settings', params: {id: this.id}})
+    },
   },
   created() {
     db
@@ -47,11 +47,12 @@ export default defineComponent({
         this.activeCharacter = new Character(doc.id, doc.data());
         this.abilityModifiers();
 
-        console.log('active', this.activeCharacter)
+        // console.log('active', this.activeCharacter)
       });
     // this.abilityModifiers();
   },
-  mounted() {
+  beforeMount() {
+    // this.activeCharacter = this.userStore.activeCharacter;
     // this.abilityModifiers();
   }
 })
@@ -60,8 +61,9 @@ export default defineComponent({
 <template>
   <div class="name full-width bg-grey-5">
     <div class="constrain q-mx-auto">
-      <div class="name text-h3">
+      <div class="name text-h3 relative-position">
         {{ activeCharacter.name }}
+        <q-btn round flat class="absolute-right" icon="settings" size="16px" @click="updateCharacter"><q-tooltip>Settings Page</q-tooltip></q-btn>
       </div>
       <div class="details text-h5 text-weight-light">
         {{ activeCharacter.race }} | {{ activeCharacter?.classData?.classLevelString }}

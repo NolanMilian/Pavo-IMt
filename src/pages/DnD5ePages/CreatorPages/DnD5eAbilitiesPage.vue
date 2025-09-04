@@ -119,8 +119,8 @@ export default defineComponent({
       // this.abilities.baseScores = {str: this.strBase || 3, dex: this.dexBase || 3, con: this.conBase || 3, int: this.intBase || 3, wis: this.wisBase || 3, cha: this.chaBase || 3};
       // this.abilities.totalScores = {str: this.strTotal, dex: this.dexTotal, con: this.conTotal, int: this.intTotal, wis: this.wisTotal, cha: this.chaTotal};
 
-      Object.assign(this.abilityScores.baseAbilityScores, {str: this.abilityScores.baseAbilityScores.str, dex: this.abilityScores.baseAbilityScores.dex, con: this.abilityScores.baseAbilityScores.con, int: this.abilityScores.baseAbilityScores.int, wis: this.abilityScores.baseAbilityScores.wis, cha: this.abilityScores.baseAbilityScores.cha})
-      Object.assign(this.abilityScores.baseAbilityScores, {str: this.abilityScores.baseAbilityScores.str, dex: this.abilityScores.baseAbilityScores.dex, con: this.abilityScores.baseAbilityScores.con, int: this.abilityScores.baseAbilityScores.int, wis: this.abilityScores.baseAbilityScores.wis, cha: this.abilityScores.baseAbilityScores.cha})
+      Object.assign(this.abilityScores.baseAbilityScores, {str: parseInt(this.abilityScores.baseAbilityScores.str), dex: parseInt(this.abilityScores.baseAbilityScores.dex), con: parseInt(this.abilityScores.baseAbilityScores.con), int: parseInt(this.abilityScores.baseAbilityScores.int), wis: parseInt(this.abilityScores.baseAbilityScores.wis), cha: parseInt(this.abilityScores.baseAbilityScores.cha)})
+      // Object.assign(this.abilityScores.baseAbilityScores, {str: this.abilityScores.baseAbilityScores.str, dex: this.abilityScores.baseAbilityScores.dex, con: this.abilityScores.baseAbilityScores.con, int: this.abilityScores.baseAbilityScores.int, wis: this.abilityScores.baseAbilityScores.wis, cha: this.abilityScores.baseAbilityScores.cha})
       // Object.assign(this.abilityScores.totalScores, {str: this.strTotal, dex: this.dexTotal, con: this.conTotal, int: this.intTotal, wis: this.wisTotal, cha: this.chaTotal})
 
 
