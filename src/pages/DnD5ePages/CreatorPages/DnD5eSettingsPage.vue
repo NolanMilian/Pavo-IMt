@@ -41,8 +41,11 @@ export default defineComponent({
       <span class="label text-h6">
         <strong>Character Name</strong>
       </span>
-        <q-input standout debounce="500" v-model="characterName" @blur="update" style="width: 300px"/>
-        <q-icon v-if="saveIcon" class="q-pt-md" name="save" size="24px"/>
+      <q-input standout debounce="500" v-model="characterName" @blur="update" style="width: 300px">
+        <template v-slot:append>
+          <q-icon v-if="saveIcon" name="save"/>
+        </template>
+      </q-input>
     </div>
   </div>
 </template>

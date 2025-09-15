@@ -107,11 +107,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="flex flex-center q-gutter-md">
-    <div class="characterRace column">
+  <div class="flex flex-center q-col-gutter-md">
+    <div class="characterRace column q-gutter-md">
         <span class="label text-h6">
-        <strong>Character Race</strong>
-      </span>
+          <strong>Character Race</strong>
+        </span>
       <div class="row">
         <q-select
           v-model="characterRace"
@@ -125,6 +125,9 @@ export default defineComponent({
           @blur="handleBlur"
           @filter="filterFn"
         >
+          <template v-slot:append>
+            <q-icon v-if="saveIcon" name="save"/>
+          </template>
           <template v-slot:no-option>
             <q-item>
               <q-item-section class="text-grey">
@@ -158,7 +161,6 @@ export default defineComponent({
           </template>
         </q-select>
       </div>
-      <q-icon v-if="saveIcon" class="q-pt-md" name="save" size="24px"/>
     </div>
   </div>
 </template>

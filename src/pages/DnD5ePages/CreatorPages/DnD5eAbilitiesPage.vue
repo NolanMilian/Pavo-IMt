@@ -126,6 +126,8 @@ export default defineComponent({
 
       },
     saveHandler() {
+      this.saveIcon = true
+      setTimeout(()=>{this.saveIcon = false},500)
       this.setScores();
       this.update();
     }
@@ -233,8 +235,8 @@ export default defineComponent({
 <!--          <div class="rollAssign"><q-select v-model="roll.one.assignedAbility" /></div>-->
 <!--        </div>-->
 <!--      </div>-->
-
-      <q-btn class="bg-primary text-white" label="Save Scores" @click="saveHandler"><q-icon v-if="saveIcon" class="q-pl-md" name="save" size="24px"/></q-btn>
+      <q-btn :loading="saveIcon" color="primary" @click="saveHandler" label="Save Scores" />
+<!--      <q-btn class="bg-primary text-white" label="Save Scores" @click="saveHandler"><q-icon v-if="saveIcon" class="q-pl-md" name="save" size="24px"/></q-btn>-->
     </div>
   </div>
 </template>

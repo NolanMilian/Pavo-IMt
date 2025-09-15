@@ -21,7 +21,7 @@ export default defineComponent({
 <template>
   <div class="conditionsList ">
     <div class="topLabel text-bold text-left">CONDITIONS</div>
-    <div class="conditionsList">{{ conditionsList }}</div>
+    <div class="conditionsList">{{ conditionsList }} <q-tooltip>{{ conditionsList }}</q-tooltip> </div>
   </div>
 </template>
 
