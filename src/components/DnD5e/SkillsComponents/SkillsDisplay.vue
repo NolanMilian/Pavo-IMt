@@ -35,9 +35,9 @@ export default defineComponent({
 
 <template>
   <display-box
-    box-width="235px"
-    box-min-width="235px"
-    box-max-width="235px"
+    box-width="265px"
+    box-min-width="265px"
+    box-max-width="265px"
     box-height="692px"
     box-min-height="692px"
     box-max-height="692px"
@@ -48,6 +48,7 @@ export default defineComponent({
         <div class="prof col-2">PROF<q-tooltip>Proficiency</q-tooltip></div>
         <div class="mod col-2">MOD<q-tooltip>Modifier</q-tooltip></div>
         <div class="skill col">SKILL</div>
+        <div class="status col"></div>
         <div class="bonus col-2">BONUS</div>
       </div>
       <skills-list-item

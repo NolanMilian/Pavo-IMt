@@ -13,7 +13,8 @@ export default defineComponent({
 <div class="skillsListItem row items-baseline q-gutter-sm">
   <div class="prof col-1 flex-center"><proficiency-ball :status="skillObj.prof" :custom="skillObj.profCustom"/></div>
   <div class="mod col-2">{{ skillObj.mod }}</div>
-  <div class="skill col q-ml-none">{{ skillObj.skill }}</div>
+  <div class="skill col q-ml-none text-no-wrap">{{ skillObj.skill }}</div>
+  <div class="status col-1 q-ml-none text-center">A</div>
   <div class="bonus col-1 q-mr-xs text-center">{{ skillObj.bonus }}</div>
 </div>
 </template>
