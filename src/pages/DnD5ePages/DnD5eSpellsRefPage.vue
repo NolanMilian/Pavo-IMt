@@ -32,7 +32,7 @@ export default defineComponent({
       spells: [],
       spell: {},
       spellDialog: false,
-      spellRefinementDialog: true,
+      spellRefinementDialog: false,
       errorDialog: false,
       searchErrorReport: '',
     }
@@ -56,9 +56,27 @@ export default defineComponent({
         console.warn('Error in returnSpells: ', error)
       }
     },
+    async returnSpell(index) {
+      try {
+        this.spell = await this.fetchResults(`https://www.dnd5eapi.co/api/spells/${index}`);
+        console.log('spell: ', this.spell);
+        return this;
+      } catch (error) {
+        console.error('Error in returnSpell: ', error)
+      }
+    },
     async returnClassSpells(characterClass, spellLevel) {
       try {
         const data = await this.fetchResults(`https://www.dnd5eapi.co/api/classes/${characterClass}/levels/${spellLevel}/spells`);
+        this.spells = data.results;
+        console.log('spells by class: ', this.spells);
+      } catch (error) {
+        console.warn('Error in returnClassSpells: ', error)
+      }
+    },
+    async returnClassSpellsNoLevel(characterClass) {
+      try {
+        const data = await this.fetchResults(`https://www.dnd5eapi.co/api/classes/${characterClass}/spells`);
         this.spells = data.results;
         console.log('spells by class: ', this.spells);
       } catch (error) {
@@ -71,28 +89,18 @@ export default defineComponent({
       const schools = schoolOfMagic;
       console.log('school', schools);
       const params = new URLSearchParams();
-      if (level) {
+      if (level >= 0) {
         params.append('level', level)
       }
-      if (schools.length > 0) {
+      if (schools?.length > 0) {
         schools.forEach(school => params.append('school', school));
       }
       try {
         const data = await this.fetchResults(`https://www.dnd5eapi.co/api/spells?${params}`);
-        console.log('params', params)
         this.spells = data.results;
         console.log('spells by school: ', this.spells);
       } catch (error) {
         console.warn('Error in returnSchoolSpells: ', error)
-      }
-    },
-    async returnSpell(index) {
-      try {
-        this.spell = await this.fetchResults(`https://www.dnd5eapi.co/api/spells/${index}`);
-        console.log('spell: ', this.spell);
-        return this;
-      } catch (error) {
-        console.error('Error in returnSpell: ', error)
       }
     },
     async clickHandler(spellIndex) {
@@ -104,16 +112,22 @@ export default defineComponent({
       }
     },
     async searchHandler() {
-      if (this.classValue && this.schoolValue?.length > 0) {
+      if (this.classValue && this.schoolValue?.length > 0) {  // if there is both character class and magic school selected throw an error
         this.errorHandler();
-      } else if (this.classValue && this.spellLevelValue) {
+      } else if (this.classValue && this.spellLevelValue) {   // if there is a character class and a spell level, return
         await this.returnClassSpells(this.classValue, this.spellLevelValue.value);
         this.spellRefinementDialog = false;
-      } else if (this.schoolValue && this.spellLevelValue) {
+      } else if (this.schoolValue?.length > 0 && this.spellLevelValue) {  // if there is more than one magic school and a spell level selected, return
+        await this.returnSchoolSpells(this.schoolValue, this.spellLevelValue.value);
+        this.spellRefinementDialog = false;
+      } else if (this.classValue && !this.spellLevelValue) {  // is there is a character class and no spell level, return
+        await this.returnClassSpellsNoLevel(this.classValue)
+        this.spellRefinementDialog = false;
+      } else if (this.spellLevelValue){  // if there is a spell level selected and nothing else, return
         await this.returnSchoolSpells(this.schoolValue, this.spellLevelValue.value);
         this.spellRefinementDialog = false;
       } else {
-        await this.returnSchoolSpells(this.schoolValue);
+        console.warn('no results from refinement')
       }
     },
     errorHandler() {
@@ -124,7 +138,7 @@ export default defineComponent({
       this.schoolValue.length = 0;
       this.classValue = '';
       this.spellLevelValue = null;
-      this.searchHandler();
+      this.returnSpells();
     },
   },
   mounted() {
@@ -152,6 +166,9 @@ export default defineComponent({
         return '';
       }
     },
+    spellDuration() {
+      return this.spell.concentration ? `Concentration, ${this.spell.duration}` : this.spell.duration;
+    },
     classesFormatted() {
       return this.spell.classes.map(n => n.name).join(', ');
     }
@@ -171,7 +188,7 @@ export default defineComponent({
     </div>
   </div>
 
-  <div class="spellsRef q-mx-auto items-center" style="width: 1440px">
+  <div class="spellsRef q-mx-auto " style="max-width: 1440px">
     <div class="q-gutter-sm row">
       <div v-for="data in spells" :key="data.index" class="text-center">
         <q-btn :label="data.name" class="bg-primary text-white" @click="clickHandler(data.index)"/>
@@ -214,7 +231,7 @@ export default defineComponent({
             :options="spellLevels"
             behavior="default"
             clearable
-            label="Spell Level (not required)"
+            label="Spell Level"
             standout
           />
 
@@ -262,7 +279,7 @@ export default defineComponent({
           <span v-for="component in spell.components" :key="component" class="component">{{ component }}</span>
           <span class="material">({{ spell.material }})</span>
         </div>
-        <div class="duration"><span class="durationLabel label text-bold">Duration: </span>{{ spell.duration }}</div>
+        <div class="duration"><span class="durationLabel label text-bold">Duration: </span>{{ spellDuration }}</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
