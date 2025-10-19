@@ -33,7 +33,7 @@ export default defineComponent({
       <span class="healthLabel">HEALTH</span>
       <div class="row items-center">
         <div class="healthInputGroup q-ma-none q-pa-none col-4">
-          <input class="healthInput" type="number">
+          <input class="healthInput" type="number"/>
           <!--        <q-input type="number" class="healthInput" input-class="healthInput" filled></q-input>-->
           <q-btn class="heal" size="10px" padding="none" color="green">HEAL</q-btn>
           <q-btn class=" damage" size="10px" padding="none" color="red">DAMAGE</q-btn>

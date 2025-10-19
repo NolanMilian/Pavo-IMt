@@ -34,7 +34,7 @@ export default defineComponent({
     <div class="col q-px-none q-mx-none centerCol">
       <skills-display class="q-mr-none"/>
     </div>
-    <div class="col-6 rightCol q-pl-none">
+    <div class="col-5 rightCol q-pl-none">
       <second-stat-bar-desktop class="q-mb-md"/>
       <ultra-display/>
     </div>

@@ -12,15 +12,18 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="q-gutter-md row items-end sized">
-    <health-tracker-desktop class="col"/>
+  <div class="q-gutter-md row q-ml-none q-pl-none sized">
+    <health-tracker-desktop class="col q-ml-none"/>
     <ability-stat-group class="col"/>
     <movement-speed class="col"/>
     <armor-class class="col"/>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.sized {
+  //transform: scale(105%);
+}
 @media (max-width: 1200px) {
   .sized {
     transform: scale(85%);

@@ -80,7 +80,6 @@ export default defineComponent({
     update() {
       if (this.characterName)
         this.userStore.updateCharacterVariable(this.id, 'name', this.characterName);
-      this.userStore.updateCharacterVariable(this.id,'')
       this.saveHandler();
 
     },
@@ -142,6 +141,7 @@ export default defineComponent({
           </template>
         </q-input>
       </div>
+<!--Character Details-->
       <q-list bordered class="q-pt-sm q-px-sm">
         <div class="descriptions ">
           <q-expansion-item
@@ -191,7 +191,7 @@ export default defineComponent({
           </q-expansion-item>
         </div>
       </q-list>
-
+<!--Physical Characteristics-->
       <q-list bordered class="q-pt-sm q-px-sm">
         <div class="characteristics">
           <q-expansion-item
@@ -285,6 +285,120 @@ export default defineComponent({
           </q-expansion-item>
         </div>
       </q-list>
+<!--Personal Characteristics-->
+      <q-list bordered class="q-pt-sm q-px-sm">
+        <div class="descriptions ">
+          <q-expansion-item
+            caption="Personality - Ideals - Bonds - Flaws"
+            caption-lines="1"
+            class="details"
+            expand-separator
+            header-class="q-pt-none q-px-none"
+            icon="perm_identity"
+            label="Personal Characteristics"
+          >
+            <q-card>
+              <q-card-section>
+                <div class="alignment">
+                  <div class="label">Alignment</div>
+                  <q-select
+                    v-model="alignmentModel"
+                    :options="alignmentOptions"
+                    class=""
+                    outlined
+                  />
+                  {{ }}
+                </div>
+              </q-card-section>
+              <q-card-section>
+                <div class="faith">
+                  <div class="label">Faith</div>
+                  <q-input v-model="faithModel"
+                           class=""
+                           outlined
+                  />
+                </div>
+              </q-card-section>
+              <q-card-section>
+                <div class="lifestyle">
+                  <div class="label">Lifestyle</div>
+                  <q-select
+                    v-model="lifestyleModel"
+                    :options="lifestyleOptions"
+                    class=""
+                    outlined
+                  />
+                  {{ }}
+                </div>
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
+        </div>
+      </q-list>
+<!--Notes-->
+      <q-list bordered class="q-pt-sm q-px-sm">
+        <div class="descriptions ">
+          <q-expansion-item
+            caption="Organizations - Allies - Enemies - Backstory - Other"
+            caption-lines="1"
+            class="details"
+            expand-separator
+            header-class="q-pt-none q-px-none"
+            icon="perm_identity"
+            label="Notes"
+          >
+            <q-card>
+              <q-card-section>
+                <div class="organizations">
+                  <div class="label">Organizations</div>
+                  <q-input v-model="organizationsModel"
+                           class=""
+                           outlined
+                  />
+                </div>
+              </q-card-section>
+              <q-card-section>
+                <div class="allies">
+                  <div class="label">Allies</div>
+                  <q-input v-model="alliesModel"
+                           class=""
+                           outlined
+                  />
+                </div>
+              </q-card-section>
+              <q-card-section>
+                <div class="enemies">
+                  <div class="label">Enemies</div>
+                  <q-input v-model="enemiesModel"
+                           class=""
+                           outlined
+                  />
+                </div>
+              </q-card-section>
+              <q-card-section>
+                <div class="backstory">
+                  <div class="label">Backstory</div>
+                  <q-input v-model="backstoryModel"
+                           class=""
+                           outlined
+                  />
+                </div>
+              </q-card-section>
+              <q-card-section>
+                <div class="other">
+                  <div class="label">Other</div>
+                  <q-input v-model="otherModel"
+                           class=""
+                           outlined
+                  />
+                </div>
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
+        </div>
+      </q-list>
+
+
     </div>
   </div>
 </template>
