@@ -1,12 +1,15 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import { db } from "boot/firebase";
 
 /*
 Content Store: Manages the source material and content data, including classes, spells, races, and other game-related information.
  */
 
-export const useCounterStore = defineStore('counter', {
+export const useContentStore = defineStore('content', {
   state: () => ({
-    counter: 0
+    content: {},
+    races: {},
+    classes: {}
   }),
 
   getters: {
@@ -18,6 +21,16 @@ export const useCounterStore = defineStore('counter', {
   actions: {
     increment () {
       this.counter++
+    },
+    getAllContent () {
+      db
+      .collection('content')
+      .onSnapshot((querySnapshot) => {} )
+    },
+    getContentByGame (game) {
+      db
+      .collection(`content/${game}/sourceMaterial/`)
+      .onSnapshot((querySnapshot) => {} )
     }
   }
 })
