@@ -7,9 +7,9 @@ Content Store: Manages the source material and content data, including classes, 
 
 export const useContentStore = defineStore('content', {
   state: () => ({
-    content: {},
-    races: {},
-    classes: {}
+    content: [],
+    races: [],
+    classes: []
   }),
 
   getters: {
@@ -19,18 +19,19 @@ export const useContentStore = defineStore('content', {
   },
 
   actions: {
-    increment () {
-      this.counter++
-    },
-    getAllContent () {
-      db
-      .collection('content')
-      .onSnapshot((querySnapshot) => {} )
-    },
     getContentByGame (game) {
       db
-      .collection(`content/${game}/sourceMaterial/`)
-      .onSnapshot((querySnapshot) => {} )
-    }
+      .collectionGroup(`content`)
+      .where("game","==",game)
+      .get()
+      .then((querySnapshot) => {
+        this.getAllContent.length = 0;
+        querySnapshot.forEach((doc) => {
+          this.content.push(new SourceContent(doc.id, doc.data()));
+        })
+      })
+      .catch((error) => {console.error('Error getting documents',error);})
+    },
+    
   }
 })
