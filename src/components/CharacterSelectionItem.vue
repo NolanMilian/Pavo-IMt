@@ -1,7 +1,7 @@
 <script>
 import {defineComponent} from 'vue'
 import DnD5eCharacter from "src/models/DnD5eCharacter";
-import {useUserStore} from "stores/user-store";
+import {useCharacterStore} from "stores/character-store";
 
 export default defineComponent({
   name: "CharacterSelectionItem",
@@ -10,7 +10,7 @@ export default defineComponent({
   data() {
     return {
       character: new DnD5eCharacter(),
-      userStore: useUserStore(),
+      userStore: useCharacterStore(),
       cardGameLabel: '',
       cardBg: {},
     }

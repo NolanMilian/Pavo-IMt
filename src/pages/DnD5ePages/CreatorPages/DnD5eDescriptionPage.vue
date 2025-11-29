@@ -1,13 +1,13 @@
 <script>
 import {defineComponent} from 'vue'
-import {useUserStore} from "stores/user-store";
+import {useCharacterStore} from "stores/character-store";
 
 export default defineComponent({
   name: "DnD5eDescriptionPage",
   props: ['id'],
   data() {
     return {
-      userStore: useUserStore(),
+      userStore: useCharacterStore(),
       activeCharacter: {},
       characterName: '',
       saveIcon: false,

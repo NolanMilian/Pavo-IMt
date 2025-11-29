@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<character>
+  <version>1</version>
+  <initMiscMod>0</initMiscMod>
+  <improvedInitiative>0</improvedInitiative>
+  <currentHealth>10</currentHealth>
+  <maxHealth>10</maxHealth>
+  <currentTempHP>0</currentTempHP>
+  <armorBonus>14</armorBonus>
+  <shieldBonus>2</shieldBonus>
+  <miscArmorBonus>0</miscArmorBonus>
+  <maxDex>2</maxDex>
+  <proficiencyBonus>2</proficiencyBonus>
+  <miscSpellAttackBonus>0</miscSpellAttackBonus>
+  <miscSpellDCBonus>0</miscSpellDCBonus>
+  <castingStatCode>4</castingStatCode>
+  <offenseAbilityDisplay>0</offenseAbilityDisplay>
+  <deathSaveSuccesses>0</deathSaveSuccesses>
+  <deathSaveFailures>0</deathSaveFailures>
+  <showDeathSaves>true</showDeathSaves>
+  <baseSpeed>0</baseSpeed>
+  <speedMiscMod>0</speedMiscMod>
+  <movementMode>Speed</movementMode>
+  <raceCode>-1</raceCode>
+  <subraceCode>-1</subraceCode>
+  <backgroundCode>-1</backgroundCode>
+  <pagePosition0>1</pagePosition0>
+  <pagePosition1>2</pagePosition1>
+  <pagePosition2>3</pagePosition2>
+  <pagePosition3>4</pagePosition3>
+  <pagePosition4>5</pagePosition4>
+  <unarmoredDefense>0</unarmoredDefense>
+  <featCode></featCode>
+  <classData>Cleric⊡Life Domain⊡1⊡0⊡0⊟⊟Resource⊡Resource⊡0⊡0⊡0⊡2⊡0⊡0⊡303⊡0⊟⊟⊟⊟⊟Dwarf⊟Hill Dwarf⊟Acolyte⊟0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠⊟0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠⊟20⊠20⊠20⊠20⊠20⊠20⊠⊟0⊟2⊟1⊟1⊟1⊟2</classData>
+  <multiclassFeatures></multiclassFeatures>
+  <weaponList>2⊠Mace⊠5 feet⊠1100⊠0⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠6⊠Crossbow, light⊠80/320⊠2201⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠8</weaponList>
+  <abilityScores>18⊠13⊠18⊠14⊠14⊠14⊠false⊠false⊠false⊠false⊠true⊠true⊠0⊠0⊠0⊠0⊠0⊠0⊠0</abilityScores>
+  <skillInfo>false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠true⊠false⊠true⊠true⊠false⊠false⊠false⊠false⊠false⊠true⊠false⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false</skillInfo>
+  <spellList>v1.1⊠0⊡2⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠false⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠0⊠1⊠false⊠1⊟Bless⊟⊟⊟⊟⊟⊟true⊟0⊡1⊟Cure Wounds⊟⊟⊟⊟⊟⊟true⊟0⊡</spellList>
+  <noteList>Dwarf Features:
+    • Within 60 feet of you, treat dim light as bright, darkness as dim light
+    • Advantage on saves vs poison, poison damage resistance
+    • Double proficiency bonus to History checks concerning stonework (even if not proficient)
+    • Battleaxe, handaxe, throwing hammer, warhammer proficiency
+    • Gain 1 extra hit point per level
+    Acolyte Feature:
+    • Receive aid from those who share your faith
+    Cleric Features:
+    • Cleric Archetype: Life
+    • Healing spells of at least 1st level heal an additional 2 + spell level
+    ⊠Light Armor, Medium Armor, Shields
+    Heavy Armor
+    ⊠Battleaxe
+    Handaxe
+    Throwing Hammer
+    Warhammer
+    Simple Weapons
+    ⊠Smith's Tools OR Brewer's Supplies OR Mason's Tools
+    ⊠Common
+    Dwarvish
+    Two Extra Languages
+    ⊠scale mail
+    shield
+    mace
+    light crossbow
+    bolts (20)
+    priest's pouch
+    holy symbol
+    holy symbol
+    prayer book
+    stick of incense (5)
+    vestments
+    set of common clothes
+    belt pouch
+    ⊠⊠Cleric 1⊠Hill Dwarf⊠Acolyte⊠⊠⊠⊠⊠⊠Test⊠Cleric 1⊠0⊠0⊠0⊠15⊠0⊠0</noteList>
+  <hitDiceList>1⊠1⊠8⊠1</hitDiceList>
+  <classResource>-1⊠-1⊠-1⊠-1⊠-1⊠-1⊠1⊠2⊠1000⊠3⊠4⊠5</classResource>
+</character>

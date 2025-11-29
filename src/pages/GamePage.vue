@@ -1,7 +1,7 @@
 <script>
 import {defineComponent} from 'vue'
 import DnD5eLayout from "components/DnD5e/DnD5eLayout.vue";
-import {useUserStore} from "stores/user-store";
+import {useCharacterStore} from "stores/character-store";
 import {db} from "boot/firebase";
 import {useAuthStore} from "stores/auth-store";
 import Character from "src/models/Character";
@@ -12,7 +12,7 @@ export default defineComponent({
   components: {DnD5eLayout},
   data() {
     return {
-      userStore: useUserStore(),
+      userStore: useCharacterStore(),
       activeCharacter: {},
     }
   },

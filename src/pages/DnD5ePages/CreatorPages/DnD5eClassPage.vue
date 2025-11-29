@@ -1,13 +1,13 @@
 <script>
 import {defineComponent} from 'vue'
-import {useUserStore} from "stores/user-store";
+import {useCharacterStore} from "stores/character-store";
 
 export default defineComponent({
   name: "DnD5eClassPage",
   props: ['id'],
   data() {
     return {
-      userStore: useUserStore(),
+      userStore: useCharacterStore(),
       activeCharacter: {},
       saveIcon: false,
       numberOptions: Array.from({length: 20}, (_, i) => ({label: (i + 1).toString(), value: i + 1})),

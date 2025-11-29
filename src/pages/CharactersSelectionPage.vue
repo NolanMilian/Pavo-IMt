@@ -1,6 +1,6 @@
 <script>
 import { defineComponent } from 'vue'
-import { useUserStore } from "stores/user-store";
+import { useCharacterStore } from "stores/character-store";
 import Character from "src/models/Character";
 import CharacterSelectionItem from "components/CharacterSelectionItem.vue";
 import { useAuthStore } from "stores/auth-store";
@@ -12,7 +12,7 @@ export default defineComponent({
   data() {
     return{
       newCharacter: new Character(),
-      userStore: useUserStore(),
+      userStore: useCharacterStore(),
       authStore: useAuthStore(),
       newCharacterDialog: false,
     }

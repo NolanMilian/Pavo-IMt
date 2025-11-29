@@ -3,11 +3,11 @@ import { db } from "boot/firebase";
 import Character from "src/models/Character";
 import {useAuthStore} from "stores/auth-store";
 
-/* TODO: change name to useCharacterStore 
- * Character Store: Manages the state and actions related to character data, such as creating, updating, and retrieving character information. 
+/*
+ * Character Store: Manages the state and actions related to character data, such as creating, updating, and retrieving character information.
  */
 
-export const useUserStore = defineStore('user', {
+export const useCharacterStore = defineStore('character', {
   state: () => ({
     activeCharacter: {},
     allCharacters: [],
@@ -111,5 +111,9 @@ export const useUserStore = defineStore('user', {
   },
 
   getters: {
+    isCreated(state) {
+      return !!state.activeCharacter.race && !!state.activeCharacter.classData && !!state.activeCharacter.abilityScores;
+
+    }
   }
 })

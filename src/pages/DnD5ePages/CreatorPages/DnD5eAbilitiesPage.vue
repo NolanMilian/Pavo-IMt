@@ -1,13 +1,13 @@
 <script>
 import {defineComponent} from 'vue'
-import {useUserStore} from "stores/user-store";
+import {useCharacterStore} from "stores/character-store";
 
 export default defineComponent({
   name: "DnD5eAbilitiesPage",
   props: ['id'],
   data() {
     return {
-      userStore: useUserStore(),
+      userStore: useCharacterStore(),
       activeCharacter: this?.activeCharacter?.abilityScores ?? {
         abilityScoresTotal: { str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }
       },

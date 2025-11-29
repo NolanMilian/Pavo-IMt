@@ -237,11 +237,6 @@
               {
                 "index": "hill-dwarf",
                 "name": "Hill Dwarf",
-                "url": "/api/subraces/hill-dwarf"
-              },
-              {
-                "index": "hill-dwarf",
-                "name": "Hill Dwarf",
                 "race": {
                   "index": "dwarf",
                   "name": "Dwarf",

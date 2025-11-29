@@ -1,7 +1,7 @@
 <script>
 import {defineComponent} from 'vue'
 import AbilityStat from "components/DnD5e/AbilityComponents/AbilityStat.vue";
-import {useUserStore} from "stores/user-store";
+import {useCharacterStore} from "stores/character-store";
 
 export default defineComponent({
   name: "AbilityStatGroup",
@@ -9,7 +9,7 @@ export default defineComponent({
   components: {AbilityStat},
   data() {
     return {
-      userStore: useUserStore(),
+      userStore: useCharacterStore(),
       activeCharacter: {},
       abilityScores: {},
     }
