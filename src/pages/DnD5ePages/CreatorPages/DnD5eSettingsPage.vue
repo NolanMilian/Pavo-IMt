@@ -14,6 +14,8 @@ export default defineComponent({
       characterName: '',
       saveIcon: false,
       uploadDialog: false,
+      userUpload: null,
+      uploadingState: false,
 
     }
   },
@@ -28,6 +30,13 @@ export default defineComponent({
       setTimeout(() => {this.saveIcon = false},500);
     },
     uploadFile(file){
+      // TODO: add user feedback; let them know if the file was successfully uploaded, or if it failed.
+      // we set loading state
+      this.uploadingState = true
+
+      // simulate a delay
+
+
       // console.log('file', file)
       // Perform file upload to Firebase Storage
       const storageRef = storage.ref();
@@ -36,15 +45,27 @@ export default defineComponent({
       fileRef.put(file)
         .then(snapshot => {
           // Get the download URL
-          snapshot.ref.getDownloadURL().then(downloadURL => {
+          snapshot.ref.getDownloadURL()
+            .then(downloadURL => {
             // Store the downloadURL in Firestore or perform any other action
             db.collection('uploads').add({ downloadURL });
           });
         })
+        .then(
+          setTimeout(() => {
+            // we're done, we reset loading state
+            this.uploadingState = false
+            this.uploadDialog = false
+          }, 1000)
+        )
         .catch(error => {
           console.error('Error uploading file:', error);
         });
     },
+
+    cancelFileUpload(){
+      this.userUpload = null;
+    }
   },
   mounted() {
     // this.userStore.activateCharacter(this.id);
@@ -86,17 +107,33 @@ export default defineComponent({
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-uploader
-        label="Character Upload"
-        auto-upload
-        max-files="1"
-        @added="uploadFile"
-        />
+        <q-file filled bottom-slots v-model="userUpload" label="Label" counter max-files="1" accept=".json">
+<!--          <template v-slot:prepend>-->
+<!--            <q-icon name="cloud_upload" @click.stop.prevent />-->
+<!--          </template>-->
+          <template v-slot:append>
+            <q-icon name="close" @click.stop.prevent="userUpload = null" class="cursor-pointer" />
+          </template>
+          <template v-slot:loading>
+            <q-icon name="close" @click.stop.prevent="userUpload = null" class="cursor-pointer" />
+          </template>
+
+          <template v-slot:hint>
+            Field hint
+          </template>
+        </q-file>
       </q-card-section>
 
       <q-card-actions align="right" class="text-primary">
-        <q-btn flat label="Cancel" v-close-popup />
-        <q-btn flat label="Add address" v-close-popup />
+        <q-btn flat label="Cancel" v-close-popup @click="cancelFileUpload" />
+<!--        <q-btn flat label="Upload Character" @click="uploadFile(userUpload)" />-->
+        <q-btn flat :loading="uploadingState" color="primary" @click="uploadFile(userUpload)" label="Upload Character">
+<!--        Button-->
+        <template v-slot:loading>
+          <q-spinner-hourglass class="on-left" />
+          Uploading...
+        </template>
+      </q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>
