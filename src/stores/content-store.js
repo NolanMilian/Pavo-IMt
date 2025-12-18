@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { db } from "boot/firebase";
+import SourceContent from "src/models/SourceContent";
 
 /*
 Content Store: Manages the source material and content data, including classes, spells, races, and other game-related information.
@@ -25,13 +26,13 @@ export const useContentStore = defineStore('content', {
       .where("game","==",game)
       .get()
       .then((querySnapshot) => {
-        this.getAllContent.length = 0;
+        this.content.length = 0;
         querySnapshot.forEach((doc) => {
           this.content.push(new SourceContent(doc.id, doc.data()));
         })
       })
       .catch((error) => {console.error('Error getting documents',error);})
     },
-    
+
   }
 })

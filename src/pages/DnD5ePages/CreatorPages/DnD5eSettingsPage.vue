@@ -29,13 +29,28 @@ export default defineComponent({
       this.saveIcon = true;
       setTimeout(() => {this.saveIcon = false},500);
     },
+    parseFile(file){
+      // Parse the XML String
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(file, 'text/xml');
+
+      // Convert XML to JSON
+      const xmlToJSON = require('xmltojson');
+      const character = xmlDoc.getElementsByTagName("character")[0];
+      const characterJson = xmlToJSON(xmlDoc);
+      console.log(characterJson);
+    },
     uploadFile(file){
       // TODO: add user feedback; let them know if the file was successfully uploaded, or if it failed.
       // we set loading state
       this.uploadingState = true
 
-      // simulate a delay
-
+      try {
+        this.parseFile(file)
+      } catch (e) {
+        console.error('Error in parsing file', e)
+        // this.uploadingState = false;
+      }
 
       // console.log('file', file)
       // Perform file upload to Firebase Storage

@@ -106,8 +106,7 @@ export const useCharacterStore = defineStore('character', {
         .catch((error) => console.error(`Error toggling ${variable} in document`, error))
     },
 
-
-
+    
   },
 
   getters: {
