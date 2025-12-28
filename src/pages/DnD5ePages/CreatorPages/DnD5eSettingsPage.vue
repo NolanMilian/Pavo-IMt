@@ -1,7 +1,9 @@
 <script>
 import {defineComponent} from 'vue'
 import {useCharacterStore} from "stores/character-store";
+import xmlToJson from "src/js/xmlToJson";
 import {storage, db} from "boot/firebase";
+
 
 
 export default defineComponent({
@@ -29,53 +31,67 @@ export default defineComponent({
       this.saveIcon = true;
       setTimeout(() => {this.saveIcon = false},500);
     },
-    parseFile(file){
-      // Parse the XML String
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(file, 'text/xml');
 
-      // Convert XML to JSON
-      const xmlToJSON = require('xmltojson');
-      const character = xmlDoc.getElementsByTagName("character")[0];
-      const characterJson = xmlToJSON(xmlDoc);
-      console.log(characterJson);
+    parseFile(file){
+      let json = {};
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          // load file to string
+          const xmlString = e.target.result;
+
+          // Parse the XML string
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+
+          // Grab the character attribute tag
+          const character = xmlDoc.getElementsByTagName("character")[0];
+
+          // Convert XML to JSON
+          json = xmlToJson(character);
+
+          console.log(json);
+        }
+
+        reader.readAsText(file);
+
+      // Convert JSON to a string with indentation for readability
+      // const jsonString = JSON.stringify(json, null, 2);
+      // console.log(jsonString);
     },
     uploadFile(file){
       // TODO: add user feedback; let them know if the file was successfully uploaded, or if it failed.
       // we set loading state
       this.uploadingState = true
 
-      try {
-        this.parseFile(file)
-      } catch (e) {
-        console.error('Error in parsing file', e)
-        // this.uploadingState = false;
-      }
+      this.parseFile(file);
 
-      // console.log('file', file)
-      // Perform file upload to Firebase Storage
-      const storageRef = storage.ref();
-      const fileRef = storageRef.child(file.name);
+      this.uploadingState = false
 
-      fileRef.put(file)
-        .then(snapshot => {
-          // Get the download URL
-          snapshot.ref.getDownloadURL()
-            .then(downloadURL => {
-            // Store the downloadURL in Firestore or perform any other action
-            db.collection('uploads').add({ downloadURL });
-          });
-        })
-        .then(
-          setTimeout(() => {
-            // we're done, we reset loading state
-            this.uploadingState = false
-            this.uploadDialog = false
-          }, 1000)
-        )
-        .catch(error => {
-          console.error('Error uploading file:', error);
-        });
+      // // console.log('file', file)
+      // // Perform file upload to Firebase Storage
+      // const storageRef = storage.ref();
+      // const fileRef = storageRef.child(file.name);
+      //
+      // fileRef.put(file)
+      //   .then(snapshot => {
+      //     // Get the download URL
+      //     snapshot.ref.getDownloadURL()
+      //       .then(downloadURL => {
+      //       // Store the downloadURL in Firestore or perform any other action
+      //       db.collection('uploads').add({ downloadURL });
+      //     });
+      //   })
+      //   .then(
+      //     setTimeout(() => {
+      //       // we're done, we reset loading state
+      //       this.uploadingState = false
+      //       this.uploadDialog = false
+      //     }, 1000)
+      //   )
+      //   .catch(error => {
+      //     console.error('Error uploading file:', error);
+      //   });
     },
 
     cancelFileUpload(){
