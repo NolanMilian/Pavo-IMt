@@ -2,8 +2,9 @@
 import {defineComponent} from 'vue'
 import {useCharacterStore} from "stores/character-store";
 import xmlToJson from "src/js/xmlToJson";
+import fifthEditionCharacterSheetConverter from "src/models/FifthEditionCharacterSheetConverter";
 import {storage, db} from "boot/firebase";
-
+import Character from "src/models/Character";
 
 
 export default defineComponent({
@@ -32,28 +33,59 @@ export default defineComponent({
       setTimeout(() => {this.saveIcon = false},500);
     },
 
-    parseFile(file){
-      let json = {};
+    readFile(file) {
+      return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
-        reader.onload = function (e) {
-          // load file to string
-          const xmlString = e.target.result;
+        reader.onload = (event) => resolve(event.target.result);
+        reader.onerror = (event) => reject(event.target.error);
 
-          // Parse the XML string
+        reader.readAsText(file)
+      });
+    },
+
+    parseXML(xmlString) {
+      return new Promise((resolve, reject) => {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(file, "text/xml");
+        const errorNode = xmlDoc.querySelector("parsererror");
+        if (errorNode) {
+          reject('Parser Error');
+        } else {
+          resolve(xmlDoc);
+        }
+      })
+    },
+
+    parseFile(file){
+      let json = {};
+      let character = {};
+
+      this.readFile(file)
+        .then((xmlString) => {
+          console.log('Reader Succeeded');
+
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+          const errorNode = xmlDoc.querySelector("parsererror");
+          if (errorNode) {
+            console.warn('Parser Error', errorNode)
+          } else {
+            console.log('Parser Succeed', xmlDoc)
+          }
 
-          // Grab the character attribute tag
-          const character = xmlDoc.getElementsByTagName("character")[0];
+          const characterElement = xmlDoc.getElementsByTagName('character')[0];
 
-          // Convert XML to JSON
-          json = xmlToJson(character);
+          json = xmlToJson(characterElement);
 
-          console.log(json);
-        }
+          character = new fifthEditionCharacterSheetConverter(xmlDoc);
 
-        reader.readAsText(file);
+
+          console.log('File Converted to JSON', character);
+        })
+        .catch((error) => {
+          console.error('Error reading file', error)
+        })
 
       // Convert JSON to a string with indentation for readability
       // const jsonString = JSON.stringify(json, null, 2);
@@ -63,6 +95,8 @@ export default defineComponent({
       // TODO: add user feedback; let them know if the file was successfully uploaded, or if it failed.
       // we set loading state
       this.uploadingState = true
+
+      // this.handleUserFile(file);
 
       this.parseFile(file);
 
@@ -92,6 +126,20 @@ export default defineComponent({
       //   .catch(error => {
       //     console.error('Error uploading file:', error);
       //   });
+    },
+    handleUserFile(file){
+      let characterJSON= {};
+      this.readFile(file)
+        .then((xmlString) => {
+          this.parseXML(xmlString)
+            .then((xmlDoc) => {
+              const characterElement = xmlDoc.getElementsByTagName('character')[0];
+              characterJSON = xmlToJson(characterElement);
+              console.log(characterJSON);
+            })
+            .catch((error) => {console.warn('Parser Error', error)})
+        })
+        .catch((error) => {console.error('Reader Error', error)})
     },
 
     cancelFileUpload(){
