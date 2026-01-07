@@ -41,7 +41,7 @@ export default function Character(id, data) {
     // armorClass: {
     get totalArmorClass() {},
     armor: data.armor ?? {score: 0, name: ''},
-    get ArmorBonus() {},
+    get armorBonus() {},
     shield: data.shield ?? {score: 0, name: ''},
     get shieldBonus() {},
     miscArmorBonus: data.miscArmorBonus ?? 0,
@@ -76,10 +76,10 @@ export default function Character(id, data) {
     // creationDate: data.creationDate ?? firebase.firestore.FieldValue.serverTimestamp(),
     // updateDate: firebase.firestore.FieldValue.serverTimestamp(),
     // proficienciesAndLanguages: data.proficienciesAndLanguages ?? {
-    profArmor: data.profArmor ?? [{}],
-    profWeapons: data.profWeapons ?? [{}],
-    profTools: data.profTools ?? [{}],
-    profLanguages: data.profLanguages ?? [ { name: 'Common', source: 'Players Handbook' } ],
+    armorProficiencies: data.armorProficiencies ?? [{}],
+    weaponProficiencies: data.weaponProficiencies ?? [{}],
+    toolProficiencies: data.toolProficiencies ?? [{}],
+    languagesKnown: data.languagesKnown ?? [ { name: 'Common', source: 'Players Handbook' } ],
     // },
     inventory: data.inventory ?? { money: { cp: 0, sp: 0, ep: 0, gp: 0, pp: 0 }, equipment: {}, backpack: {}, },
     notes: data.notes ?? { organizations: '', allies: '', enemies: '', backstory: '', others: '' },

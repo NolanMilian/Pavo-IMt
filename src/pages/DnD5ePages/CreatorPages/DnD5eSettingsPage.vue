@@ -1,10 +1,7 @@
 <script>
 import {defineComponent} from 'vue'
 import {useCharacterStore} from "stores/character-store";
-import xmlToJson from "src/js/xmlToJson";
 import fifthEditionCharacterSheetConverter from "src/models/FifthEditionCharacterSheetConverter";
-import {storage, db} from "boot/firebase";
-import Character from "src/models/Character";
 
 
 export default defineComponent({
@@ -16,26 +13,30 @@ export default defineComponent({
       activeCharacter: {},
       characterName: '',
       saveIcon: false,
-      uploadDialog: false,
+      importDialog: false,
       userUpload: null,
       uploadingState: false,
-
+      importErrorDialog: false,
+      importError: null,
     }
   },
   methods: {
-    update(){
+    update() {
       if (this.characterName)
         this.userStore.updateCharacterVariable(this.id, 'name', this.characterName);
       this.saveHandler();
     },
-    saveHandler(){
+    saveHandler() {
       this.saveIcon = true;
-      setTimeout(() => {this.saveIcon = false},500);
+      setTimeout(() => {
+        this.saveIcon = false
+      }, 500);
     },
 
     readFile(file) {
+      const reader = new FileReader();
+
       return new Promise((resolve, reject) => {
-        const reader = new FileReader();
 
         reader.onload = (event) => resolve(event.target.result);
         reader.onerror = (event) => reject(event.target.error);
@@ -45,20 +46,20 @@ export default defineComponent({
     },
 
     parseXML(xmlString) {
+      const parser = new DOMParser();
       return new Promise((resolve, reject) => {
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(file, "text/xml");
+        const xmlDoc = parser.parseFromString(xmlString, "text/xml");
         const errorNode = xmlDoc.querySelector("parsererror");
         if (errorNode) {
-          reject('Parser Error');
+          reject('Parser Error', errorNode);
         } else {
           resolve(xmlDoc);
         }
       })
     },
 
-    parseFile(file){
-      let json = {};
+    parseFile(file) {
+      // let json = {};
       let character = {};
 
       this.readFile(file)
@@ -74,12 +75,9 @@ export default defineComponent({
             console.log('Parser Succeed', xmlDoc)
           }
 
-          const characterElement = xmlDoc.getElementsByTagName('character')[0];
-
-          json = xmlToJson(characterElement);
-
           character = new fifthEditionCharacterSheetConverter(xmlDoc);
 
+          // character = new Character(this.id,character);
 
           console.log('File Converted to JSON', character);
         })
@@ -91,14 +89,13 @@ export default defineComponent({
       // const jsonString = JSON.stringify(json, null, 2);
       // console.log(jsonString);
     },
-    uploadFile(file){
+    uploadFile(file) {
       // TODO: add user feedback; let them know if the file was successfully uploaded, or if it failed.
       // we set loading state
       this.uploadingState = true
 
-      // this.handleUserFile(file);
-
-      this.parseFile(file);
+      this.handleFileImport(file);
+      // this.parseFile(file);
 
       this.uploadingState = false
 
@@ -127,24 +124,44 @@ export default defineComponent({
       //     console.error('Error uploading file:', error);
       //   });
     },
-    handleUserFile(file){
-      let characterJSON= {};
-      this.readFile(file)
-        .then((xmlString) => {
-          this.parseXML(xmlString)
-            .then((xmlDoc) => {
-              const characterElement = xmlDoc.getElementsByTagName('character')[0];
-              characterJSON = xmlToJson(characterElement);
-              console.log(characterJSON);
-            })
-            .catch((error) => {console.warn('Parser Error', error)})
-        })
-        .catch((error) => {console.error('Reader Error', error)})
+    async handleFileImport(file) {
+      let characterJSON = {};
+
+      this.uploadingState = true;
+
+      const xmlString = await this.readFile(file).catch((e) => {
+        console.warn('Reader Error', e);
+        this.abortFileUpload('Error reading file.');
+      });
+      const xmlDoc = await this.parseXML(xmlString).catch((e) => {
+        console.warn('Parser Error', e);
+        this.abortFileUpload('Error parsing file. ' +
+          '\nThis can happen if there are special characters in your Character Sheet such as "< > &"' +
+          '\nPlease ensure you don\'t have them in your characters file. Thank you!');
+      });
+
+      characterJSON = new fifthEditionCharacterSheetConverter(xmlDoc);
+
+      console.log(characterJSON);
+
+      setTimeout(() => {this.uploadingState = false}, 500)
     },
 
-    cancelFileUpload(){
+    abortFileUpload(error){
+      this.importError = error;
+      this.importErrorDialog = true;
+      this.cancelFileUpload();
+    },
+
+    cancelFileUpload() {
       this.userUpload = null;
-    }
+      this.uploadingState = false;
+    },
+
+    fileUploadError() {
+      this.uploadingState = false;
+      this.cancelFileUpload();
+    },
   },
   mounted() {
     // this.userStore.activateCharacter(this.id);
@@ -157,19 +174,21 @@ export default defineComponent({
 
 <template>
   <div class="flex flex-center column">
+    <!-- Character Import -->
     <div class="characterImport column text-center q-mb-lg">
       <span class="label text-h5 text-bold q-pb-sm">
         Have an existing character you want to upload?
       </span>
       <div class="">
-        <q-btn class="bg-primary text-white" icon="upload" @click="uploadDialog = true">Upload Character</q-btn>
+        <q-btn class="bg-primary text-white" icon="upload" @click="importDialog = true">Upload Character</q-btn>
       </div>
     </div>
+    <!-- character Name -->
     <div class="characterName column">
       <span class="label text-h6">
         <strong>Character Name</strong>
       </span>
-      <q-input standout debounce="500" v-model="characterName" @blur="update" style="width: 300px">
+      <q-input v-model="characterName" debounce="500" standout style="width: 300px" @blur="update">
         <template v-slot:append>
           <q-icon v-if="saveIcon" name="save"/>
         </template>
@@ -177,8 +196,8 @@ export default defineComponent({
     </div>
   </div>
 
-
-  <q-dialog v-model="uploadDialog" persistent>
+  <!-- Character Import Dialog -->
+  <q-dialog v-model="importDialog" persistent>
     <q-card style="min-width: 350px">
       <q-card-section>
         <div class="text-h6">Character Sheet</div>
@@ -186,15 +205,15 @@ export default defineComponent({
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-file filled bottom-slots v-model="userUpload" label="Label" counter max-files="1" accept=".json">
-<!--          <template v-slot:prepend>-->
-<!--            <q-icon name="cloud_upload" @click.stop.prevent />-->
-<!--          </template>-->
+        <q-file v-model="userUpload" accept=".json" bottom-slots counter filled label="Label" max-files="1">
+          <!--          <template v-slot:prepend>-->
+          <!--            <q-icon name="cloud_upload" @click.stop.prevent />-->
+          <!--          </template>-->
           <template v-slot:append>
-            <q-icon name="close" @click.stop.prevent="userUpload = null" class="cursor-pointer" />
+            <q-icon class="cursor-pointer" name="close" @click.stop.prevent="userUpload = null"/>
           </template>
           <template v-slot:loading>
-            <q-icon name="close" @click.stop.prevent="userUpload = null" class="cursor-pointer" />
+            <q-icon class="cursor-pointer" name="close" @click.stop.prevent="userUpload = null"/>
           </template>
 
           <template v-slot:hint>
@@ -204,22 +223,39 @@ export default defineComponent({
       </q-card-section>
 
       <q-card-actions align="right" class="text-primary">
-        <q-btn flat label="Cancel" v-close-popup @click="cancelFileUpload" />
-<!--        <q-btn flat label="Upload Character" @click="uploadFile(userUpload)" />-->
-        <q-btn flat :loading="uploadingState" color="primary" @click="uploadFile(userUpload)" label="Upload Character">
-<!--        Button-->
-        <template v-slot:loading>
-          <q-spinner-hourglass class="on-left" />
-          Uploading...
-        </template>
-      </q-btn>
+        <q-btn v-close-popup flat label="Cancel" @click="cancelFileUpload"/>
+        <!--        <q-btn flat label="Upload Character" @click="uploadFile(userUpload)" />-->
+        <q-btn :loading="uploadingState" color="primary" flat label="Upload Character"
+               @click="handleFileImport(userUpload)">
+          <!--        Button-->
+          <template v-slot:loading>
+            <q-spinner-hourglass class="on-left"/>
+            Uploading...
+          </template>
+        </q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+<!-- Error with File Upload -->
+  <q-dialog v-model="importErrorDialog">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6 text-negative">Alert</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        {{ importError }}
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="OK" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <style scoped>
-
 
 
 </style>
