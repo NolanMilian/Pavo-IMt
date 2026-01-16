@@ -47,9 +47,19 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     // deathSaveFailures: parseInt(character.getElementsByTagName("deathSaveFailures")[0].childNodes[0].nodeValue),
     // showDeathSaves: character.getElementsByTagName("showDeathSaves")[0].childNodes[0].nodeValue === 'true',
 
-    baseSpeed: parseInt(character.getElementsByTagName("baseSpeed")[0].childNodes[0].nodeValue),
-    speedMiscMod: parseInt(character.getElementsByTagName("speedMiscMod")[0].childNodes[0].nodeValue),
-    movementMode: character.getElementsByTagName("movementMode")[0].childNodes[0].nodeValue,
+    movementSpeed: {
+      activeMovementSpeed: 'walking',
+      walking: parseInt(character.getElementsByTagName("baseSpeed")[0].childNodes[0].nodeValue) + parseInt(character.getElementsByTagName("speedMiscMod")[0].childNodes[0].nodeValue),
+      walkingNotes: '',
+      climbing: 0,
+      climbingNotes: '',
+      swimming: 0,
+      flying: 0,
+      burrowing: 0
+    },
+    // baseSpeed: parseInt(character.getElementsByTagName("baseSpeed")[0].childNodes[0].nodeValue),
+    // speedMiscMod: parseInt(character.getElementsByTagName("speedMiscMod")[0].childNodes[0].nodeValue),
+    // movementMode: character.getElementsByTagName("movementMode")[0].childNodes[0].nodeValue,
 
     // raceCode: parseInt(character.getElementsByTagName("raceCode")[0].childNodes[0].nodeValue),
     // subraceCode: parseInt(character.getElementsByTagName("subraceCode")[0].childNodes[0].nodeValue),

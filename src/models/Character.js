@@ -51,10 +51,10 @@ export default function Character(id, data) {
       walking: {
         speed: 30,
         source: 'Players Handbook' },
-      climbing: {},
-      swimming: {},
-      flying: {},
-      burrowing: {}
+      climbing: 0,
+      swimming: 0,
+      flying: 0,
+      burrowing: 0
     },
     level: data.level ?? '',
     classData: data.classData ?? {
