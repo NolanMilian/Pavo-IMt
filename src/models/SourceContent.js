@@ -5,8 +5,11 @@ export default function SourceContent(id, data) {
     return {
         id: id,
         game: data.game,
+        sourcebookCode: data.sourcebookCode,
+        sourcebookTitle: data.sourcebookTitle,
         races: data.races,
         classes: data.classes,
-        backgrounds: data.backgrounds
+        backgrounds: data.backgrounds,
+        feats: data.feats
     }
 }
