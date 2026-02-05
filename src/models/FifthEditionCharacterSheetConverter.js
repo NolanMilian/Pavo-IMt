@@ -21,6 +21,31 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     return weapons;
   }
 
+  function parseClasses(classString) {
+    const classComponents = classString.split('⊠');
+    // const classCount = parseInt(classComponents);
+
+    let classes = [];
+    let classLevel = 0;
+
+    // for (let i = 0; i < classCount; i++) {
+    //   const className = classComponents[i].split('⊡')[0];
+    //   const subclassName = classComponents[i].split('⊡')[1];
+    //   const level = classComponents[i].split('⊡')[2];
+    //   classes.push([className, subclassName, level]);
+    // }
+
+    for (const value of classComponents) {
+      const className = value.split('⊡')[0];
+      const subclassName = value.split('⊡')[1];
+      const level = value.split('⊡')[2];
+      classLevel += value.split('⊡')[2];
+      classes.push([className, subclassName, level]);
+    }
+
+    return classes;
+  }
+
   return {
     gameType: 'dnd5e',
     initMiscMod: parseInt(character.getElementsByTagName("initMiscMod")[0].childNodes[0].nodeValue),
@@ -33,20 +58,30 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     armorBonus: parseInt(character.getElementsByTagName("armorBonus")[0].childNodes[0].nodeValue),
     shieldBonus: parseInt(character.getElementsByTagName("shieldBonus")[0].childNodes[0].nodeValue),
     miscArmorBonus: parseInt(character.getElementsByTagName("miscArmorBonus")[0].childNodes[0].nodeValue),
+    unarmoredDefense: parseInt(character.getElementsByTagName("unarmoredDefense")[0].childNodes[0].nodeValue),
 
     maxDex: parseInt(character.getElementsByTagName("maxDex")[0].childNodes[0].nodeValue),
 
     proficiencyBonus: parseInt(character.getElementsByTagName("proficiencyBonus")[0].childNodes[0].nodeValue),
-
     miscSpellAttackBonus: parseInt(character.getElementsByTagName("miscSpellAttackBonus")[0].childNodes[0].nodeValue),
     miscSpellDCBonus: parseInt(character.getElementsByTagName("miscSpellDCBonus")[0].childNodes[0].nodeValue),
+
     castingStatCode: parseInt(character.getElementsByTagName("castingStatCode")[0].childNodes[0].nodeValue),
 
-    offenseAbilityDisplay: parseInt(character.getElementsByTagName("offenseAbilityDisplay")[0].childNodes[0].nodeValue),
-    // deathSaveSuccesses: parseInt(character.getElementsByTagName("deathSaveSuccesses")[0].childNodes[0].nodeValue),
-    // deathSaveFailures: parseInt(character.getElementsByTagName("deathSaveFailures")[0].childNodes[0].nodeValue),
-    // showDeathSaves: character.getElementsByTagName("showDeathSaves")[0].childNodes[0].nodeValue === 'true',
+    // deathSaveSuccesses: parseInt(character.getElementsByTagName("deathSaveSuccesses")[0].childNodes[0].nodeValue), // not needed
+    // deathSaveFailures: parseInt(character.getElementsByTagName("deathSaveFailures")[0].childNodes[0].nodeValue), // not needed
+    // showDeathSaves: character.getElementsByTagName("showDeathSaves")[0].childNodes[0].nodeValue === 'true', // not needed
+    // raceCode: parseInt(character.getElementsByTagName("raceCode")[0].childNodes[0].nodeValue), // not used
+    // subraceCode: parseInt(character.getElementsByTagName("subraceCode")[0].childNodes[0].nodeValue), // not used
+    // backgroundCode: parseInt(character.getElementsByTagName("backgroundCode")[0].childNodes[0].nodeValue), // not used
+    // featCode: character.getElementsByTagName("featCode")[0].childNodes[0].nodeValue, // not used
+    // multiclassFeatures: character.getElementsByTagName("multiclassFeatures")[0].childNodes[0].nodeValue, // not used
 
+    offenseAbilityDisplay: parseInt(character.getElementsByTagName("offenseAbilityDisplay")[0].childNodes[0].nodeValue),
+
+    // baseSpeed: parseInt(character.getElementsByTagName("baseSpeed")[0].childNodes[0].nodeValue), // Implemented in movement speed
+    // speedMiscMod: parseInt(character.getElementsByTagName("speedMiscMod")[0].childNodes[0].nodeValue), // Implemented in movement speed
+    // movementMode: character.getElementsByTagName("movementMode")[0].childNodes[0].nodeValue, // Implemented in movement speed
     movementSpeed: {
       activeMovementSpeed: 'walking',
       walking: parseInt(character.getElementsByTagName("baseSpeed")[0].childNodes[0].nodeValue) + parseInt(character.getElementsByTagName("speedMiscMod")[0].childNodes[0].nodeValue),
@@ -54,24 +89,20 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
       climbing: 0,
       climbingNotes: '',
       swimming: 0,
+      swimmingNotes: '',
       flying: 0,
-      burrowing: 0
+      flyingNotes: '',
+      burrowing: 0,
+      burrowingNotes: ''
     },
-    // baseSpeed: parseInt(character.getElementsByTagName("baseSpeed")[0].childNodes[0].nodeValue),
-    // speedMiscMod: parseInt(character.getElementsByTagName("speedMiscMod")[0].childNodes[0].nodeValue),
-    // movementMode: character.getElementsByTagName("movementMode")[0].childNodes[0].nodeValue,
 
-    // raceCode: parseInt(character.getElementsByTagName("raceCode")[0].childNodes[0].nodeValue),
-    // subraceCode: parseInt(character.getElementsByTagName("subraceCode")[0].childNodes[0].nodeValue),
-    // backgroundCode: parseInt(character.getElementsByTagName("backgroundCode")[0].childNodes[0].nodeValue),
-
-    unarmoredDefense: parseInt(character.getElementsByTagName("unarmoredDefense")[0].childNodes[0].nodeValue),
-
-    // featCode: character.getElementsByTagName("featCode")[0].childNodes[0].nodeValue,
-
-    classData: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟⊟'),
-
-    // multiclassFeatures: character.getElementsByTagName("multiclassFeatures")[0].childNodes[0].nodeValue,
+    classData: parseClasses(character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[0]),
+    resources: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[2].split('⊠'),
+    feats: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[3].split('⊠'),
+    asi: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[4].split('⊡'),
+    race: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[7],
+    // raceLabel: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[8],
+    // background: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[9],
 
     weaponList: parseWeapons(character.getElementsByTagName("weaponList")[0].childNodes[0].nodeValue),
 
@@ -80,7 +111,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
 
     spellList: character.getElementsByTagName("spellList")[0].childNodes[0].nodeValue.split('⊠'),
 
-    // noteList: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠'),
+    // noteList: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠'), // Implemented in all options below
     features: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[0],
     armorProficiencies: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[1].split("\n"),
     weaponProficiencies: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[2].split("\n"),
@@ -88,8 +119,8 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     languagesKnown: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[4].split("\n"),
     equipment: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[5].split("\n"),
     notes: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[6],
-    class: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[7],
-    race: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[8],
+    classLabel: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[7],
+    raceLabel: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[8],
     background: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[9],
     alignment: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[10],
     personalityTraits: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[11],
