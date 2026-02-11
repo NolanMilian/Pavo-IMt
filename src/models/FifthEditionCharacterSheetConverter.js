@@ -21,12 +21,29 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     return weapons;
   }
 
+  function parseCharacterLevel(classString) {
+    const classComponents = classString.split('⊠');
+    // const classCount = parseInt(classComponents);
+
+    let classLevel = 0;
+
+    // for (let i = 0; i < classCount; i++) {
+    //   const classLevel = classComponents[i].split('⊡')[2];
+    // }
+
+    for (const value of classComponents) {
+      classLevel += value.split('⊡')[2];
+    }
+
+    return classLevel;
+  }
+
   function parseClasses(classString) {
     const classComponents = classString.split('⊠');
     // const classCount = parseInt(classComponents);
 
     let classes = [];
-    let classLevel = 0;
+    // let classLevel = 0;
 
     // for (let i = 0; i < classCount; i++) {
     //   const className = classComponents[i].split('⊡')[0];
@@ -39,7 +56,6 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
       const className = value.split('⊡')[0];
       const subclassName = value.split('⊡')[1];
       const level = value.split('⊡')[2];
-      classLevel += value.split('⊡')[2];
       classes.push([className, subclassName, level]);
     }
 
@@ -48,13 +64,16 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
 
   return {
     gameType: 'dnd5e',
+
     initMiscMod: parseInt(character.getElementsByTagName("initMiscMod")[0].childNodes[0].nodeValue),
     improvedInitiative: parseInt(character.getElementsByTagName("improvedInitiative")[0].childNodes[0].nodeValue),
+
     health: {
       current: parseInt(character.getElementsByTagName("currentHealth")[0].childNodes[0].nodeValue),
       max: parseInt(character.getElementsByTagName("maxHealth")[0].childNodes[0].nodeValue),
       temp: parseInt(character.getElementsByTagName("currentTempHP")[0].childNodes[0].nodeValue),
     },
+
     armorBonus: parseInt(character.getElementsByTagName("armorBonus")[0].childNodes[0].nodeValue),
     shieldBonus: parseInt(character.getElementsByTagName("shieldBonus")[0].childNodes[0].nodeValue),
     miscArmorBonus: parseInt(character.getElementsByTagName("miscArmorBonus")[0].childNodes[0].nodeValue),
@@ -97,6 +116,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     },
 
     classData: parseClasses(character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[0]),
+    characterLevel: parseCharacterLevel(character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[0]),
     resources: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[2].split('⊠'),
     feats: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[3].split('⊠'),
     asi: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[4].split('⊡'),
