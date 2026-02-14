@@ -1,6 +1,10 @@
 export default function fifthEditionCharacterSheetConverter(xmlData) {
   const character = xmlData.getElementsByTagName('character')[0];
 
+  function getData(tagNameString){
+    return character.getElementsByTagName(tagNameString)[0].childNodes[0].nodeValue
+  }
+
   function parseWeapons(weaponsString) {
     const weaponComponents = weaponsString.split('⊠');
     const weaponCount = parseInt(weaponComponents[0]);
@@ -62,10 +66,20 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     return classes;
   }
 
+  function parseAbilityScores(abilityScoresString){
+    const abilityScoresComponents = abilityScoresString.split('⊠');
+    let baseAbilityScores = {};
+    baseAbilityScores.str = abilityScoresComponents[0];
+    baseAbilityScores.dex = abilityScoresComponents[1];
+
+  }
+
+  function parseSkillInfo(skillInfoString){}
+
   return {
     gameType: 'dnd5e',
 
-    initMiscMod: parseInt(character.getElementsByTagName("initMiscMod")[0].childNodes[0].nodeValue),
+    initMiscMod: parseInt(getData("initMiscMod")),
     improvedInitiative: parseInt(character.getElementsByTagName("improvedInitiative")[0].childNodes[0].nodeValue),
 
     health: {
@@ -126,7 +140,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
 
     weaponList: parseWeapons(character.getElementsByTagName("weaponList")[0].childNodes[0].nodeValue),
 
-    abilityScores: character.getElementsByTagName("abilityScores")[0].childNodes[0].nodeValue.split('⊠'),
+    abilityScores: parseAbilityScores(character.getElementsByTagName("abilityScores")[0].childNodes[0].nodeValue),
     skillInfo: character.getElementsByTagName("skillInfo")[0].childNodes[0].nodeValue.split('⊠'),
 
     spellList: character.getElementsByTagName("spellList")[0].childNodes[0].nodeValue.split('⊠'),
