@@ -27,16 +27,10 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
 
   function parseCharacterLevel(classString) {
     const classComponents = classString.split('⊠');
-    // const classCount = parseInt(classComponents);
-
     let classLevel = 0;
 
-    // for (let i = 0; i < classCount; i++) {
-    //   const classLevel = classComponents[i].split('⊡')[2];
-    // }
-
     for (const value of classComponents) {
-      classLevel += value.split('⊡')[2];
+      classLevel += parseInt(value.split('⊡')[2]);
     }
 
     return classLevel;
@@ -44,23 +38,14 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
 
   function parseClasses(classString) {
     const classComponents = classString.split('⊠');
-    // const classCount = parseInt(classComponents);
 
     let classes = [];
-    // let classLevel = 0;
-
-    // for (let i = 0; i < classCount; i++) {
-    //   const className = classComponents[i].split('⊡')[0];
-    //   const subclassName = classComponents[i].split('⊡')[1];
-    //   const level = classComponents[i].split('⊡')[2];
-    //   classes.push([className, subclassName, level]);
-    // }
 
     for (const value of classComponents) {
       const className = value.split('⊡')[0];
       const subclassName = value.split('⊡')[1];
       const level = value.split('⊡')[2];
-      classes.push([className, subclassName, level]);
+      classes.push({className: className, subClassName: subclassName, level: parseInt(level)});
     }
 
     return classes;
@@ -68,10 +53,33 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
 
   function parseAbilityScores(abilityScoresString){
     const abilityScoresComponents = abilityScoresString.split('⊠');
-    let baseAbilityScores = {};
-    baseAbilityScores.str = abilityScoresComponents[0];
-    baseAbilityScores.dex = abilityScoresComponents[1];
+    return {
+      abilityScoresOverrides: {
+        str: parseInt(abilityScoresComponents[0]),
+        dex: parseInt(abilityScoresComponents[1]),
+        con: parseInt(abilityScoresComponents[2]),
+        int: parseInt(abilityScoresComponents[3]),
+        wis: parseInt(abilityScoresComponents[4]),
+        cha: parseInt(abilityScoresComponents[5])
+      },
+      abilitySaveProficiencies: {
+        str: abilityScoresComponents[6],
+        dex: abilityScoresComponents[7],
+        con: abilityScoresComponents[8],
+        int: abilityScoresComponents[9],
+        wis: abilityScoresComponents[10],
+        cha: abilityScoresComponents[11]
+      },
+      abilitySaveMisc: {
+        str: parseInt(abilityScoresComponents[12]),
+        dex: parseInt(abilityScoresComponents[13]),
+        con: parseInt(abilityScoresComponents[14]),
+        int: parseInt(abilityScoresComponents[15]),
+        wis: parseInt(abilityScoresComponents[16]),
+        cha: parseInt(abilityScoresComponents[17])
+      },
 
+    };
   }
 
   function parseSkillInfo(skillInfoString){}
@@ -80,44 +88,46 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     gameType: 'dnd5e',
 
     initMiscMod: parseInt(getData("initMiscMod")),
-    improvedInitiative: parseInt(character.getElementsByTagName("improvedInitiative")[0].childNodes[0].nodeValue),
+    improvedInitiative: parseInt(getData("improvedInitiative")),
 
     health: {
-      current: parseInt(character.getElementsByTagName("currentHealth")[0].childNodes[0].nodeValue),
-      max: parseInt(character.getElementsByTagName("maxHealth")[0].childNodes[0].nodeValue),
-      temp: parseInt(character.getElementsByTagName("currentTempHP")[0].childNodes[0].nodeValue),
+      max: parseInt(getData("maxHealth")),
+      current: parseInt(getData("maxHealth")),
+      // current: parseInt(getData("currentHealth")),
+      temp: 0,
+      // temp: parseInt(getData("currentTempHP")),
     },
 
-    armorBonus: parseInt(character.getElementsByTagName("armorBonus")[0].childNodes[0].nodeValue),
-    shieldBonus: parseInt(character.getElementsByTagName("shieldBonus")[0].childNodes[0].nodeValue),
-    miscArmorBonus: parseInt(character.getElementsByTagName("miscArmorBonus")[0].childNodes[0].nodeValue),
-    unarmoredDefense: parseInt(character.getElementsByTagName("unarmoredDefense")[0].childNodes[0].nodeValue),
+    armorBonus: parseInt(getData("armorBonus")),
+    shieldBonus: parseInt(getData("shieldBonus")),
+    miscArmorBonus: parseInt(getData("miscArmorBonus")),
+    unarmoredDefense: parseInt(getData("unarmoredDefense")),
 
-    maxDex: parseInt(character.getElementsByTagName("maxDex")[0].childNodes[0].nodeValue),
+    maxDex: parseInt(getData("maxDex")),
 
-    proficiencyBonus: parseInt(character.getElementsByTagName("proficiencyBonus")[0].childNodes[0].nodeValue),
-    miscSpellAttackBonus: parseInt(character.getElementsByTagName("miscSpellAttackBonus")[0].childNodes[0].nodeValue),
-    miscSpellDCBonus: parseInt(character.getElementsByTagName("miscSpellDCBonus")[0].childNodes[0].nodeValue),
+    proficiencyBonus: parseInt(getData("proficiencyBonus")),
+    miscSpellAttackBonus: parseInt(getData("miscSpellAttackBonus")),
+    miscSpellDCBonus: parseInt(getData("miscSpellDCBonus")),
 
-    castingStatCode: parseInt(character.getElementsByTagName("castingStatCode")[0].childNodes[0].nodeValue),
+    castingStatCode: parseInt(getData("castingStatCode")),
 
-    // deathSaveSuccesses: parseInt(character.getElementsByTagName("deathSaveSuccesses")[0].childNodes[0].nodeValue), // not needed
-    // deathSaveFailures: parseInt(character.getElementsByTagName("deathSaveFailures")[0].childNodes[0].nodeValue), // not needed
-    // showDeathSaves: character.getElementsByTagName("showDeathSaves")[0].childNodes[0].nodeValue === 'true', // not needed
-    // raceCode: parseInt(character.getElementsByTagName("raceCode")[0].childNodes[0].nodeValue), // not used
-    // subraceCode: parseInt(character.getElementsByTagName("subraceCode")[0].childNodes[0].nodeValue), // not used
-    // backgroundCode: parseInt(character.getElementsByTagName("backgroundCode")[0].childNodes[0].nodeValue), // not used
-    // featCode: character.getElementsByTagName("featCode")[0].childNodes[0].nodeValue, // not used
-    // multiclassFeatures: character.getElementsByTagName("multiclassFeatures")[0].childNodes[0].nodeValue, // not used
+    // deathSaveSuccesses: parseInt(getData("deathSaveSuccesses")), // not needed
+    // deathSaveFailures: parseInt(getData("deathSaveFailures")), // not needed
+    // showDeathSaves: getData("showDeathSaves") === 'true', // not needed
+    // raceCode: parseInt(getData("raceCode")), // not used
+    // subraceCode: parseInt(getData("subraceCode")), // not used
+    // backgroundCode: parseInt(getData("backgroundCode")), // not used
+    // featCode: getData("featCode"), // not used
+    // multiclassFeatures: getData("multiclassFeatures"), // not used
 
-    offenseAbilityDisplay: parseInt(character.getElementsByTagName("offenseAbilityDisplay")[0].childNodes[0].nodeValue),
+    offenseAbilityDisplay: parseInt(getData("offenseAbilityDisplay")),
 
-    // baseSpeed: parseInt(character.getElementsByTagName("baseSpeed")[0].childNodes[0].nodeValue), // Implemented in movement speed
-    // speedMiscMod: parseInt(character.getElementsByTagName("speedMiscMod")[0].childNodes[0].nodeValue), // Implemented in movement speed
-    // movementMode: character.getElementsByTagName("movementMode")[0].childNodes[0].nodeValue, // Implemented in movement speed
+    // baseSpeed: parseInt(getData("baseSpeed")), // Implemented in movement speed
+    // speedMiscMod: parseInt(getData("speedMiscMod")), // Implemented in movement speed
+    // movementMode: getData("movementMode"), // Implemented in movement speed
     movementSpeed: {
       activeMovementSpeed: 'walking',
-      walking: parseInt(character.getElementsByTagName("baseSpeed")[0].childNodes[0].nodeValue) + parseInt(character.getElementsByTagName("speedMiscMod")[0].childNodes[0].nodeValue),
+      walking: parseInt(getData("baseSpeed")) + parseInt(getData("speedMiscMod")),
       walkingNotes: '',
       climbing: 0,
       climbingNotes: '',
@@ -129,49 +139,49 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
       burrowingNotes: ''
     },
 
-    classData: parseClasses(character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[0]),
-    characterLevel: parseCharacterLevel(character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[0]),
-    resources: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[2].split('⊠'),
-    feats: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[3].split('⊠'),
-    asi: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[4].split('⊡'),
-    race: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[7],
-    // raceLabel: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[8],
-    // background: character.getElementsByTagName("classData")[0].childNodes[0].nodeValue.split('⊟')[9],
+    classData: parseClasses(getData("classData").split('⊟')[0]),
+    characterLevel: parseCharacterLevel(getData("classData").split('⊟')[0]),
+    resources: getData("classData").split('⊟')[2].split('⊠'),
+    feats: getData("classData").split('⊟')[3].split('⊠'),
+    asi: getData("classData").split('⊟')[4].split('⊡'),
+    race: getData("classData").split('⊟')[7],
+    // raceLabel: getData("classData").split('⊟')[8],
+    // background: getData("classData").split('⊟')[9],
 
-    weaponList: parseWeapons(character.getElementsByTagName("weaponList")[0].childNodes[0].nodeValue),
+    weaponList: parseWeapons(getData("weaponList")),
 
-    abilityScores: parseAbilityScores(character.getElementsByTagName("abilityScores")[0].childNodes[0].nodeValue),
-    skillInfo: character.getElementsByTagName("skillInfo")[0].childNodes[0].nodeValue.split('⊠'),
+    abilityScores: parseAbilityScores(getData("abilityScores")),
+    skillInfo: getData("skillInfo").split('⊠'),
 
-    spellList: character.getElementsByTagName("spellList")[0].childNodes[0].nodeValue.split('⊠'),
+    spellList: getData("spellList").split('⊠'),
 
-    // noteList: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠'), // Implemented in all options below
-    features: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[0],
-    armorProficiencies: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[1].split("\n"),
-    weaponProficiencies: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[2].split("\n"),
-    toolProficiencies: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[3].split("\n"),
-    languagesKnown: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[4].split("\n"),
-    equipment: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[5].split("\n"),
-    notes: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[6],
-    classLabel: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[7],
-    raceLabel: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[8],
-    background: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[9],
-    alignment: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[10],
-    personalityTraits: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[11],
-    ideals: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[12],
-    bonds: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[13],
-    flaws: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[14],
-    name: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[15],
-    classAgain: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[16],
-    cp: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[17],
-    sp: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[18],
-    ep: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[19],
-    gp: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[20],
-    pp: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[21],
-    experience: character.getElementsByTagName("noteList")[0].childNodes[0].nodeValue.split('⊠')[22],
+    // noteList: getData("noteList").split('⊠'), // Implemented in all options below
+    features: getData("noteList").split('⊠')[0],
+    armorProficiencies: getData("noteList").split('⊠')[1].split("\n"),
+    weaponProficiencies: getData("noteList").split('⊠')[2].split("\n"),
+    toolProficiencies: getData("noteList").split('⊠')[3].split("\n"),
+    languagesKnown: getData("noteList").split('⊠')[4].split("\n"),
+    equipment: getData("noteList").split('⊠')[5].split("\n"),
+    notes: getData("noteList").split('⊠')[6],
+    classLabel: getData("noteList").split('⊠')[7],
+    raceLabel: getData("noteList").split('⊠')[8],
+    background: getData("noteList").split('⊠')[9],
+    alignment: getData("noteList").split('⊠')[10],
+    personalityTraits: getData("noteList").split('⊠')[11],
+    ideals: getData("noteList").split('⊠')[12],
+    bonds: getData("noteList").split('⊠')[13],
+    flaws: getData("noteList").split('⊠')[14],
+    name: getData("noteList").split('⊠')[15],
+    classAgain: getData("noteList").split('⊠')[16],
+    cp: getData("noteList").split('⊠')[17],
+    sp: getData("noteList").split('⊠')[18],
+    ep: getData("noteList").split('⊠')[19],
+    gp: getData("noteList").split('⊠')[20],
+    pp: getData("noteList").split('⊠')[21],
+    experience: getData("noteList").split('⊠')[22],
 
-    hitDiceList: character.getElementsByTagName("hitDiceList")[0].childNodes[0].nodeValue.split('⊠'),
+    hitDiceList: getData("hitDiceList").split('⊠'),
 
-    classResource: character.getElementsByTagName("classResource")[0].childNodes[0].nodeValue.split('⊠'),
+    classResource: getData("classResource").split('⊠'),
   };
 }
