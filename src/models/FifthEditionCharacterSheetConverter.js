@@ -1,7 +1,7 @@
 export default function fifthEditionCharacterSheetConverter(xmlData) {
   const character = xmlData.getElementsByTagName('character')[0];
 
-  function getData(tagNameString){
+  function getData(tagNameString) {
     return character.getElementsByTagName(tagNameString)[0].childNodes[0].nodeValue
   }
 
@@ -51,7 +51,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     return classes;
   }
 
-  function parseAbilityScores(abilityScoresString){
+  function parseAbilityScores(abilityScoresString) {
     const abilityScoresComponents = abilityScoresString.split('⊠');
     return {
       abilityScoresOverrides: {
@@ -82,7 +82,8 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     };
   }
 
-  function parseSkillInfo(skillInfoString){}
+  function parseSkillInfo(skillInfoString) {
+  }
 
   return {
     gameType: 'dnd5e',
