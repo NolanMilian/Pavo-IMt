@@ -25,7 +25,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     return weapons;
   }
 
-  function parseCharacterLevel(classString) {
+  function getCharacterLevel(classString) {
     const classComponents = classString.split('⊠');
     let classLevel = 0;
 
@@ -63,12 +63,12 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
         cha: parseInt(abilityScoresComponents[5])
       },
       abilitySaveProficiencies: {
-        str: abilityScoresComponents[6],
-        dex: abilityScoresComponents[7],
-        con: abilityScoresComponents[8],
-        int: abilityScoresComponents[9],
-        wis: abilityScoresComponents[10],
-        cha: abilityScoresComponents[11]
+        str: Boolean(abilityScoresComponents[6]),
+        dex: Boolean(abilityScoresComponents[7]),
+        con: Boolean(abilityScoresComponents[8]),
+        int: Boolean(abilityScoresComponents[9]),
+        wis: Boolean(abilityScoresComponents[10]),
+        cha: Boolean(abilityScoresComponents[11])
       },
       abilitySaveMisc: {
         str: parseInt(abilityScoresComponents[12]),
@@ -83,6 +83,109 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
   }
 
   function parseSkillInfo(skillInfoString) {
+    const proficiencyComponents = skillInfoString.split('⊠');
+    return {
+      skillProficiencies: {
+        athletics: Boolean(proficiencyComponents[0]),
+        acrobatics: Boolean(proficiencyComponents[1]),
+        slightOfHand: Boolean(proficiencyComponents[2]),
+        stealth: Boolean(proficiencyComponents[3]),
+        arcana: Boolean(proficiencyComponents[4]),
+        history: Boolean(proficiencyComponents[5]),
+        investigation: Boolean(proficiencyComponents[6]),
+        nature: Boolean(proficiencyComponents[7]),
+        religion: Boolean(proficiencyComponents[8]),
+        animalHandling: Boolean(proficiencyComponents[9]),
+        insight: Boolean(proficiencyComponents[10]),
+        medicine: Boolean(proficiencyComponents[11]),
+        perception: Boolean(proficiencyComponents[12]),
+        survival: Boolean(proficiencyComponents[13]),
+        deception: Boolean(proficiencyComponents[14]),
+        intimidation: Boolean(proficiencyComponents[15]),
+        performance: Boolean(proficiencyComponents[16]),
+        persuasion: Boolean(proficiencyComponents[17])
+      },
+      skillDoubleProficiencies: {
+        athletics: Boolean(proficiencyComponents[38]),
+        acrobatics: Boolean(proficiencyComponents[39]),
+        slightOfHand: Boolean(proficiencyComponents[40]),
+        stealth: Boolean(proficiencyComponents[41]),
+        arcana: Boolean(proficiencyComponents[42]),
+        history: Boolean(proficiencyComponents[43]),
+        investigation: Boolean(proficiencyComponents[44]),
+        nature: Boolean(proficiencyComponents[45]),
+        religion: Boolean(proficiencyComponents[46]),
+        animalHandling: Boolean(proficiencyComponents[47]),
+        insight: Boolean(proficiencyComponents[48]),
+        medicine: Boolean(proficiencyComponents[49]),
+        perception: Boolean(proficiencyComponents[50]),
+        survival: Boolean(proficiencyComponents[51]),
+        deception: Boolean(proficiencyComponents[52]),
+        intimidation: Boolean(proficiencyComponents[53]),
+        performance: Boolean(proficiencyComponents[54]),
+        persuasion: Boolean(proficiencyComponents[55])
+      },
+      skillHalfProficiencies: {
+        athletics: Boolean(proficiencyComponents[57]),
+        acrobatics: Boolean(proficiencyComponents[58]),
+        slightOfHand: Boolean(proficiencyComponents[59]),
+        stealth: Boolean(proficiencyComponents[60]),
+        arcana: Boolean(proficiencyComponents[61]),
+        history: Boolean(proficiencyComponents[62]),
+        investigation: Boolean(proficiencyComponents[63]),
+        nature: Boolean(proficiencyComponents[64]),
+        religion: Boolean(proficiencyComponents[65]),
+        animalHandling: Boolean(proficiencyComponents[66]),
+        insight: Boolean(proficiencyComponents[67]),
+        medicine: Boolean(proficiencyComponents[68]),
+        perception: Boolean(proficiencyComponents[69]),
+        survival: Boolean(proficiencyComponents[70]),
+        deception: Boolean(proficiencyComponents[71]),
+        intimidation: Boolean(proficiencyComponents[72]),
+        performance: Boolean(proficiencyComponents[73]),
+        persuasion: Boolean(proficiencyComponents[74])
+      },
+      skillHalfProficienciesRoundedUp: {
+        athletics: Boolean(proficiencyComponents[76]),
+        acrobatics: Boolean(proficiencyComponents[77]),
+        slightOfHand: Boolean(proficiencyComponents[78]),
+        stealth: Boolean(proficiencyComponents[79]),
+        arcana: Boolean(proficiencyComponents[80]),
+        history: Boolean(proficiencyComponents[81]),
+        investigation: Boolean(proficiencyComponents[82]),
+        nature: Boolean(proficiencyComponents[83]),
+        religion: Boolean(proficiencyComponents[84]),
+        animalHandling: Boolean(proficiencyComponents[85]),
+        insight: Boolean(proficiencyComponents[86]),
+        medicine: Boolean(proficiencyComponents[87]),
+        perception: Boolean(proficiencyComponents[88]),
+        survival: Boolean(proficiencyComponents[89]),
+        deception: Boolean(proficiencyComponents[90]),
+        intimidation: Boolean(proficiencyComponents[91]),
+        performance: Boolean(proficiencyComponents[92]),
+        persuasion: Boolean(proficiencyComponents[93])
+      },
+      skillMiscBonus: {
+        athletics: parseInt(proficiencyComponents[19]),
+        acrobatics: parseInt(proficiencyComponents[20]),
+        slightOfHand: parseInt(proficiencyComponents[21]),
+        stealth: parseInt(proficiencyComponents[22]),
+        arcana: parseInt(proficiencyComponents[23]),
+        history: parseInt(proficiencyComponents[24]),
+        investigation: parseInt(proficiencyComponents[25]),
+        nature: parseInt(proficiencyComponents[26]),
+        religion: parseInt(proficiencyComponents[27]),
+        animalHandling: parseInt(proficiencyComponents[28]),
+        insight: parseInt(proficiencyComponents[29]),
+        medicine: parseInt(proficiencyComponents[30]),
+        perception: parseInt(proficiencyComponents[31]),
+        survival: parseInt(proficiencyComponents[32]),
+        deception: parseInt(proficiencyComponents[33]),
+        intimidation: parseInt(proficiencyComponents[34]),
+        performance: parseInt(proficiencyComponents[35]),
+        persuasion: parseInt(proficiencyComponents[36])
+      },
+    }
   }
 
   return {
@@ -141,7 +244,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     },
 
     classData: parseClasses(getData("classData").split('⊟')[0]),
-    characterLevel: parseCharacterLevel(getData("classData").split('⊟')[0]),
+    characterLevel: getCharacterLevel(getData("classData").split('⊟')[0]),
     resources: getData("classData").split('⊟')[2].split('⊠'),
     feats: getData("classData").split('⊟')[3].split('⊠'),
     asi: getData("classData").split('⊟')[4].split('⊡'),
@@ -152,7 +255,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     weaponList: parseWeapons(getData("weaponList")),
 
     abilityScores: parseAbilityScores(getData("abilityScores")),
-    skillInfo: getData("skillInfo").split('⊠'),
+    skillInfo: parseSkillInfo(getData("skillInfo")),
 
     spellList: getData("spellList").split('⊠'),
 
