@@ -13,7 +13,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
 
     for (let i = 0; i < weaponCount; i++) {
       const startIndex = i * 13 + 1;
-      const weaponType = weaponComponents[startIndex + 11];
+      const weaponType = weaponComponents[startIndex];
 
       if (!weapons[weaponType]) {
         weapons[weaponType] = [];
@@ -44,8 +44,8 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     for (const value of classComponents) {
       const className = value.split('⊡')[0];
       const subclassName = value.split('⊡')[1];
-      const level = value.split('⊡')[2];
-      classes.push({className: className, subClassName: subclassName, level: parseInt(level)});
+      const level = parseInt(value.split('⊡')[2]);
+      classes.push({className, subclassName, level});
     }
 
     return classes;
@@ -78,7 +78,6 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
         wis: parseInt(abilityScoresComponents[16]),
         cha: parseInt(abilityScoresComponents[17])
       },
-
     };
   }
 
@@ -188,6 +187,53 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     }
   }
 
+  function parseResources(resourceString){
+    const resourceGroups = resourceString.split('⊠');
+    let resources = [];
+
+    // for (let i = 0; i < resourceGroups.length; i++) {}
+    for (const resourceGroup of resourceGroups) {
+      const resource = resourceGroup.split('⊡');
+      const name = resource[0];
+      const displayName = resource[1];
+      const maxValue = parseInt(resource[2]);
+      // const currentValue = parseInt(resource[3]);
+      const dieSize = parseInt(resource[4]);
+      const spendable = parseInt(resource[5]); // spendable == 1, static == 2
+      const reset = parseInt(resource[1]);
+      const regainShort = parseInt(resource[6]);
+      const regainLong = parseInt(resource[7]);
+      resources.push({name,displayName,maxValue,dieSize,spendable,reset,regainShort,regainLong});
+    }
+
+    return resources;
+  }
+
+  function parseHitDice(hitDiceString){
+    const  hitDiceComponents = hitDiceString.split('⊠');
+    const diceSetCount = parseInt(hitDiceComponents[0]);
+
+    let hitDiceArray = [];
+
+    for (const hitDiceComponent of hitDiceComponents) {
+      hitDiceArray.push(parseInt(hitDiceComponent));
+    }
+
+    let hitDiceSets = {};
+
+    for (let i = 0; i < diceSetCount; i++) {
+      const startIndex = i * 3 + 1;
+      const diceType = hitDiceArray[startIndex + 1];
+
+      if (!hitDiceSets[diceType]){
+        hitDiceSets[diceType] = [];
+      }
+
+      hitDiceSets[diceType].push(hitDiceArray.slice(startIndex, startIndex + 3))
+    }
+    return hitDiceSets;
+  }
+
   return {
     gameType: 'dnd5e',
 
@@ -244,6 +290,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     },
 
     classData: parseClasses(getData("classData").split('⊟')[0]),
+
     characterLevel: getCharacterLevel(getData("classData").split('⊟')[0]),
     resources: getData("classData").split('⊟')[2].split('⊠'),
     feats: getData("classData").split('⊟')[3].split('⊠'),
@@ -260,31 +307,62 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     spellList: getData("spellList").split('⊠'),
 
     // noteList: getData("noteList").split('⊠'), // Implemented in all options below
+    description: {
+      languagesKnown: getData("noteList").split('⊠')[4].split("\n"),
+      background: getData("noteList").split('⊠')[9],
+      characterDetails: {
+        alignment: getData("noteList").split('⊠')[10],
+        faith: '',
+        lifestyle: ''
+      },
+      physicalCharacteristics: {
+        gender: '',
+        eyes: '',
+        size: 'Medium',
+        height: '',
+        faith: '',
+        hair: '',
+        skin: '',
+        age: 0,
+        weight: 0
+      },
+      personalCharacteristics: {
+        personalityTraits: getData("noteList").split('⊠')[11],
+        ideals: getData("noteList").split('⊠')[12],
+        bonds: getData("noteList").split('⊠')[13],
+        flaws: getData("noteList").split('⊠')[14],
+      },
+      notes: {
+        organizations: '',
+        allies: '',
+        enemies: '',
+        backstory: '',
+        other: getData("noteList").split('⊠')[6].split('\n').join()
+      },
+    },
+
     features: getData("noteList").split('⊠')[0],
     armorProficiencies: getData("noteList").split('⊠')[1].split("\n"),
     weaponProficiencies: getData("noteList").split('⊠')[2].split("\n"),
     toolProficiencies: getData("noteList").split('⊠')[3].split("\n"),
-    languagesKnown: getData("noteList").split('⊠')[4].split("\n"),
     equipment: getData("noteList").split('⊠')[5].split("\n"),
-    notes: getData("noteList").split('⊠')[6],
     classLabel: getData("noteList").split('⊠')[7],
     raceLabel: getData("noteList").split('⊠')[8],
-    background: getData("noteList").split('⊠')[9],
-    alignment: getData("noteList").split('⊠')[10],
-    personalityTraits: getData("noteList").split('⊠')[11],
-    ideals: getData("noteList").split('⊠')[12],
-    bonds: getData("noteList").split('⊠')[13],
-    flaws: getData("noteList").split('⊠')[14],
+
+
     name: getData("noteList").split('⊠')[15],
-    classAgain: getData("noteList").split('⊠')[16],
-    cp: getData("noteList").split('⊠')[17],
-    sp: getData("noteList").split('⊠')[18],
-    ep: getData("noteList").split('⊠')[19],
-    gp: getData("noteList").split('⊠')[20],
-    pp: getData("noteList").split('⊠')[21],
+    classCustom: getData("noteList").split('⊠')[16], // class user filled
+    money: {
+      cp: parseInt(getData("noteList").split('⊠')[17]),
+      sp: parseInt(getData("noteList").split('⊠')[18]),
+      ep: parseInt(getData("noteList").split('⊠')[19]),
+      gp: parseInt(getData("noteList").split('⊠')[20]),
+      pp: parseInt(getData("noteList").split('⊠')[21])
+    },
+
     experience: getData("noteList").split('⊠')[22],
 
-    hitDiceList: getData("hitDiceList").split('⊠'),
+    hitDiceList: parseHitDice(getData("hitDiceList")),
 
     classResource: getData("classResource").split('⊠'),
   };

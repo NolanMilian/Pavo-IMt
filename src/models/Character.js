@@ -67,12 +67,6 @@ export default function Character(id, data) {
         },
       ],
     },
-    get characterLevel() {
-      return this.classData.classes.length;
-    },
-    get classLevels(){
-      return null;
-    },
     // creationDate: data.creationDate ?? firebase.firestore.FieldValue.serverTimestamp(),
     // updateDate: firebase.firestore.FieldValue.serverTimestamp(),
     // proficienciesAndLanguages: data.proficienciesAndLanguages ?? {
@@ -94,12 +88,10 @@ export default function Character(id, data) {
       flaws: '',
       appearance: '',
       characteristics: {
-        alignment: '',
         gender: '',
         eyes: '',
         size: 'Medium',
         height: '',
-        faith: '',
         hair: '',
         skin: '',
         age: 0,
