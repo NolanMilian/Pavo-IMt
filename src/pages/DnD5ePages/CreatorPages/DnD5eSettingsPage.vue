@@ -18,6 +18,8 @@ export default defineComponent({
       uploadingState: false,
       importErrorDialog: false,
       importError: null,
+      infoDialog: false,
+      importSuccessDialog: false,
     }
   },
   methods: {
@@ -26,6 +28,7 @@ export default defineComponent({
         this.userStore.updateCharacterVariable(this.id, 'name', this.characterName);
       this.saveHandler();
     },
+
     saveHandler() {
       this.saveIcon = true;
       setTimeout(() => {
@@ -58,37 +61,38 @@ export default defineComponent({
       })
     },
 
-    parseFile(file) {
-      // let json = {};
-      let character = {};
+    // parseFile(file) {
+    //   // let json = {};
+    //   let character = {};
+    //
+    //   this.readFile(file)
+    //     .then((xmlString) => {
+    //       console.log('Reader Succeeded');
+    //
+    //       const parser = new DOMParser();
+    //       const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+    //       const errorNode = xmlDoc.querySelector("parsererror");
+    //       if (errorNode) {
+    //         console.warn('Parser Error', errorNode)
+    //       } else {
+    //         console.log('Parser Succeed', xmlDoc)
+    //       }
+    //
+    //       character = new fifthEditionCharacterSheetConverter(xmlDoc);
+    //
+    //       // character = new Character(this.id,character);
+    //
+    //       console.log('File Converted to JSON', character);
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error reading file', error)
+    //     })
+    //
+    //   // Convert JSON to a string with indentation for readability
+    //   // const jsonString = JSON.stringify(json, null, 2);
+    //   // console.log(jsonString);
+    // },
 
-      this.readFile(file)
-        .then((xmlString) => {
-          console.log('Reader Succeeded');
-
-          const parser = new DOMParser();
-          const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-          const errorNode = xmlDoc.querySelector("parsererror");
-          if (errorNode) {
-            console.warn('Parser Error', errorNode)
-          } else {
-            console.log('Parser Succeed', xmlDoc)
-          }
-
-          character = new fifthEditionCharacterSheetConverter(xmlDoc);
-
-          // character = new Character(this.id,character);
-
-          console.log('File Converted to JSON', character);
-        })
-        .catch((error) => {
-          console.error('Error reading file', error)
-        })
-
-      // Convert JSON to a string with indentation for readability
-      // const jsonString = JSON.stringify(json, null, 2);
-      // console.log(jsonString);
-    },
     uploadFile(file) {
       // TODO: add user feedback; let them know if the file was successfully uploaded, or if it failed.
       // we set loading state
@@ -129,22 +133,29 @@ export default defineComponent({
 
       this.uploadingState = true;
 
-      const xmlString = await this.readFile(file).catch((e) => {
-        console.warn('Reader Error', e);
-        this.abortFileUpload('Error reading file.');
-      });
-      const xmlDoc = await this.parseXML(xmlString).catch((e) => {
-        console.warn('Parser Error', e);
-        this.abortFileUpload('Error parsing file. ' +
-          '\nThis can happen if there are special characters in your Character Sheet such as "< > &"' +
-          '\nPlease ensure you don\'t have them in your characters file. Thank you!');
-      });
+      if (!file) {
+        this.abortFileUpload('No file present, please choose a file to import.')
+      } else {
 
-      characterJSON = new fifthEditionCharacterSheetConverter(xmlDoc);
+        const xmlString = await this.readFile(file).catch((e) => {
+          console.warn('Reader Error', e);
+          this.abortFileUpload('Error reading file.');
+        });
 
-      console.log(characterJSON);
+        const xmlDoc = await this.parseXML(xmlString).catch((e) => {
+          console.warn('Parser Error', e);
+          this.abortFileUpload('Error parsing file. ' +
+            '\nThis can happen if there are special characters in your Character Sheet such as "< > &"' +
+            '\nPlease ensure you don\'t have them in your characters file. Thank you!');
+        });
 
-      setTimeout(() => {this.uploadingState = false}, 500)
+        characterJSON = new fifthEditionCharacterSheetConverter(xmlDoc);
+
+        console.log(characterJSON);
+
+        setTimeout(() => {this.uploadingState = false; this.importSuccessDialog = true;}, 500)
+
+      }
     },
 
     abortFileUpload(error){
@@ -200,12 +211,15 @@ export default defineComponent({
   <q-dialog v-model="importDialog" persistent>
     <q-card style="min-width: 350px">
       <q-card-section>
-        <div class="text-h6">Character Sheet</div>
-        <div class="">Currently we only support Fifth Edition Character Sheet</div>
+        <div class="text-h6">Character Sheet Import</div>
+        <div class="">
+          <q-btn flat round dense icon="info" @click="infoDialog = true"/>
+          Currently we only import characters from the app <span class="text-green text-weight-bold no-wrap text-italic">Fifth Edition Character Sheet</span> with some limitations.
+        </div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-file v-model="userUpload" accept=".json" bottom-slots counter filled label="Label" max-files="1">
+        <q-file v-model="userUpload" accept=".json" bottom-slots counter filled label="character_file.json" max-files="1">
           <!--          <template v-slot:prepend>-->
           <!--            <q-icon name="cloud_upload" @click.stop.prevent />-->
           <!--          </template>-->
@@ -217,7 +231,7 @@ export default defineComponent({
           </template>
 
           <template v-slot:hint>
-            Field hint
+            Only .JSON files are accepted
           </template>
         </q-file>
       </q-card-section>
@@ -225,8 +239,7 @@ export default defineComponent({
       <q-card-actions align="right" class="text-primary">
         <q-btn v-close-popup flat label="Cancel" @click="cancelFileUpload"/>
         <!--        <q-btn flat label="Upload Character" @click="uploadFile(userUpload)" />-->
-        <q-btn :loading="uploadingState" color="primary" flat label="Upload Character"
-               @click="handleFileImport(userUpload)">
+        <q-btn :loading="uploadingState" color="primary" flat label="Upload Character" @click="handleFileImport(userUpload)">
           <!--        Button-->
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
@@ -237,7 +250,7 @@ export default defineComponent({
     </q-card>
   </q-dialog>
 
-<!-- Error with File Upload -->
+<!-- Error Dialog -->
   <q-dialog v-model="importErrorDialog">
     <q-card>
       <q-card-section>
@@ -246,6 +259,61 @@ export default defineComponent({
 
       <q-card-section class="q-pt-none">
         {{ importError }}
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="OK" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+<!-- Success Dialog -->
+  <q-dialog v-model="importSuccessDialog">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6 text-positive">Success!</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        Your character was successfully imported!
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="OK" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+
+<!--  Info dialog about character file upload -->
+  <q-dialog v-model="infoDialog">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">Formatting For Success</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        <div class="">
+          Please ensure your character is free of the following symbols: <span class="no-wrap text-weight-bold">&lt; &gt; &amp;</span><br>
+          These symbols are used in parsing the file and will result in an error if used.<br>
+          Places to check for these symbols would be in the notes section of the app.<br>
+          <br>
+          When formatting the different Proficiencies(Armor, Weapon, Tool), Languages Known, and your Equipment on the <strong>Notes Page</strong>;
+          it is best to leave one item per line, without commas. (Items with commas may not import properly)
+        </div>
+      </q-card-section>
+
+      <q-card-section>
+        <div class="text-h6 text-negative">Limitations</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        <div class="">
+          The following items from Fifth Edition Character Sheet currently either can't be imported, or are imported in a limited capacity. <br>
+          <ul>
+            <li>Weapons</li>
+            <li>Spells</li>
+          </ul>
+        </div>
       </q-card-section>
 
       <q-card-actions align="right">

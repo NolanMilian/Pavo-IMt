@@ -8,6 +8,7 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
   function parseWeapons(weaponsString) {
     const weaponComponents = weaponsString.split('⊠');
     const weaponCount = parseInt(weaponComponents[0]);
+    // TODO: fix weapon parsing. most weapon arrays are 13 elements long, but if custom they can be longer.
 
     let weapons = {};
 
@@ -219,22 +220,21 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
       hitDiceArray.push(parseInt(hitDiceComponent));
     }
 
-    let hitDiceSets = {};
+    let hitDiceSets = [];
 
     for (let i = 0; i < diceSetCount; i++) {
       const startIndex = i * 3 + 1;
       const diceType = hitDiceArray[startIndex + 1];
 
-      if (!hitDiceSets[diceType]) {
-        hitDiceSets[diceType] = [];
-      }
+      // if (!hitDiceSets[diceType]) {
+      //   hitDiceSets[diceType] = [];
+      // }
 
       let numberOfDice = hitDiceArray[startIndex];
       let dieSize = diceType;
       let diceRemaining = numberOfDice;
 
-      // hitDiceSets[diceType].push(hitDiceArray.slice(startIndex, startIndex + 3))
-      hitDiceSets[diceType].push({numberOfDice, dieSize, diceRemaining})
+      hitDiceSets.push({numberOfDice, dieSize, diceRemaining})
     }
     return hitDiceSets;
   }
@@ -300,21 +300,29 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
     resources: getData("classData").split('⊟')[2].split('⊠'),
     feats: getData("classData").split('⊟')[3].split('⊠'),
     asi: getData("classData").split('⊟')[4].split('⊡'),
-    race: getData("classData").split('⊟')[7],
-    // raceLabel: getData("classData").split('⊟')[8],
-    // background: getData("classData").split('⊟')[9],
-
-    weaponList: parseWeapons(getData("weaponList")),
 
     abilityScores: parseAbilityScores(getData("abilityScores")),
-    skillInfo: parseSkillInfo(getData("skillInfo")),
 
+    // weaponList: parseWeapons(getData("weaponList")), // TODO: fix weapon parsing
+
+    skillInfo: parseSkillInfo(getData("skillInfo")),
     spellList: getData("spellList").split('⊠'),
+
+
+    // classDataBackground: getData("classData").split('⊟')[9],
+    // notesListBackground: getData("noteList").split('⊠')[9],
+    get background() {return getData("classData").split('⊟')[9] === 'Custom' ? getData("noteList").split('⊠')[9] : getData("classData").split('⊟')[9]},
+
+    race: getData("classData").split('⊟')[7],
+    // classDataRaceLabel: getData("classData").split('⊟')[8],
+    // notesListRaceLabel: getData("noteList").split('⊠')[8],
+    get raceLabel() {return getData("classData").split('⊟')[8] === 'Custom Lineage' ? getData("noteList").split('⊠')[8] : getData("classData").split('⊟')[8]},
+
 
     // noteList: getData("noteList").split('⊠'), // Implemented in all options below
     description: {
       languagesKnown: getData("noteList").split('⊠')[4].split("\n"),
-      background: getData("noteList").split('⊠')[9],
+
       characterDetails: {
         alignment: getData("noteList").split('⊠')[10],
         faith: '',
@@ -346,17 +354,16 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
       },
     },
 
-    name: getData("noteList").split('⊠')[15],
     features: getData("noteList").split('⊠')[0],
-    armorProficiencies: getData("noteList").split('⊠')[1].split("\n"),
-    weaponProficiencies: getData("noteList").split('⊠')[2].split("\n"),
-    toolProficiencies: getData("noteList").split('⊠')[3].split("\n"),
-    equipment: getData("noteList").split('⊠')[5].split("\n"),
-    classLabel: getData("noteList").split('⊠')[7],
+    armorProficiencies: getData("noteList").split('⊠')[1].split("\n").filter(el => el),
+    weaponProficiencies: getData("noteList").split('⊠')[2].split("\n").filter(el => el),
+    toolProficiencies: getData("noteList").split('⊠')[3].split("\n").filter(el => el),
+    equipment: getData("noteList").split('⊠')[5].split("\n").filter(el => el),
+    classCustom: getData("noteList").split('⊠')[7], // User filled class
 
 
-    raceLabel: getData("noteList").split('⊠')[8],
-    classCustom: getData("noteList").split('⊠')[16], // class user filled
+    name: getData("noteList").split('⊠')[15],
+    classLabel: getData("noteList").split('⊠')[16], // class user filled
     money: {
       cp: parseInt(getData("noteList").split('⊠')[17]),
       sp: parseInt(getData("noteList").split('⊠')[18]),
