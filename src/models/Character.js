@@ -9,6 +9,7 @@ export default function Character(id, data) {
     gameType: data.gameType ?? '',
     campaignName: data.campaignName ?? '',
     favorite: data.favorite ?? false,
+    avatarURL: null,
     name: data.name ?? '',
     race: data.race ?? '',
     inspiration: false,

@@ -61,38 +61,6 @@ export default defineComponent({
       })
     },
 
-    // parseFile(file) {
-    //   // let json = {};
-    //   let character = {};
-    //
-    //   this.readFile(file)
-    //     .then((xmlString) => {
-    //       console.log('Reader Succeeded');
-    //
-    //       const parser = new DOMParser();
-    //       const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-    //       const errorNode = xmlDoc.querySelector("parsererror");
-    //       if (errorNode) {
-    //         console.warn('Parser Error', errorNode)
-    //       } else {
-    //         console.log('Parser Succeed', xmlDoc)
-    //       }
-    //
-    //       character = new fifthEditionCharacterSheetConverter(xmlDoc);
-    //
-    //       // character = new Character(this.id,character);
-    //
-    //       console.log('File Converted to JSON', character);
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error reading file', error)
-    //     })
-    //
-    //   // Convert JSON to a string with indentation for readability
-    //   // const jsonString = JSON.stringify(json, null, 2);
-    //   // console.log(jsonString);
-    // },
-
     uploadFile(file) {
       // TODO: add user feedback; let them know if the file was successfully uploaded, or if it failed.
       // we set loading state
@@ -134,17 +102,17 @@ export default defineComponent({
       this.uploadingState = true;
 
       if (!file) {
-        this.abortFileUpload('No file present, please choose a file to import.')
+        this.fileImportError('No file present, please choose a file to import.')
       } else {
 
         const xmlString = await this.readFile(file).catch((e) => {
           console.warn('Reader Error', e);
-          this.abortFileUpload('Error reading file.');
+          this.fileImportError('Error reading file.');
         });
 
         const xmlDoc = await this.parseXML(xmlString).catch((e) => {
           console.warn('Parser Error', e);
-          this.abortFileUpload('Error parsing file. ' +
+          this.fileImportError('Error parsing file. ' +
             '\nThis can happen if there are special characters in your Character Sheet such as "< > &"' +
             '\nPlease ensure you don\'t have them in your characters file. Thank you!');
         });
@@ -158,7 +126,7 @@ export default defineComponent({
       }
     },
 
-    abortFileUpload(error){
+    fileImportError(error) {
       this.importError = error;
       this.importErrorDialog = true;
       this.cancelFileUpload();
@@ -167,11 +135,6 @@ export default defineComponent({
     cancelFileUpload() {
       this.userUpload = null;
       this.uploadingState = false;
-    },
-
-    fileUploadError() {
-      this.uploadingState = false;
-      this.cancelFileUpload();
     },
   },
   mounted() {

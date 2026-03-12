@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { db } from "boot/firebase";
+import { db, storage } from "boot/firebase";
 import Character from "src/models/Character";
 import {useAuthStore} from "stores/auth-store";
 
@@ -79,6 +79,8 @@ export const useCharacterStore = defineStore('character', {
       })
     },
 
+    //TODO: make update and toggle both use the characterId instead of the whole object
+
     updateCharacterVariable(characterId, variable, data) {
       // let characterId;
       // if (character.id !== null)
@@ -106,7 +108,36 @@ export const useCharacterStore = defineStore('character', {
         .catch((error) => console.error(`Error toggling ${variable} in document`, error))
     },
 
-    
+    uploadCharacterAvatar(characterId, file) {
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(file.name);
+      let avatarURL = null;
+
+      fileRef.put(file)
+        .then(snapshot => {
+          // Get the download URL
+          snapshot.ref.getDownloadURL()
+            .then(downloadURL => {
+              // Store the downloadURL in Firestore or perform any other action
+              db.collection('uploads').add({ downloadURL });
+              avatarURL = downloadURL;
+            });
+        })
+        .then(
+          setTimeout(() => {
+            // we're done, we reset loading state
+            this.uploadingState = false
+            this.uploadDialog = false
+          }, 1000)
+        )
+        .catch(error => {
+          console.error('Error uploading file:', error);
+        });
+
+      return avatarURL;
+    },
+
+
   },
 
   getters: {

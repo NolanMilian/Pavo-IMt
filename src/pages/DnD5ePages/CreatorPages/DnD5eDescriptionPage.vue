@@ -1,6 +1,8 @@
 <script>
 import {defineComponent} from 'vue'
 import {useCharacterStore} from "stores/character-store";
+import fifthEditionCharacterSheetConverter from "src/models/FifthEditionCharacterSheetConverter";
+import {db, storage} from "boot/firebase";
 
 export default defineComponent({
   name: "DnD5eDescriptionPage",
@@ -9,6 +11,9 @@ export default defineComponent({
     return {
       userStore: useCharacterStore(),
       activeCharacter: {},
+      avatarDialog: false,
+      userUpload: null,
+      uploadingState: false,
       characterName: '',
       saveIcon: false,
       alignmentModel: 'Choose an Option',
@@ -81,7 +86,6 @@ export default defineComponent({
       if (this.characterName)
         this.userStore.updateCharacterVariable(this.id, 'name', this.characterName);
       this.saveHandler();
-
     },
     saveHandler() {
       this.saveIcon = true;
@@ -101,6 +105,48 @@ export default defineComponent({
         this.options = this.stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
       })
     },
+
+    handleFileUpload(file) {
+      this.uploadingState = true;
+
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(file.name);
+
+      fileRef.put(file)
+        .then(snapshot => {
+          // Get the download URL
+          snapshot.ref.getDownloadURL()
+            .then(downloadURL => {
+            // Store the downloadURL in Firestore or perform any other action
+            db.collection('uploads').add({ downloadURL });
+          });
+        })
+        .then(
+          setTimeout(() => {
+            // we're done, we reset loading state
+            this.uploadingState = false
+            this.uploadDialog = false
+          }, 1000)
+        )
+        .catch(error => {
+          console.error('Error uploading file:', error);
+        });
+
+
+      setTimeout(() => {this.uploadingState = false; this.importSuccessDialog = true;}, 500)
+    },
+
+    fileUploadError(error) {
+      this.importError = error;
+      this.importErrorDialog = true;
+      this.cancelFileUpload();
+    },
+
+    cancelFileUpload() {
+      this.userUpload = null;
+      this.uploadingState = false;
+    },
+
   },
   computed: {
     alignmentDesc() {
@@ -131,19 +177,39 @@ export default defineComponent({
 <template>
   <div class="flex flex-center">
     <div class="characterName column q-gutter-md">
-      <div class="q-mx-auto q-mb-lg">
+
+<!--      Character Name and Avatar-->
+      <div class="characterNameAndAvatar q-mx-auto q-mb-lg row q-gutter-md items-end">
+        <div class="characterAvatar">
+          <q-btn square dense flat @click="avatarDialog = true">
+            <q-avatar square color="grey" text-color="white" size="88px">
+              <img v-if="activeCharacter.avatarURL" :src="activeCharacter.avatarURL">
+              <q-icon v-else name="add"/>
+            </q-avatar>
+          </q-btn>
+        </div>
+        <div class="characterName">
         <span class="label text-h6">
           <strong>Character Name</strong>
         </span>
-        <q-input v-model="characterName" debounce="500" standout style="width: 300px" @blur="update">
-          <template v-slot:append>
-            <q-icon v-if="saveIcon" name="save"/>
-          </template>
-        </q-input>
+          <q-input v-model="characterName" debounce="500" standout style="width: 300px" @blur="update">
+            <template v-slot:append>
+              <q-icon v-if="saveIcon" name="save"/>
+            </template>
+          </q-input>
+        </div>
       </div>
+
+<!--      Race Extras-->
+
+<!--      Background-->
+      <div class="">
+
+      </div>
+
 <!--Character Details-->
       <q-list bordered class="q-pt-sm q-px-sm">
-        <div class="descriptions ">
+        <div class="characterDetails">
           <q-expansion-item
             caption="Alignment - Faith - Lifestyle"
             caption-lines="1"
@@ -191,9 +257,10 @@ export default defineComponent({
           </q-expansion-item>
         </div>
       </q-list>
+
 <!--Physical Characteristics-->
       <q-list bordered class="q-pt-sm q-px-sm">
-        <div class="characteristics">
+        <div class="PhysicalCharacteristics">
           <q-expansion-item
             caption="Hair - Skin - Eyes - Height - Weight - Age - Gender"
             caption-lines="1"
@@ -285,9 +352,10 @@ export default defineComponent({
           </q-expansion-item>
         </div>
       </q-list>
+
 <!--Personal Characteristics-->
       <q-list bordered class="q-pt-sm q-px-sm">
-        <div class="descriptions ">
+        <div class="personalCharacteristics">
           <q-expansion-item
             caption="Personality - Ideals - Bonds - Flaws"
             caption-lines="1"
@@ -299,45 +367,49 @@ export default defineComponent({
           >
             <q-card>
               <q-card-section>
-                <div class="alignment">
-                  <div class="label">Alignment</div>
-                  <q-select
-                    v-model="alignmentModel"
-                    :options="alignmentOptions"
-                    class=""
-                    outlined
-                  />
-                  {{ }}
-                </div>
-              </q-card-section>
-              <q-card-section>
-                <div class="faith">
-                  <div class="label">Faith</div>
-                  <q-input v-model="faithModel"
+                <div class="personality">
+                  <div class="label">Personality</div>
+                  <q-input v-model="personalityModel"
                            class=""
                            outlined
                   />
                 </div>
               </q-card-section>
               <q-card-section>
-                <div class="lifestyle">
-                  <div class="label">Lifestyle</div>
-                  <q-select
-                    v-model="lifestyleModel"
-                    :options="lifestyleOptions"
-                    class=""
-                    outlined
+                <div class="ideals">
+                  <div class="label">Ideals</div>
+                  <q-input v-model="idealsModel"
+                           class=""
+                           outlined
                   />
-                  {{ }}
+                </div>
+              </q-card-section>
+              <q-card-section>
+                <div class="bonds">
+                  <div class="label">Bonds</div>
+                  <q-input v-model="bondsModel"
+                           class=""
+                           outlined
+                  />
+                </div>
+              </q-card-section>
+              <q-card-section>
+                <div class="flaws">
+                  <div class="label">Flaws</div>
+                  <q-input v-model="flawsModel"
+                           class=""
+                           outlined
+                  />
                 </div>
               </q-card-section>
             </q-card>
           </q-expansion-item>
         </div>
       </q-list>
+
 <!--Notes-->
       <q-list bordered class="q-pt-sm q-px-sm">
-        <div class="descriptions ">
+        <div class="Notes">
           <q-expansion-item
             caption="Organizations - Allies - Enemies - Backstory - Other"
             caption-lines="1"
@@ -397,10 +469,48 @@ export default defineComponent({
           </q-expansion-item>
         </div>
       </q-list>
-
-
     </div>
   </div>
+
+
+<!--Avatar Upload Dialog-->
+  <q-dialog v-model="avatarDialog">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">Choose Your Avatar</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        <q-file v-model="userUpload" accept=".jpg" max-file-size="3145728" bottom-slots counter filled label="character_avatar.jpg" max-files="1">
+          <!--          <template v-slot:prepend>-->
+          <!--            <q-icon name="cloud_upload" @click.stop.prevent />-->
+          <!--          </template>-->
+          <template v-slot:append>
+            <q-icon class="cursor-pointer" name="close" @click.stop.prevent="userUpload = null"/>
+          </template>
+          <template v-slot:loading>
+            <q-icon class="cursor-pointer" name="close" @click.stop.prevent="userUpload = null"/>
+          </template>
+
+<!--          <template v-slot:hint>-->
+<!--            Only .JSON files are accepted-->
+<!--          </template>-->
+        </q-file>
+      </q-card-section>
+
+      <q-card-actions align="right" class="text-primary">
+        <q-btn v-close-popup flat label="Cancel" @click="cancelFileUpload"/>
+        <!--        <q-btn flat label="Upload Character" @click="uploadFile(userUpload)" />-->
+        <q-btn :loading="uploadingState" color="primary" flat label="Upload Avatar" @click="handleFileUpload(userUpload)">
+          <!--        Button-->
+          <template v-slot:loading>
+            <q-spinner-hourglass class="on-left"/>
+            Uploading...
+          </template>
+        </q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <style scoped>

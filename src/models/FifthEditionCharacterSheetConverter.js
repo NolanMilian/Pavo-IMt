@@ -331,7 +331,6 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
       physicalCharacteristics: {
         gender: '',
         eyes: '',
-        size: 'Medium',
         height: '',
         faith: '',
         hair: '',
@@ -345,13 +344,14 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
         bonds: getData("noteList").split('⊠')[13],
         flaws: getData("noteList").split('⊠')[14],
       },
-      notes: {
-        organizations: '',
-        allies: '',
-        enemies: '',
-        backstory: '',
-        other: getData("noteList").split('⊠')[6].split('\n').join()
-      },
+    },
+
+    notes: {
+      organizations: '',
+      allies: '',
+      enemies: '',
+      backstory: '',
+      other: getData("noteList").split('⊠')[6].split('\n').join()
     },
 
     features: getData("noteList").split('⊠')[0],
