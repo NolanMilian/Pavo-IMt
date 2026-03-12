@@ -225,11 +225,16 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
       const startIndex = i * 3 + 1;
       const diceType = hitDiceArray[startIndex + 1];
 
-      if (!hitDiceSets[diceType]){
+      if (!hitDiceSets[diceType]) {
         hitDiceSets[diceType] = [];
       }
 
-      hitDiceSets[diceType].push(hitDiceArray.slice(startIndex, startIndex + 3))
+      let numberOfDice = hitDiceArray[startIndex];
+      let dieSize = diceType;
+      let diceRemaining = numberOfDice;
+
+      // hitDiceSets[diceType].push(hitDiceArray.slice(startIndex, startIndex + 3))
+      hitDiceSets[diceType].push({numberOfDice, dieSize, diceRemaining})
     }
     return hitDiceSets;
   }
@@ -341,16 +346,16 @@ export default function fifthEditionCharacterSheetConverter(xmlData) {
       },
     },
 
+    name: getData("noteList").split('⊠')[15],
     features: getData("noteList").split('⊠')[0],
     armorProficiencies: getData("noteList").split('⊠')[1].split("\n"),
     weaponProficiencies: getData("noteList").split('⊠')[2].split("\n"),
     toolProficiencies: getData("noteList").split('⊠')[3].split("\n"),
     equipment: getData("noteList").split('⊠')[5].split("\n"),
     classLabel: getData("noteList").split('⊠')[7],
+
+
     raceLabel: getData("noteList").split('⊠')[8],
-
-
-    name: getData("noteList").split('⊠')[15],
     classCustom: getData("noteList").split('⊠')[16], // class user filled
     money: {
       cp: parseInt(getData("noteList").split('⊠')[17]),
