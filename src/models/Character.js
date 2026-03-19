@@ -6,10 +6,12 @@ export default function Character(id, data) {
 
   return {
     id: id,
+    userId: data.userId ?? '',
     gameType: data.gameType ?? '',
+    isPublic: data.isPublic ?? false,
     campaignName: data.campaignName ?? '',
     favorite: data.favorite ?? false,
-    avatarURL: null,
+    avatarURL: '',
     name: data.name ?? '',
     race: data.race ?? '',
     inspiration: false,

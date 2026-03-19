@@ -481,14 +481,14 @@ export default defineComponent({
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-file v-model="userUpload" accept=".jpg" max-file-size="3145728" bottom-slots counter filled label="character_avatar.jpg" max-files="1">
+        <q-file v-model="userUpload" accept=".jpg, image/*" max-file-size="3145728" bottom-slots counter filled label="Character Avatar" max-files="1" :loading="uploadingState" :rules="[val => val.value <= 3 || 'Please choose a file.']">
           <!--          <template v-slot:prepend>-->
           <!--            <q-icon name="cloud_upload" @click.stop.prevent />-->
           <!--          </template>-->
-          <template v-slot:append>
-            <q-icon class="cursor-pointer" name="close" @click.stop.prevent="userUpload = null"/>
+          <template v-if="uploadingState" v-slot:loading>
+            <q-spinner-hourglass class="on-right"/>
           </template>
-          <template v-slot:loading>
+          <template v-else v-slot:append>
             <q-icon class="cursor-pointer" name="close" @click.stop.prevent="userUpload = null"/>
           </template>
 

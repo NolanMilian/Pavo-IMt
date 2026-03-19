@@ -14,8 +14,10 @@ export const useCharacterStore = defineStore('character', {
   }),
 
   actions: {
+    // TODO: this function appears unused, potentially removable
     characterById(characterId) {
-      db.doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
+      // db.doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
+      db.doc(`characters/${characterId}`)
         .get()
         .then((doc) => {
           console.log(doc.id, '=>', doc.data())
@@ -24,18 +26,37 @@ export const useCharacterStore = defineStore('character', {
 
     activateCharacter(characterId) {
       db
-        .doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
+        // .doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
+        .doc(`characters/${characterId}`)
         .onSnapshot((doc) => {
           this.activeCharacter = new Character(doc.id, doc.data());
         })
       // console.log('active character', this.activeCharacter);
     },
 
-    getCharacters() {
+    getUserCharacters() {
       this.allCharacters = [];
       db
         // .collection(`users/${auth.currentUser.uid}/characters/`)
-        .collection(`users/${useAuthStore().authUser.uid}/characters/`)
+        .collection(`characters/`).where("userId", "==", useAuthStore().authUser.uid)
+        .onSnapshot((querySnapshot) => {
+          this.allCharacters.length = 0;
+          querySnapshot.forEach((doc) => {
+            console.log(doc.id, '=>', doc.data());
+            this.allCharacters.push(new Character(doc.id, doc.data()));
+          })
+        })
+      //   .catch((error) => {
+      //   console.error('Error retrieving collection from firestore', error);
+      // })
+      // console.log('array of characters', this.allCharacters);
+    },
+
+    getCharacters() {
+      this.allCharacters = [];
+      db
+        // .collection(`users/${useAuthStore().authUser.uid}/characters/`)
+        .collection(`characters/`).where("userId", "==", useAuthStore().authUser.uid)
         .onSnapshot((querySnapshot) => {
           this.allCharacters.length = 0;
           querySnapshot.forEach((doc) => {
@@ -52,7 +73,8 @@ export const useCharacterStore = defineStore('character', {
     addCharacter(characterObj) {
       let characterId = '';
       db
-        .collection(`users/${useAuthStore().authUser.uid}/characters/`)
+        // .collection(`users/${useAuthStore().authUser.uid}/characters/`)
+        .collection(`characters/`)
         .add(characterObj)
         .then((docRef) => {
           console.log('Character written with ID of: ', docRef.id);
@@ -68,7 +90,8 @@ export const useCharacterStore = defineStore('character', {
 
     deleteCharacter(characterId) {
       db
-        .collection(`users/${useAuthStore().authUser.uid}/characters/`)
+        // .collection(`users/${useAuthStore().authUser.uid}/characters/`)
+        .collection(`characters/`)
         .doc(characterId)
         .delete()
         .then(() => {
@@ -88,7 +111,8 @@ export const useCharacterStore = defineStore('character', {
       // else
       //   characterId = character
       db
-        .doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
+        // .doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
+        .doc(`characters/${characterId}`)
         .update({
           [variable]: data
         })
@@ -100,7 +124,8 @@ export const useCharacterStore = defineStore('character', {
       let fieldValue = character[variable]
       console.log('filedValue',fieldValue)
       db
-        .doc(`users/${useAuthStore().authUser.uid}/characters/${character.id}`)
+        // .doc(`users/${useAuthStore().authUser.uid}/characters/${character.id}`)
+        .doc(`characters/${character.id}`)
         .update({
           [variable]: !fieldValue,
         })
@@ -143,7 +168,6 @@ export const useCharacterStore = defineStore('character', {
   getters: {
     isCreated(state) {
       return !!state.activeCharacter.race && !!state.activeCharacter.classData && !!state.activeCharacter.abilityScores;
-
     }
   }
 })

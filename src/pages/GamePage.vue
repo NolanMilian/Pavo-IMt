@@ -12,7 +12,7 @@ export default defineComponent({
   components: {DnD5eLayout},
   data() {
     return {
-      userStore: useCharacterStore(),
+      characterStore: useCharacterStore(),
       activeCharacter: {},
     }
   },
@@ -28,58 +28,66 @@ export default defineComponent({
         }
       }
       this.activeCharacter.abilityScoreModifiers = stats;
-      this.userStore.activeCharacter.abilityScoreModifiers = stats;
+      this.characterStore.activeCharacter.abilityScoreModifiers = stats;
       // console.log(stats);
     },
     updateCharacter() {
-      if (this.userStore.activeCharacter.uid !== this.id)
-        this.userStore.activateCharacter(this.id)
+      if (this.characterStore.activeCharacter.uid !== this.id)
+        this.characterStore.activateCharacter(this.id)
       this.$router.push({name: 'dnd5e-settings', params: {id: this.id}})
     },
   },
   created() {
-    db
-      .doc(`users/${useAuthStore().authUser.uid}/characters/${this.id}`)
-      .onSnapshot((doc) => {
-        // this.activeCharacter = doc.data();
-        // this.activeCharacter.id = doc.id;
-        this.userStore.activeCharacter = new Character(doc.id, doc.data());
-        this.activeCharacter = new Character(doc.id, doc.data());
-        this.abilityModifiers();
-
-        // console.log('active', this.activeCharacter)
-      });
+    this.characterStore.activateCharacter(this.id);
+    if (!!this.characterStore.activeCharacter) {
+      this.activeCharacter = this.characterStore.activeCharacter
+    } else {
+      while (!!!this.characterStore.activeCharacter) {
+        this.activeCharacter = this.characterStore.activeCharacter
+      }
+    }
+    // this.activeCharacter = this.characterStore.activeCharacter;
+    // db
+    //   .doc(`characters/${this.id}`)
+    //   .onSnapshot((doc) => {
+    //     // this.activeCharacter = doc.data();
+    //     // this.activeCharacter.id = doc.id;
+    //     this.characterStore.activeCharacter = new Character(doc.id, doc.data());
+    //     this.activeCharacter = new Character(doc.id, doc.data());
+    //     this.abilityModifiers();
+    //
+    //     // console.log('active', this.activeCharacter)
+    //   });
     // this.abilityModifiers();
   },
-  beforeMount() {
-    // this.activeCharacter = this.userStore.activeCharacter;
-    // this.abilityModifiers();
-  }
 })
 </script>
 
 <template>
-  <div class="name full-width bg-grey-5">
-    <div class="constrain q-mx-auto">
-      <div class="name text-h3 relative-position">
-        {{ activeCharacter.name }}
-        <q-btn round flat class="absolute-right" icon="settings" size="16px" @click="updateCharacter"><q-tooltip>Settings Page</q-tooltip></q-btn>
-      </div>
-      <div class="details text-h5 text-weight-light">
-        {{ activeCharacter.race }} | {{ activeCharacter?.classData?.classLevelString }}
+  <q-page v-if="!!activeCharacter">
+    <div class="name full-width bg-grey-5">
+      <div class="constrain q-mx-auto">
+        <div class="name text-h3 relative-position">
+          {{ activeCharacter.name }}
+          <q-btn round flat class="absolute-right" icon="settings" size="16px" @click="updateCharacter"><q-tooltip>Settings Page</q-tooltip></q-btn>
+        </div>
+        <div class="details text-h5 text-weight-light">
+          {{ activeCharacter.race }} | {{ activeCharacter?.classData?.classLevelString }}
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="q-mt-lg flex flex-center">
-    <DnD5eLayout v-if="activeCharacter.gameType === 'DnD5e'" :data="activeCharacter"/>
-<!--        <div class="debug">-->
-<!--          <q-btn @click="logChar()">Press me to get the characters</q-btn>-->
-<!--          <q-btn @click="selectCharacter('9v0qQSAGDo52AObkDdNU')">Press me to select a character</q-btn>-->
-<!--          <q-input v-model="newCharacter.name"></q-input>-->
-<!--          <q-btn @click="addCharacter(newCharacter)">Press me to add a character</q-btn>-->
-<!--        </div>-->
-  </div>
+    <div class="q-mt-lg flex flex-center">
+      <DnD5eLayout v-if="activeCharacter.gameType === 'DnD5e'" :data="activeCharacter"/>
+      <!--        <div class="debug">-->
+      <!--          <q-btn @click="logChar()">Press me to get the characters</q-btn>-->
+      <!--          <q-btn @click="selectCharacter('9v0qQSAGDo52AObkDdNU')">Press me to select a character</q-btn>-->
+      <!--          <q-input v-model="newCharacter.name"></q-input>-->
+      <!--          <q-btn @click="addCharacter(newCharacter)">Press me to add a character</q-btn>-->
+      <!--        </div>-->
+    </div>
+  </q-page>
+  <div v-else class="loading text-h1 text-bold">Loading...</div>
 </template>
 
 <style scoped>

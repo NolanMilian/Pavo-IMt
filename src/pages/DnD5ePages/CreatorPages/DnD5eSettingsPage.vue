@@ -182,14 +182,15 @@ export default defineComponent({
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-file v-model="userUpload" accept=".json" bottom-slots counter filled label="character_file.json" max-files="1">
+<!--        TODO: change to linear progress-->
+        <q-file v-model="userUpload" accept=".json" bottom-slots counter filled label="Character File" max-files="1" :loading="uploadingState">
           <!--          <template v-slot:prepend>-->
           <!--            <q-icon name="cloud_upload" @click.stop.prevent />-->
           <!--          </template>-->
-          <template v-slot:append>
-            <q-icon class="cursor-pointer" name="close" @click.stop.prevent="userUpload = null"/>
+          <template v-if="uploadingState" v-slot:loading>
+            <q-spinner-hourglass class="on-right"/>
           </template>
-          <template v-slot:loading>
+          <template v-else v-slot:append>
             <q-icon class="cursor-pointer" name="close" @click.stop.prevent="userUpload = null"/>
           </template>
 
