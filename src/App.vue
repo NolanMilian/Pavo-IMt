@@ -1,6 +1,6 @@
 <template>
   <router-view v-if="authStore.isLoaded" />
-  <div v-else class="loading text-h1 text-bold">Loading...</div>
+<!--  <div v-else class="loading text-h1 text-bold">Loading...</div>-->
 </template>
 
 <script>
@@ -34,22 +34,20 @@ export default defineComponent({
     },
 
   },
-  mounted() {
-    this.endLoading()
-  },
   beforeUnmount() {
     if (this.timer !== void 0) {
       clearTimeout(this.timer)
       this.$q.loading.hide()
     }
   },
-  created() {
+  mounted() {
     this.showLoading()
     auth
       .onAuthStateChanged(user => {
         this.authStore.setUser(user ? new AuthUser(user) : null);
         this.authStore.isLoaded = true;
       })
+    setTimeout(() => {this.endLoading()}, 100)
   }
 })
 </script>
