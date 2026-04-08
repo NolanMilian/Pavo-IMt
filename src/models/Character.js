@@ -6,9 +6,9 @@ export default function Character(id, data) {
 
   return {
     id: id,
+    isPublic: data.isPublic ?? false,
     userId: data.userId ?? '',
     gameType: data.gameType ?? '',
-    isPublic: data.isPublic ?? false,
     campaignName: data.campaignName ?? '',
     favorite: data.favorite ?? false,
     avatarURL: '',

@@ -11,6 +11,7 @@ export const useCharacterStore = defineStore('character', {
   state: () => ({
     activeCharacter: {},
     allCharacters: [],
+    isLoaded: false,
   }),
 
   actions: {
@@ -26,10 +27,18 @@ export const useCharacterStore = defineStore('character', {
 
     activateCharacter(characterId) {
       db
-        // .doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
         .doc(`characters/${characterId}`)
         .onSnapshot((doc) => {
-          this.activeCharacter = new Character(doc.id, doc.data());
+          const tempCharacter = new Character(doc.id, doc.data());
+          if (!tempCharacter.isPublic && tempCharacter.userId === useAuthStore().authUser.uid) {
+            this.activeCharacter = tempCharacter;
+            // this.isLoaded = true;
+          } else if (tempCharacter.isPublic) {
+            this.activeCharacter = tempCharacter;
+            // this.isLoaded = true;
+          } else {
+            this.activeCharacter = {permission: false}
+          }
         })
       // console.log('active character', this.activeCharacter);
     },
@@ -56,7 +65,7 @@ export const useCharacterStore = defineStore('character', {
       this.allCharacters = [];
       db
         // .collection(`users/${useAuthStore().authUser.uid}/characters/`)
-        .collection(`characters/`).where("userId", "==", useAuthStore().authUser.uid)
+        .collection(`characters/`)
         .onSnapshot((querySnapshot) => {
           this.allCharacters.length = 0;
           querySnapshot.forEach((doc) => {
@@ -96,7 +105,7 @@ export const useCharacterStore = defineStore('character', {
         .delete()
         .then(() => {
           console.log('Character deleted');
-          this.getCharacters();
+          this.getUserCharacters();
         }).catch((error) => {
           console.error('Error removing character', error);
       })

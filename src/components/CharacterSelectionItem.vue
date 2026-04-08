@@ -20,7 +20,8 @@ export default defineComponent({
       this.userStore.toggleCharacterVariable(this.characterObj, "favorite")
     },
     deleteCharacter() {
-      this.userStore.deleteCharacter(this.characterObj.id);
+      this.$emit('deleteCharacter', this.characterObj)
+      // this.userStore.deleteCharacter(this.characterObj.id);
     },
     selectCharacter() {
       if (this.userStore.activeCharacter !== this.characterObj)

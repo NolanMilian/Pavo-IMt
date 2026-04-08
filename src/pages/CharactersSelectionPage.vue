@@ -12,21 +12,25 @@ export default defineComponent({
   data() {
     return{
       newCharacter: new Character(),
-      userStore: useCharacterStore(),
+      characterStore: useCharacterStore(),
       authStore: useAuthStore(),
       newCharacterDialog: false,
+      deleteConfirmationDialog: false,
     }
   },
   methods: {
-    getCharacters() {this.userStore.getCharacters()},
-    addCharacter(data) {this.userStore.addCharacter(data)},
+    getUserCharacters() {this.characterStore.getUserCharacters()},
+    addCharacter(data) {this.characterStore.addCharacter(data)},
     refreshPage() {
       location.reload();
+    },
+    deleteCharacter(characterObj){
+      this.characterStore.deleteCharacter(characterObj.id);
     },
   },
   created() {
     if (this.authStore.isLoaded && this.authStore.isAuthenticated){
-      this.getCharacters();
+      this.getUserCharacters();
     }
   },
 })
@@ -42,14 +46,15 @@ export default defineComponent({
           </div>
         </div>
         <character-selection-item
-          v-show="userStore.allCharacters.length > 0"
-          v-for="data in userStore.allCharacters"
+          v-show="characterStore.allCharacters.length > 0"
+          v-for="data in characterStore.allCharacters"
           :key="data.id"
           :character-obj="data"
           class=""
+          @delete-character="deleteCharacter"
         />
       </div>
-      <div v-show="userStore.allCharacters <= 0" class="" >No Character Information 😢 <q-btn @click="refreshPage">Click to Reload</q-btn> </div>
+      <div v-show="characterStore.allCharacters <= 0" class="" >No Character Information 😢 <q-btn @click="refreshPage">Click to Reload</q-btn> </div>
     </div>
 
     <div v-else class="notAuthenticated">
@@ -72,9 +77,25 @@ export default defineComponent({
 <!--          class=""-->
 <!--        />-->
       </div>
-<!--      <div v-show="userStore.allCharacters <= 0" class="" >No Character Information 😢 <q-btn @click="refreshPage">Click to Reload</q-btn> </div>-->
+<!--      <div v-show="characterStore.allCharacters <= 0" class="" >No Character Information 😢 <q-btn @click="refreshPage">Click to Reload</q-btn> </div>-->
     </div>
   </q-page>
+
+  <q-dialog v-model="deleteConfirmationDialog">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6 text-negative">Permission Denied</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        Character is not made publicly available.
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="OK" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <style scoped>

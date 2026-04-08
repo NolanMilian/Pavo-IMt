@@ -14,6 +14,7 @@ export default defineComponent({
     return {
       characterStore: useCharacterStore(),
       activeCharacter: {},
+      permissionsDeniedDialog: false,
     }
   },
   methods: {
@@ -36,16 +37,27 @@ export default defineComponent({
         this.characterStore.activateCharacter(this.id)
       this.$router.push({name: 'dnd5e-settings', params: {id: this.id}})
     },
+
+    activateCharacter(id) {
+      this.characterStore.activateCharacter(id);
+    },
   },
   created() {
-    this.characterStore.activateCharacter(this.id);
-    if (!!this.characterStore.activeCharacter) {
-      this.activeCharacter = this.characterStore.activeCharacter
-    } else {
-      while (!!!this.characterStore.activeCharacter) {
-        this.activeCharacter = this.characterStore.activeCharacter
-      }
+    if (!this.characterStore.isLoaded){
+      this.activateCharacter(this.id);
+      this.characterStore.isLoaded = true;
     }
+    if (this.characterStore.activeCharacter.permission === false) {
+      this.permissionsDeniedDialog = true;
+    }
+    // this.characterStore.activateCharacter(this.id);
+    // if (!!this.characterStore.activeCharacter) {
+    //   this.activeCharacter = this.characterStore.activeCharacter
+    // } else {
+    //   while (!!!this.characterStore.activeCharacter) {
+    //     this.activeCharacter = this.characterStore.activeCharacter
+    //   }
+    // }
     // this.activeCharacter = this.characterStore.activeCharacter;
     // db
     //   .doc(`characters/${this.id}`)
@@ -64,7 +76,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <q-page v-if="!!activeCharacter">
+  <div v-if="!!characterStore.activeCharacter.id">
     <div class="name full-width bg-grey-5">
       <div class="constrain q-mx-auto">
         <div class="name text-h3 relative-position">
@@ -86,8 +98,25 @@ export default defineComponent({
       <!--          <q-btn @click="addCharacter(newCharacter)">Press me to add a character</q-btn>-->
       <!--        </div>-->
     </div>
-  </q-page>
+  </div>
   <div v-else class="loading text-h1 text-bold">Loading...</div>
+
+  <!-- Permissions Denied Dialog -->
+  <q-dialog v-model="permissionsDeniedDialog">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6 text-negative">Permission Denied</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        Character is not made publicly available.
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="OK" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <style scoped>

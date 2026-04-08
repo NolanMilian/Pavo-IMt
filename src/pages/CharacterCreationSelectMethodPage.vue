@@ -8,22 +8,22 @@ export default defineComponent({
   name: "CharacterCreationSelectMethodPage",
   data() {
     return {
-      userStore: useCharacterStore(),
+      characterStore: useCharacterStore(),
       authStore: useAuthStore(),
     }
   },
   methods: {
     async createDnD5eCharacter(gameType) {
       let tempCharacterName = this.authStore.authUser.displayName + `'s Character`;
-      let characterObj = {gameType: gameType, favorite: false, name: tempCharacterName};
+      let characterObj = {gameType: gameType, favorite: false, name: tempCharacterName, userId: this.authStore.authUser.uid};
 
       db
-        .collection(`users/${useAuthStore().authUser.uid}/characters/`)
+        .collection(`characters/`)
         .add(characterObj)
         .then((docRef) => {
           console.log('Character written with ID of: ', docRef.id);
-          this.userStore.activateCharacter(docRef.id);
-          this.$router.push({name: 'dnd5e-settings', params: {id: docRef.id}}) // TODO: put this back in when redirect works properly 'creator-dnd5e'
+          this.characterStore.activateCharacter(docRef.id);
+          this.$router.push({name: 'dnd5e-settings', params: {id: docRef.id}})
         })
         .catch((error) => {
           console.error('Error adding document: ', error);
