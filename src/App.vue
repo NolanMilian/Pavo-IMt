@@ -1,6 +1,6 @@
 <template>
   <router-view v-if="authStore.isLoaded" />
-<!--  <div v-else class="loading text-h1 text-bold">Loading...</div>-->
+  <div v-else class="loading text-h1 text-bold">Loading...</div>
 </template>
 
 <script>
@@ -16,17 +16,13 @@ export default defineComponent({
     return {
       authStore: useAuthStore(),
       $q: useQuasar(),
-      timer: null,
     }
   },
   methods: {
     showLoading () {
-      this.$q.loading.show()
-
-      this.timer = setTimeout(() => {
-        this.$q.loading.hide()
-        this.timer = void 0
-      }, 2000)
+      this.$q.loading.show({
+        message: 'Loading user profile. Hang on...',
+      })
     },
 
     endLoading() {
@@ -42,12 +38,19 @@ export default defineComponent({
   },
   mounted() {
     this.showLoading()
-    auth
-      .onAuthStateChanged(user => {
-        this.authStore.setUser(user ? new AuthUser(user) : null);
-        this.authStore.isLoaded = true;
-      })
-    setTimeout(() => {this.endLoading()}, 100)
+    this.authStore.init().then(() => {setTimeout(() => {this.endLoading()}, 100)});
+    // auth
+    //   .onAuthStateChanged(user => {
+    //     this.authStore.setUser(user ? new AuthUser(user) : null);
+    //     this.authStore.isLoaded = true;
+    //   })
+
   }
 })
 </script>
+
+<style>
+.loading {
+  background-color: #0d47a1;
+}
+</style>

@@ -52,8 +52,8 @@ export const useAuthStore = defineStore('auth',{
     },
 
     // initialize authState in the app.vue
-    init() {
-      auth
+    async init() {
+      await auth
         .onAuthStateChanged(user => {
           this.setUser(user ? new AuthUser(user) : null);
           this.isLoaded = true;
