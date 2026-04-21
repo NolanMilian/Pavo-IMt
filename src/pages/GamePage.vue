@@ -5,6 +5,7 @@ import {useCharacterStore} from "stores/character-store";
 import {db} from "boot/firebase";
 import {useAuthStore} from "stores/auth-store";
 import Character from "src/models/Character";
+import { getActivePinia } from "pinia";
 
 export default defineComponent({
   name: "GamePage",
@@ -18,23 +19,28 @@ export default defineComponent({
     }
   },
   methods: {
-    abilityModifiers () {
-      const stats = this.activeCharacter.abilityScoresTotal;
+    // abilityModifiers () {
+    //   const stats = this.activeCharacter.abilityScoresTotal;
+    //
+    //   for (let key in stats) {
+    //     if (stats.hasOwnProperty(key)) {
+    //       let value = stats[key];
+    //       stats[key] = Math.floor((value - 10) / 2);
+    //       // console.log(key, stats[key])
+    //     }
+    //   }
+    //   this.activeCharacter.abilityScoreModifiers = stats;
+    //   this.characterStore.activeCharacter.abilityScoreModifiers = stats;
+    //   // console.log(stats);
+    // },
 
-      for (let key in stats) {
-        if (stats.hasOwnProperty(key)) {
-          let value = stats[key];
-          stats[key] = Math.floor((value - 10) / 2);
-          // console.log(key, stats[key])
-        }
-      }
-      this.activeCharacter.abilityScoreModifiers = stats;
-      this.characterStore.activeCharacter.abilityScoreModifiers = stats;
-      // console.log(stats);
-    },
-    updateCharacter() {
-      if (this.characterStore.activeCharacter.uid !== this.id)
-        this.characterStore.activateCharacter(this.id)
+    // updateCharacter() {
+    //   if (this.characterStore.activeCharacter.id !== this.id)
+    //     this.characterStore.activateCharacter(this.id)
+    //   this.$router.push({name: 'dnd5e-settings', params: {id: this.id}})
+    // },
+
+    redirectToCharacterSettings() {
       this.$router.push({name: 'dnd5e-settings', params: {id: this.id}})
     },
 
@@ -42,14 +48,17 @@ export default defineComponent({
       this.characterStore.activateCharacter(id);
     },
   },
+  mounted() {
+    this.activateCharacter(this.id);
+  },
   created() {
-    if (!this.characterStore.isLoaded){
-      this.activateCharacter(this.id);
-      this.characterStore.isLoaded = true;
-    }
-    if (this.characterStore.activeCharacter.permission === false) {
-      this.permissionsDeniedDialog = true;
-    }
+    // if (!this.characterStore.isLoaded){
+    //   this.activateCharacter(this.id);
+    //   this.characterStore.isLoaded = true;
+    // }
+    // if (this.characterStore.activeCharacter.permission === false) {
+    //   this.permissionsDeniedDialog = true;
+    // }
     // this.characterStore.activateCharacter(this.id);
     // if (!!this.characterStore.activeCharacter) {
     //   this.activeCharacter = this.characterStore.activeCharacter
@@ -58,7 +67,11 @@ export default defineComponent({
     //     this.activeCharacter = this.characterStore.activeCharacter
     //   }
     // }
-    // this.activeCharacter = this.characterStore.activeCharacter;
+    // if (!!this.activePinia) {
+    //   this.characterStore.activateCharacter(this.id);
+    //   this.activeCharacter = this.characterStore.activeCharacter;
+    // }
+
     // db
     //   .doc(`characters/${this.id}`)
     //   .onSnapshot((doc) => {
@@ -71,26 +84,27 @@ export default defineComponent({
     //     // console.log('active', this.activeCharacter)
     //   });
     // this.abilityModifiers();
+    // console.log(this.activePinia)
   },
 })
 </script>
 
 <template>
-  <div v-if="!!characterStore.activeCharacter.id">
+  <div v-if="!!characterStore.activeCharacter.name">
     <div class="name full-width bg-grey-5">
       <div class="constrain q-mx-auto">
         <div class="name text-h3 relative-position">
-          {{ activeCharacter.name }}
-          <q-btn round flat class="absolute-right" icon="settings" size="16px" @click="updateCharacter"><q-tooltip>Settings Page</q-tooltip></q-btn>
+          {{ characterStore.activeCharacter.name }}
+          <q-btn round flat class="absolute-right" icon="settings" size="16px" @click="redirectToCharacterSettings"><q-tooltip>Settings Page</q-tooltip></q-btn>
         </div>
         <div class="details text-h5 text-weight-light">
-          {{ activeCharacter.race }} | {{ activeCharacter?.classData?.classLevelString }}
+          {{ characterStore.activeCharacter.race }} | {{ characterStore.activeCharacter?.classData?.classLevelString }}
         </div>
       </div>
     </div>
 
     <div class="q-mt-lg flex flex-center">
-      <DnD5eLayout v-if="activeCharacter.gameType === 'DnD5e'" :data="activeCharacter"/>
+      <DnD5eLayout v-if="characterStore.activeCharacter.gameType === 'DnD5e'" :data="characterStore.activeCharacter"/>
       <!--        <div class="debug">-->
       <!--          <q-btn @click="logChar()">Press me to get the characters</q-btn>-->
       <!--          <q-btn @click="selectCharacter('9v0qQSAGDo52AObkDdNU')">Press me to select a character</q-btn>-->

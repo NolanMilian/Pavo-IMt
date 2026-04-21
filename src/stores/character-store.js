@@ -11,19 +11,19 @@ export const useCharacterStore = defineStore('character', {
   state: () => ({
     activeCharacter: {},
     allCharacters: [],
-    isLoaded: false,
+    // isLoaded: false,
   }),
 
   actions: {
     // TODO: this function appears unused, potentially removable
-    characterById(characterId) {
-      // db.doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
-      db.doc(`characters/${characterId}`)
-        .get()
-        .then((doc) => {
-          console.log(doc.id, '=>', doc.data())
-        })
-    },
+    // characterById(characterId) {
+    //   // db.doc(`users/${useAuthStore().authUser.uid}/characters/${characterId}`)
+    //   db.doc(`characters/${characterId}`)
+    //     .get()
+    //     .then((doc) => {
+    //       console.log(doc.id, '=>', doc.data())
+    //     })
+    // },
 
     activateCharacter(characterId) {
       db
@@ -32,15 +32,12 @@ export const useCharacterStore = defineStore('character', {
           const tempCharacter = new Character(doc.id, doc.data());
           if (!tempCharacter.isPublic && tempCharacter.userId === useAuthStore().authUser.uid) {
             this.activeCharacter = tempCharacter;
-            // this.isLoaded = true;
           } else if (tempCharacter.isPublic) {
             this.activeCharacter = tempCharacter;
-            // this.isLoaded = true;
           } else {
             this.activeCharacter = {permission: false}
           }
         })
-      // console.log('active character', this.activeCharacter);
     },
 
     getUserCharacters() {
@@ -145,7 +142,7 @@ export const useCharacterStore = defineStore('character', {
     uploadCharacterAvatar(characterId, file) {
       const storageRef = storage.ref();
       const fileRef = storageRef.child(file.name);
-      let avatarURL = null;
+      // let avatarURL = null;
 
       fileRef.put(file)
         .then(snapshot => {
@@ -153,21 +150,11 @@ export const useCharacterStore = defineStore('character', {
           snapshot.ref.getDownloadURL()
             .then(downloadURL => {
               // Store the downloadURL in Firestore or perform any other action
-              db.collection('uploads').add({ downloadURL });
-              avatarURL = downloadURL;
+              // db.collection('uploads').add({ downloadURL });
+              db.doc(`character/${characterId}`).update({avatarURL: downloadURL});
+              // avatarURL = downloadURL;
             });
         })
-        .then(
-          setTimeout(() => {
-            // we're done, we reset loading state
-            this.uploadingState = false
-            this.uploadDialog = false
-          }, 1000)
-        )
-        .catch(error => {
-          console.error('Error uploading file:', error);
-        });
-
       return avatarURL;
     },
 
