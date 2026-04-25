@@ -9,7 +9,7 @@ export default defineComponent({
   props: ['id'],
   data() {
     return {
-      userStore: useCharacterStore(),
+      characterStore: useCharacterStore(),
       activeCharacter: {},
       avatarDialog: false,
       userUpload: null,
@@ -48,7 +48,6 @@ export default defineComponent({
         age: '',
         gender: '',
       },
-
     }
   },
   methods: {
@@ -84,7 +83,7 @@ export default defineComponent({
     },
     update() {
       if (this.characterName)
-        this.userStore.updateCharacterVariable(this.id, 'name', this.characterName);
+        this.characterStore.updateCharacterVariable(this.id, 'name', this.characterName);
       this.saveHandler();
     },
     saveHandler() {
@@ -109,29 +108,7 @@ export default defineComponent({
     handleFileUpload(file) {
       this.uploadingState = true;
 
-      const storageRef = storage.ref();
-      const fileRef = storageRef.child(file.name);
-
-      fileRef.put(file)
-        .then(snapshot => {
-          // Get the download URL
-          snapshot.ref.getDownloadURL()
-            .then(downloadURL => {
-            // Store the downloadURL in Firestore or perform any other action
-            db.collection('uploads').add({ downloadURL });
-          });
-        })
-        .then(
-          setTimeout(() => {
-            // we're done, we reset loading state
-            this.uploadingState = false
-            this.uploadDialog = false
-          }, 1000)
-        )
-        .catch(error => {
-          console.error('Error uploading file:', error);
-        });
-
+      this.characterStore.uploadCharacterAvatar(this.id, file);
 
       setTimeout(() => {this.uploadingState = false; this.importSuccessDialog = true;}, 500)
     },
@@ -166,7 +143,7 @@ export default defineComponent({
   },
   mounted() {
     this.returnBackgrounds();
-    this.activeCharacter = this.userStore.activeCharacter;
+    this.activeCharacter = this.characterStore.activeCharacter;
     this.characterName = this.activeCharacter.name;
     // this.characterRace = this.activeCharacter.race;
   },
@@ -183,7 +160,7 @@ export default defineComponent({
         <div class="characterAvatar">
           <q-btn square dense flat @click="avatarDialog = true">
             <q-avatar square color="grey" text-color="white" size="88px">
-              <img v-if="activeCharacter.avatarURL" :src="activeCharacter.avatarURL">
+              <img v-if="!!characterStore.activeCharacter.avatarURL" :src="characterStore.activeCharacter.avatarURL" alt="character avatar">
               <q-icon v-else name="add"/>
             </q-avatar>
           </q-btn>
@@ -474,6 +451,7 @@ export default defineComponent({
 
 
 <!--Avatar Upload Dialog-->
+<!--  TODO: add remove photo button when there is a photo uploaded-->
   <q-dialog v-model="avatarDialog">
     <q-card>
       <q-card-section>
@@ -481,7 +459,7 @@ export default defineComponent({
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-file v-model="userUpload" accept=".jpg, image/*" max-file-size="3145728" bottom-slots counter filled label="Character Avatar" max-files="1" :loading="uploadingState" :rules="[val => val.value <= 3 || 'Please choose a file.']">
+        <q-file v-model="userUpload" accept=".jpg" max-file-size="3145728" bottom-slots counter filled label="Character Avatar" max-files="1" :loading="uploadingState">
           <!--          <template v-slot:prepend>-->
           <!--            <q-icon name="cloud_upload" @click.stop.prevent />-->
           <!--          </template>-->

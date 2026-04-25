@@ -11,8 +11,8 @@ export default function Character(id, data) {
     gameType: data.gameType ?? '',
     campaignName: data.campaignName ?? '',
     favorite: data.favorite ?? false,
-    avatarURL: '',
     name: data.name ?? '',
+    avatarURL: data.avatarURL ?? '',
     race: data.race ?? '',
     inspiration: false,
     health: data.health ?? {

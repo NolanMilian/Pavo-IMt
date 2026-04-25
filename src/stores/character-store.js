@@ -142,20 +142,16 @@ export const useCharacterStore = defineStore('character', {
     uploadCharacterAvatar(characterId, file) {
       const storageRef = storage.ref();
       const fileRef = storageRef.child(file.name);
-      // let avatarURL = null;
 
       fileRef.put(file)
         .then(snapshot => {
           // Get the download URL
           snapshot.ref.getDownloadURL()
             .then(downloadURL => {
-              // Store the downloadURL in Firestore or perform any other action
-              // db.collection('uploads').add({ downloadURL });
-              db.doc(`character/${characterId}`).update({avatarURL: downloadURL});
-              // avatarURL = downloadURL;
+              db.doc(`characters/${characterId}`).update({avatarURL: downloadURL});
             });
         })
-      return avatarURL;
+      // return avatarURL;
     },
 
 
