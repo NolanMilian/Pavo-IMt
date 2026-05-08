@@ -16,6 +16,7 @@ export default defineComponent({
       authStore: useAuthStore(),
       newCharacterDialog: false,
       deleteConfirmationDialog: false,
+      characterToDelete: {},
     }
   },
   methods: {
@@ -24,8 +25,12 @@ export default defineComponent({
     refreshPage() {
       location.reload();
     },
-    deleteCharacter(characterObj){
-      this.characterStore.deleteCharacter(characterObj.id);
+    deleteCharacter(){
+      this.characterStore.deleteCharacter(this.characterToDelete.id);
+    },
+    deleteCharacterDialog(characterObj){
+      this.characterToDelete = characterObj;
+      this.deleteConfirmationDialog = true;
     },
   },
   created() {
@@ -51,7 +56,7 @@ export default defineComponent({
           :key="data.id"
           :character-obj="data"
           class=""
-          @delete-character="deleteCharacter"
+          @delete-character="deleteCharacterDialog"
         />
       </div>
       <div v-show="characterStore.allCharacters <= 0" class="" >No Character Information 😢 <q-btn @click="refreshPage">Click to Reload</q-btn> </div>
@@ -84,15 +89,16 @@ export default defineComponent({
   <q-dialog v-model="deleteConfirmationDialog">
     <q-card>
       <q-card-section>
-        <div class="text-h6 text-negative">Permission Denied</div>
+        <div class="text-h6 text-negative">Delete Confirmation</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        Character is not made publicly available.
+        Are you sure you want to delete "{{ characterToDelete.name }}"?
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="OK" color="primary" v-close-popup />
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn flat label="Confirm" color="negative" @click="deleteCharacter" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
